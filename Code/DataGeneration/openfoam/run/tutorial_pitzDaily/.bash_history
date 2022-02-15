@@ -1,0 +1,3 @@
+simpleFoam
+paraFoam
+exit

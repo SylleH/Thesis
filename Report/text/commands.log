@@ -1,0 +1,17 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdftex 2019.9.9)  18 JAN 2022 09:53
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**commands.tex
+(./commands.tex
+./commands.tex:2: Undefined control sequence.
+l.2 \theoremstyle
+                 {plain}
+? 
+./commands.tex:2: Emergency stop.
+l.2 \theoremstyle
+                 {plain}
+End of file on the terminal!
+
+./commands.tex:2:  ==> Fatal error occurred, no output PDF file produced!

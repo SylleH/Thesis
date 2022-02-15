@@ -1,0 +1,68 @@
+%%% MATHEMATICS
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{col}{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{deff}{Definition}
+\newtheorem{conj}{Conjecture}
+
+\newtheoremstyle{own}%
+    {3pt}% Space above
+    {3pt}% Space below
+    {}% Body font
+    {}% Indent amount
+    {\color{teal}\bfseries}% Theorem head font
+    {:}% Punctuation after theorem head
+    {\newline}% Space after theorem head
+    {}% Theorem head spec
+\theoremstyle{own}
+\newtheorem{example}{Example}[section]
+
+%   MATH COMMANDS
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\let\oldvec\vec
+\renewcommand{\vec}[1]{\oldvec{\mathbf{#1}}}
+\renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
+
+\DeclareMathOperator{\minimize}{minimize}
+\DeclareMathOperator{\maximize}{maximize}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\diag}{diag}
+%\newcommand{\iff}{\Leftrightarrow}
+\newcommand{\kron}{\otimes}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+
+
+% LETTERS 
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+
+\newcommand{\FF}{\mathcal{F}}
+
+\newcommand{\Ohm}{\Omega}
+\newcommand{\ohm}{\omega}
+\newcommand{\vare}{\varepsilon}
+
+%% SETUP
+%easy colors
+\definecolor{red4}{RGB}{139, 0, 0} 
+\definecolor{green4}{RGB}{0, 139, 0}
+\definecolor{blue4}{RGB}{0, 0,139}  
+
+\newcommand{\bred}{\textcolor{red4}{\textbullet}}
+\newcommand{\bbg}{\textcolor{green4}{\textbullet}}
+\newcommand{\bbl}{\textcolor{blue4}{\textbullet}}
+
+%% contains all the used packages %%
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\newcommand\SmallMatrix[1]{{%
+  \tiny\arraycolsep=0.3\arraycolsep\ensuremath{\begin{pmatrix}#1\end{pmatrix}}}}

@@ -1,0 +1,35 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+
+%SetFonts
+
+%SetFonts
+
+
+\title{Brief Article}
+\author{The Author}
+%\date{}							% Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+\section{Literature notes}
+\subsection{Different methods}
+ML:
+Deep Fluid paper --> encoder to make a parametrisation of the flow data, then add known simulation parameters. These parameters are used as inputs for a NN and NN makes next time step. 
+Flood prediction --> use ROM techniques (domain decomposition)+  LSTM
+DL the physics of transport phenomena --> input BC and let cGAN predict output flow field. 
+use ML to make higher accuracy solution from coarse grid solution 
+
+Idea: use cGAN trained generator te make parametrisation, then use NN of deep fluid paper to timestep
+
+BLOOD:
+blood velocity depends on blood pressure, vessel resistance and blood viscosity. Also vessel diameter.
+
+
+\end{document}  
