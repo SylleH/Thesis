@@ -1,3 +1,9 @@
+"""
+Author: Sylle Hoogeveen
+Functions to create multiple meshes with GMSH for OpenFoam simulations
+"""
+
+
 import gmsh
 import sys
 import math
@@ -6,7 +12,9 @@ import numpy as np
 gmsh.initialize()
 factory = gmsh.model.geo
 mm = 1e-03
-Lc = 0.0002 #mesh size
+Lc = 0.0002 #mesh size 0.0002 works, smaller the Courant number explodes with icoFoam solver
+Lc1 = 0.0001
+Lc2 = 0.0005
 
 
 
@@ -113,7 +121,7 @@ def build_channel_branch():
 
 
 def build_channel_bend():
-    deg = 90
+    deg = 90    # 0< deg < 180
 
     name='channel_bend'+str(deg)
 
@@ -128,8 +136,8 @@ def build_channel_bend():
     factory.addPoint(0, 0, 0, Lc, 1) #midpoint circle
     factory.addPoint(-r1, 0, 0, Lc, 2)
     factory.addPoint(-r2, 0, 0, Lc, 3)
-    factory.addPoint(r2 * math.cos(angle), r2 * math.sin(angle), 0, Lc, 4)
-    factory.addPoint(r1*math.cos(angle), r1*math.sin(angle), 0, Lc, 5)
+    factory.addPoint(-r2 * math.cos(angle), -r2 * math.sin(angle), 0, Lc, 4)
+    factory.addPoint(-r1*math.cos(angle), -r1*math.sin(angle), 0, Lc, 5)
 
     factory.addLine(2, 3, 1)
     factory.addCircleArc(3, 1, 4, 2)
@@ -156,7 +164,7 @@ def build_channel_bend():
     gmsh.model.setPhysicalName(2, 3, "outer_arc")
     gmsh.model.setPhysicalName(2, 4, "right")
     gmsh.model.setPhysicalName(2, 5, "inner_arc")
-    gmsh.model.setPhysicalName(2, 6, "bottom")
+    gmsh.model.setPhysicalName(2, 6, "top")
     gmsh.model.setPhysicalName(3, 2, "the volume")
 
     gmsh.model.mesh.generate(3)
@@ -247,11 +255,11 @@ def build_channel_bifurcation():
 
     gmsh.model.mesh.generate(3)
 
-    gmsh.write("channel_bifurcation.msh2")
+    gmsh.write("channel_bifurcation_fine.msh2")
 
 #build_channel_straight()
-#build_channel_bend()
-build_channel_branch()
+build_channel_bend()
+#build_channel_branch()
 #build_channel_bifurcation()
 
 # Launch the GUI to see the results:

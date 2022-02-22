@@ -13,7 +13,3 @@ def get_conv_shape(tensor, data_format='NHWC'):
         return [shape[0], shape[2], shape[3], shape[1]]
     elif data_format == 'NHWC':
         return shape
-
-def upscale(x, scale, dataformat='NHWC'):
-    _, h,w, _ = get_conv_shape(x, dataformat)
-    return resize_nearest_neighbo
