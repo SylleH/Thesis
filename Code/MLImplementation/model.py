@@ -13,13 +13,12 @@ from ops import *
 import math
 
 
-def Encoder(x, filters, z_num, batch_size, num_conv, conv_k, repeat, act=tf.nn.relu, name='encoder'):
+def Encoder(x, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.relu, name='encoder'):
     """
     Encoder network to obtain reduced dimension representation from velocity field input
 
     :param x: velocity field tensor with data format [Number of images in batch, Height, Width ,Channel_depth]
     :param filters: number of filters generated per convolutional layer
-    :param batch_size: batch size
     :param z_num: latent dimension size (unsupervised part)
     :param num_conv: number of convolutional layers
     :param conv_k: kernel size
@@ -128,7 +127,7 @@ def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf
     generator_model = keras.Model(z,out)
     return out, generator_model
 
-def AE(x, filters, z_num, batch_size,  num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu, name='AE'):
+def AE(x, filters, z_num, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu, name='AE'):
     """
     Combination of Encoder and Generator networks
 
@@ -137,7 +136,7 @@ def AE(x, filters, z_num, batch_size,  num_conv, conv_k, last_k, repeat, act=tf.
     :return out: generated velocity field from reduced representation
     """
 
-    z,_ = Encoder(x, filters=filters, z_num=z_num, batch_size=batch_size, num_conv= num_conv, conv_k= conv_k, repeat= repeat, act=act)
+    z,_ = Encoder(x, filters=filters, z_num=z_num, num_conv= num_conv, conv_k= conv_k, repeat= repeat, act=act)
 
     #z is new latent representation = z + output NN
     out,_ = Generator(z, filters=filters, output_shape = get_conv_shape(x)[1:],
@@ -146,9 +145,9 @@ def AE(x, filters, z_num, batch_size,  num_conv, conv_k, last_k, repeat, act=tf.
 
     return z, out, autoencoder
 
-def LatentIntNN(x, onum, nodenum=512, act = tf.nn.elu, dropout=0.1, name='LatentIntNN'):
+def LatentIntNN(x, onum, node_num=512, act = tf.nn.elu, dropout=0.1, name='LatentIntNN'):
     """
-    Neural Network for time stepping in reduced dimension
+    Neural Network for time evolution in reduced dimension
 
     :param x: combination of z (reduced representation learned from encoder), p (known parameters) and
             delta_p (difference known parameters time t with t+1)
@@ -161,11 +160,11 @@ def LatentIntNN(x, onum, nodenum=512, act = tf.nn.elu, dropout=0.1, name='Latent
 
 
     x = layers.BatchNormalization()(x)
-    x = layers.Dense(nodenum*2, activation=act)(x)
+    x = layers.Dense(node_num*2, activation=act)(x)
     x = layers.Dropout(dropout)(x) #keras automatically sets training to True only for training phase
 
     x = layers.BatchNormalization()(x)
-    x = layers.Dense(nodenum, activation=act)(x)
+    x = layers.Dense(node_num, activation=act)(x)
     x = layers.Dropout(dropout)(x)  # keras automatically sets training to True only for training phase
 
     delta_z = layers.Dense(onum)(x)
