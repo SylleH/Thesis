@@ -1,0 +1,6 @@
+PyYAML
+matplotlib
+tensorflow
+numpy
+pillow
+scipy

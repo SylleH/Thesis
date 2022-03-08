@@ -122,6 +122,7 @@ def build_channel_branch():
 
 def build_channel_bend():
     deg = 90    # 0< deg < 180
+    Lc = 0.0001
 
     name='channel_bend'+str(deg)
 
@@ -129,8 +130,8 @@ def build_channel_bend():
 
     w = 0.75*mm
     angle= np.deg2rad(deg)
-    r1 = w
-    r2 = 2*w
+    r1 = 1*mm
+    r2 = r1+w
 
 
     factory.addPoint(0, 0, 0, Lc, 1) #midpoint circle

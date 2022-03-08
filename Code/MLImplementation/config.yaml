@@ -1,22 +1,21 @@
 data:
-  scenario: straight #bifurcation, bend90 or branch
+  scenario: test #straight, bifurcation, bend90 or branch
   model_dir: model/
 preprocess:
   img_height: 832 #after cropping, original = 952
   img_width: 768 #after cropping, original = 1578
   channels: 3 #3=RGB, 1=GRAYSCALE
 AE:
-  filters: 3
+  filters: 32
   z_num: 100
-  num_conv:  1 #4-5 in Deep Fluids
+  num_conv:  4 #4-5 in Deep Fluids
   conv_k: 3
   last_k: 3 #channels
-  repeat: 6 #0 = calculated, more repeats is more downsampling, less trainable parameters
+  repeat: 4 #0 = calculated, more repeats is more downsampling, less trainable parameters
   training:
-    batch_size: 10
-    epochs: 10
+    batch_size: 1
+    epochs: 3
 NN:
   node_num: 512
   dropout: 0.1
-
 

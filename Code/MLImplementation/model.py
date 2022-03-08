@@ -4,16 +4,17 @@ using keras functional API
 Author: Sylle Hoogeveen
 """
 
-import numpy as np
+
 
 import tensorflow as tf
 from tensorflow import keras
 from keras import layers
 from ops import *
-import math
+import numpy as np
 
 
-def Encoder(x, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.relu, name='encoder'):
+
+def Encoder(x, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.leaky_relu, name='encoder'):
     """
     Encoder network to obtain reduced dimension representation from velocity field input
 
@@ -52,14 +53,14 @@ def Encoder(x, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.relu, name='
             x = layers.Conv2D(filters, kernel_size=conv_k, strides=1, activation=act, padding="same", name=str(layer_num)+'_conv')(x)
             layer_num +=1
 
-        #skip connection
-        x = layers.Concatenate(axis=-1, name = str(idx)+"_skip")([x, x0]) #concat on feature map = last dimension
-
         ch += filters
 
         if idx < repeat_num-1:
-            #x = layers.MaxPool2D((2,2),padding="valid",name=str(idx)+"_pool")(x)
-            x = layers.Conv2D(ch, kernel_size=conv_k, strides=2, activation=act, padding="same",name=str(layer_num) + '_conv')(x)
+            # skip connection
+            x = layers.Concatenate(axis=-1, name=str(idx) + "_skip")([x, x0])  # concat on feature map = last dimension
+
+            x = layers.MaxPool2D((2,2),padding="valid",name=str(idx)+"_pool")(x)
+            #x = layers.Conv2D(ch, kernel_size=conv_k, strides=2, activation=act, padding="same",name=str(layer_num) + '_conv')(x)
             layer_num +=1
             x0=x
 
@@ -110,19 +111,19 @@ def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf
 
         #SMALL BLOCK
         for _ in range(num_conv):
-            x = layers.Conv2D(filters=filters, kernel_size=conv_k, strides=1, activation=act, padding="same",name=str(layer_num) + '_deconv')(x)
+            x = layers.Conv2DTranspose(filters=filters, kernel_size=conv_k, strides=1, activation=act, padding="same",name=str(layer_num) + '_deconv')(x)
             layer_num += 1
 
         if idx < repeat_num - 1:
             #residual skip connection = element-wise sum of feature maps of input & output each convolutional layer block
             x = layers.Add(name=str(idx)+"_add")([x, x0])
-            x = layers.UpSampling2D(size=(2,2), data_format='channels_last', interpolation='nearest')(x)
+            x = layers.UpSampling2D(size=(2,2), data_format='channels_last', interpolation='bilinear', name=str(idx)+"_upsample")(x)
             x0 = x
 
         else:
             x = layers.Add(name=str(idx)+"_add")([x, x0])
 
-    out = layers.Conv2D(output_shape[-1], kernel_size=last_k, strides=1, padding="same", name=str(layer_num) + '_deconv')(x)
+    out = layers.Conv2D(output_shape[-1], kernel_size=last_k, strides=1, padding="same", activation= keras.activations.relu, name=str(layer_num) + '_deconv')(x)
 
     generator_model = keras.Model(z,out)
     return out, generator_model

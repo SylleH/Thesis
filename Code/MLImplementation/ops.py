@@ -1,11 +1,10 @@
-import tensorflow as tf
-import numpy as np
-import glob
+
 import os
 from PIL import Image
 
 scenario = "straight" #bifurcation, bend90 or branch
-data_dir = "data/"+scenario+"/"
+data_in_dir ="../DataGeneration/Data_generated/"+scenario+"/"
+data_out_dir = "data/"+scenario+"/"
 
 def int_shape(tensor):
     shape = tensor.get_shape().as_list()
@@ -20,11 +19,11 @@ def get_conv_shape(tensor, data_format='NHWC'):
         return shape
 
 def create_cropped_images():
-    for filename in glob.glob("*.png"):
-        file, ext = os.path.splitext(filename)
-        im = Image.open(filename)
-        cropped_im = im.crop((397,48,1181,904))
-        cropped_im.save(data_dir+file+"_cropped.png")
+    for image in os.listdir(data_in_dir):
+        file, ext = os.path.splitext(image)
+        im = Image.open(data_in_dir+image)
+        cropped_im = im.crop((0,9,515,378)) #left, upper, right, lower
+        cropped_im.save(data_out_dir+file+"_cropped.png")
 
 #this can be used as preprocessing_function in ImageDataGenerator, but dimension issues
 def crop(image):
@@ -34,3 +33,5 @@ def crop(image):
     cropped_image = image[start_y:(952 - start_y),start_x:(1578 - start_x), :]
     print(cropped_image.shape)
     return cropped_image
+
+#create_cropped_images()

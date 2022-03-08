@@ -3,19 +3,17 @@ Preprocessing functions for CFD simulations to tensor input for model
 Author: Sylle Hoogeveen
 """
 
-import tensorflow as tf
 from ops import *
+import tensorflow as tf
 import matplotlib.pyplot as plt
 from model import AE
-from PIL import Image
-import glob
-import os
 
-scenario = "straight" #bifurcation, bend90 or branch
-data_dir = "data/"+scenario+"/"
+
+# scenario = "straight" #bifurcation, bend90 or branch
+# data_dir = "data/"+scenario+"/"
 
 def create_datagenerators(data_dir, batch_size, img_height, img_width):
-    image_gen = tf.keras.preprocessing.image.ImageDataGenerator(validation_split=0.2) #lots of options to specify
+    image_gen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1./255, validation_split=0.2) #lots of options to specify
     train_generator = image_gen.flow_from_directory(data_dir,
                                                     target_size=(img_height,img_width),
                                                     color_mode="rgb",
@@ -53,7 +51,7 @@ def test():
     first_image = img_batch[0]
     print(first_image.shape)
     plt.figure()
-    plt.imshow(first_image.astype('uint8'))
+    plt.imshow(first_image)
     plt.show()
 
-
+print(tf.config.list_physical_devices())
