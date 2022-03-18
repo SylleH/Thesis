@@ -1,3 +1,0 @@
-simpleFoam
-paraFoam
-exit
