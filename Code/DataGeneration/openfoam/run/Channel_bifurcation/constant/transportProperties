@@ -11,6 +11,7 @@ FoamFile
     class       dictionary;
     location    "constant";
     object      transportProperties;
+    version	9;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

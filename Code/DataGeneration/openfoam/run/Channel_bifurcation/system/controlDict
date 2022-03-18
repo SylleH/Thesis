@@ -11,9 +11,9 @@ FoamFile
     class       dictionary;
     location    "system";
     object      controlDict;
+    version	9;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
 application     icoFoam;
 
 startFrom       startTime;
@@ -34,13 +34,13 @@ purgeWrite      0;
 
 writeFormat     ascii;
 
-writePrecision  6;
+writePrecision  3;
 
 writeCompression off;
 
 timeFormat      general;
 
-timePrecision   6;
+timePrecision   3;
 
 runTimeModifiable true;
 

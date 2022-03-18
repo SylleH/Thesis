@@ -1,27 +1,21 @@
+#!/usr/bin/python
+
 """
 Author: Sylle Hoogeveen
 Functions to create multiple meshes with GMSH for OpenFoam simulations
 """
-
 
 import gmsh
 import sys
 import math
 import numpy as np
 
-gmsh.initialize()
-factory = gmsh.model.geo
-mm = 1e-03
-Lc = 0.0002 #mesh size 0.0002 works, smaller the Courant number explodes with icoFoam solver
-Lc1 = 0.0001
-Lc2 = 0.0005
-
-
-
-def build_channel_straight():
+def build_channel_straight(width, Lc):
     gmsh.model.add("channel_straight")
+    factory = gmsh.model.geo
+    mm = 1e-03
 
-    w = 0.75*mm
+    w = width*mm #0.75*mm
     h = 5*mm
 
     factory.addPoint(-w,0,0, Lc,1)
@@ -60,13 +54,15 @@ def build_channel_straight():
     gmsh.model.setPhysicalName(3, 2, "the volume")
 
     gmsh.model.mesh.generate(3)
+    name='channel_straight_w'+str(width)
+    gmsh.write('Meshes/'+name+".msh2")
 
-    gmsh.write("channel_straight.msh2")
-
-def build_channel_branch():
+def build_channel_branch(width, Lc):
     gmsh.model.add("channel_branch")
+    factory = gmsh.model.geo
+    mm = 1e-03
 
-    w = 0.75 * mm
+    w = width * mm
     r = 2*w
     h1 = 5 * mm
     h2 = 4*mm
@@ -117,18 +113,18 @@ def build_channel_branch():
 
     gmsh.model.mesh.generate(3)
 
-    gmsh.write("channel_branch.msh2")
+    name='channel_branch_w'+str(width)
+    gmsh.write('Meshes/'+name+".msh2")
 
 
-def build_channel_bend():
+def build_channel_bend(width, Lc):
     deg = 90    # 0< deg < 180
-    Lc = 0.0001
+    factory = gmsh.model.geo
+    mm = 1e-03
 
-    name='channel_bend'+str(deg)
+    gmsh.model.add("channel_bend")
 
-    gmsh.model.add(name)
-
-    w = 0.75*mm
+    w = width*mm
     angle= np.deg2rad(deg)
     r1 = 1*mm
     r2 = r1+w
@@ -170,14 +166,17 @@ def build_channel_bend():
 
     gmsh.model.mesh.generate(3)
 
-    gmsh.write(name+'.msh2')
+    name='channel_bend_w'+str(width)+'_a'+str(deg)
+    gmsh.write('Meshes/'+name+".msh2")
 
-def build_channel_bifurcation():
+def build_channel_bifurcation(width, Lc):
     gmsh.model.add("channel_bifurcation")
+    factory = gmsh.model.geo
+    mm = 1e-03
 
     e1 = 1.25*mm
     e2 = 1.15*mm
-    e3 = 0.75*mm
+    e3 = width*mm
     h1 = 2*mm
     h2 = 3*mm
     h3 = 1.25*mm
@@ -255,18 +254,37 @@ def build_channel_bifurcation():
 
 
     gmsh.model.mesh.generate(3)
+    name='channel_bifurcation_w'+str(width)
+    gmsh.write('Meshes/'+name+".msh2")
 
-    gmsh.write("channel_bifurcation_fine.msh2")
 
-#build_channel_straight()
-build_channel_bend()
-#build_channel_branch()
-#build_channel_bifurcation()
+def main(argv):
+    gmsh.initialize()
+
+    scenario = argv[0]
+    width = float(argv[1])  #width*2 is actual channel width, due to symmetrical building
+    deg = 90                #ToDo: make optional system argument, also think about other optional arguments (width branch or bifurcation)
+    Lc = 0.0002             #this determines the coarseness of the mesh
+
+    if scenario == 'straight':
+        build_channel_straight(width, Lc)
+    if scenario == 'bend':
+        build_channel_bend(width,deg, Lc)
+    if scenario == 'branch':
+        build_channel_branch(width, Lc)
+    if scenario == 'bifurcation':
+        build_channel_bifurcation(width, Lc)
+
+    gmsh.finalize
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
+
 
 # Launch the GUI to see the results:
-if '-nopopup' not in sys.argv:
-    gmsh.fltk.run()
+# if '-nopopup' not in sys.argv:
+#     gmsh.fltk.run()
 
-gmsh.finalize()
+
 
 

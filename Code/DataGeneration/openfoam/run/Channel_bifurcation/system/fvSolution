@@ -11,6 +11,7 @@ FoamFile
     class       dictionary;
     location    "system";
     object      fvSolution;
+    version	9;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

@@ -1,0 +1,6 @@
+numpy
+vtk
+matplotlib
+gmsh
+SciPy
+pandas

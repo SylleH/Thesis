@@ -1,2 +1,16 @@
 venv_thesis
-DataGeneration/Code/venv_data_thesis
+DataGeneration/venv_data_thesis
+*/.DS_Store
+DataGeneration/openfoam/run/Channel_bifurcation/0.*
+DataGeneration/openfoam/run/Channel_bifurcation/1
+DataGeneration/openfoam/run/Channel_bifurcation/VTK
+DataGeneration/openfoam/run/Channel_straight/0.*
+DataGeneration/openfoam/run/Channel_straight/1
+DataGeneration/openfoam/run/Channel_straight/VTK
+DataGeneration/openfoam/run/Channel_branch/0.*
+DataGeneration/openfoam/run/Channel_branch/1
+DataGeneration/openfoam/run/Channel_branch/VTK
+DataGeneration/openfoam/run/Channel_bend90/0.*
+DataGeneration/openfoam/run/Channel_bend90/1
+DataGeneration/openfoam/run/Channel_bend90/VTK
+DataGeneration/openfoam/run/tutorial_pitzDaily

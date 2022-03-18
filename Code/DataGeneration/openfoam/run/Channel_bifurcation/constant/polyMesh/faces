@@ -11,6 +11,7 @@ FoamFile
     class       faceList;
     location    "constant/polyMesh";
     object      faces;
+    version	9;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

@@ -10,6 +10,7 @@ FoamFile
     format      ascii;
     class       volVectorField;
     object      U;
+    version	9;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -41,14 +42,17 @@ boundaryField
     
     top
     {
-    type         uniformFixedValue;
-    uniformValue
+	type		uniformFixedValue;
+    	uniformValue
     	{
-        	type            scale;
-		scale		squarePulse;
-		start		0.3;	
-        	duration	0.3;
-        	value        	(0 -0.7 0);
+		type			tableFile;
+		format			csv;
+		nHeaderLine		1;
+		refColumn		0;
+		componentColumns	(1 2 3);
+		separator		",";
+		mergeSeparators		no;
+        	file			"inlet_v.csv";
     	}
     }
 

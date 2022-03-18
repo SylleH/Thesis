@@ -11,6 +11,7 @@ FoamFile
     class       polyBoundaryMesh;
     location    "constant/polyMesh";
     object      boundary;
+    version	9;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

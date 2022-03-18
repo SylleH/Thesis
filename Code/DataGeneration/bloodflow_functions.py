@@ -66,7 +66,7 @@ def p_out(t):
 
     p_conv_list = p_list.copy()
     for count, value in enumerate(p_list):
-        p_conv_list[count] = p_list[count]*133.322368/1060 #convert fot OpenFoam
+        p_conv_list[count] = p_list[count]*133.322368/1060  #convert for  OpenFoam
     print(p_conv_list)
 
     plt.plot(x,y, '.',xp10,p10(xp10), '-')
