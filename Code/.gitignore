@@ -1,6 +1,6 @@
 venv_thesis
 DataGeneration/venv_data_thesis
-*/.DS_Store
+*.DS_Store
 DataGeneration/openfoam/run/Channel_bifurcation/0.*
 DataGeneration/openfoam/run/Channel_bifurcation/1
 DataGeneration/openfoam/run/Channel_bifurcation/VTK
