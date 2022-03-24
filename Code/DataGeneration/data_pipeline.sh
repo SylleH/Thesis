@@ -15,9 +15,9 @@ do
 	cp Meshes/channel_${scenario}_w${width}.msh2 openfoam/run/Channel_${scenario}/	
 done
 
-# deactivate
+deactivate
 
-#run simulations, store VTK files ---> works
+#run simulations, store VTK files and convert VTK to PNG ---> works
 for width in ${channel_widths}
 do
 	cd openfoam/run/channel_${scenario}
@@ -28,12 +28,11 @@ do
 	cd ../../../VTK_files/${scenario}/w${width}
 	for file in data_*; do mv "$file" "${file/data/${scenario}_w${width}_}"; done
 	cd ../../..
-	
-done
+	source venv_data_thesis/bin/activate
+	python VTKtoPNG.py $scenario $width
+	deactivate
 
-# source venv_data_thesis/bin/activate
-# python VTKtoPNG.py $scenario $width
-# deactivate
+done
 
 echo 'All done'
 

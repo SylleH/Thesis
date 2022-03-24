@@ -8,6 +8,6 @@ from your OpenFoam data directory.
 
 First create meshes using create_mesh.py and boundary conditions using bloodflow_functions.py . Adjust OpenFoam dictionary files (details in report) and run solver. Use VTKtoPNG.py to convert generated VTK files to PNG files. PNG files are used as input for NNs. 
 
-The whole data generation pipeline is represented in bash script: data_pipeline.sh (experimental phase). 
+The whole data generation pipeline is implemented in bash script: data_pipeline.sh (except boundary conditions, they are taken time dependent but fixed for now). 
 
 ![Data generation pipeline](../../Report/images/data_pipeline.png)

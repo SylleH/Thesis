@@ -149,14 +149,14 @@ def plot_and_save(scenario, filename, x,y, U, triangle_id):
     plt.axis('off')
     plt.xlim(left=-0.0025, right =0.0025)
     plt.savefig('Data_generated/'+scenario+'/'+os.path.splitext(filename)[0]+'.png', bbox_inches='tight')
-    plt.colorbar()
-    plt.show()
-
+    # plt.colorbar()
+    # plt.show()
+    plt.close()
 
 
 def main(argv):
-    scenario = 'straight' #argv[0]
-    width = str(0.75) #argv[1]
+    scenario = argv[0]
+    width = argv[1]
 
     mesh_path = 'Meshes/channel_'+scenario+'_w'+width+'.msh2'
 
