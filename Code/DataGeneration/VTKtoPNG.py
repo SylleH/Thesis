@@ -148,7 +148,7 @@ def plot_and_save(scenario, filename, x,y, U, triangle_id):
     plt.pcolor(xg,yg, U_int, cmap=cm.jet, vmin=0, vmax=0.8)
     plt.axis('off')
     plt.xlim(left=-0.0025, right =0.0025)
-    plt.savefig('Data_generated/'+scenario+'/'+filename.split('.')[0]+'.png', bbox_inches='tight')
+    plt.savefig('Data_generated/'+scenario+'/'+os.path.splitext(filename)[0]+'.png', bbox_inches='tight')
     plt.colorbar()
     plt.show()
 
@@ -162,8 +162,10 @@ def main(argv):
 
     x, y, triangle_id = load_GMSH_data(mesh_path)
     count = 0
-    for filename in os.listdir('VTK_files/'+scenario):
-        VTK_path = 'VTK_files/'+scenario+"/"+filename
+    for filename in os.listdir('VTK_files/'+scenario+'/w'+width):
+        if filename == '.DS_Store':
+            continue
+        VTK_path = 'VTK_files/'+scenario+"/w"+width+'/'+filename
         x_VTK, y_VTK, U = load_VTK_data(VTK_path)
 
         # check if mesh and VTK file are matched correctly, only need to check once

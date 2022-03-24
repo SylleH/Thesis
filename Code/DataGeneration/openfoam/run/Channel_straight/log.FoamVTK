@@ -1,0 +1,1444 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+Build  : 9-b456138dc4bc
+Exec   : foamToVTK -allPatches
+Date   : Mar 24 2022
+Time   : 13:05:57
+Host   : "3758fe76d85a"
+PID    : 130
+I/O    : uncollated
+Case   : //data
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 10)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Create mesh for time = 0
+
+Deleting old VTK files in "//data/VTK"
+
+Time: 0
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_0.vtk"
+    Original cells:606 points:678   Additional cells:0  additional points:0
+
+    Combined patches     : "//data/VTK/allPatches/allPatches_0.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+Time: 0.01
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_10.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_10.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.02
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_20.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_20.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.03
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_30.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_30.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.04
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_40.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_40.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.05
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_50.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_50.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.06
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_60.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_60.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.07
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_70.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_70.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.08
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_80.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_80.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.09
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_90.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_90.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.1
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_100.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_100.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.11
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_110.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_110.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.12
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_120.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_120.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.13
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_130.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_130.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.14
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_140.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_140.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.15
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_150.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_150.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.16
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_160.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_160.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.17
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_170.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_170.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.18
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_180.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_180.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.19
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_190.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_190.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.2
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_200.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_200.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.21
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_210.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_210.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.22
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_220.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_220.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.23
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_230.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_230.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.24
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_240.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_240.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.25
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_250.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_250.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.26
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_260.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_260.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.27
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_270.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_270.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.28
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_280.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_280.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.29
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_290.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_290.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.3
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_300.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_300.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.31
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_310.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_310.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.32
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_320.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_320.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.33
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_330.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_330.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.34
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_340.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_340.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.35
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_350.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_350.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.36
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_360.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_360.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.37
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_370.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_370.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.38
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_380.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_380.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.39
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_390.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_390.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.4
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_400.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_400.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.41
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_410.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_410.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.42
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_420.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_420.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.43
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_430.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_430.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.44
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_440.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_440.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.45
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_450.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_450.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.46
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_460.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_460.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.47
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_470.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_470.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.48
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_480.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_480.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.49
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_490.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_490.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.5
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_500.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_500.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.51
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_510.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_510.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.52
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_520.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_520.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.53
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_530.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_530.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.54
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_540.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_540.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.55
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_550.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_550.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.56
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_560.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_560.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.57
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_570.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_570.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.58
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_580.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_580.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.59
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_590.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_590.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.6
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_600.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_600.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.61
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_610.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_610.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.62
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_620.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_620.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.63
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_630.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_630.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.64
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_640.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_640.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.65
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_650.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_650.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.66
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_660.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_660.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.67
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_670.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_670.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.68
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_680.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_680.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.69
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_690.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_690.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.7
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_700.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_700.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.71
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_710.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_710.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.72
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_720.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_720.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.73
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_730.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_730.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.74
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_740.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_740.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.75
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_750.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_750.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.76
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_760.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_760.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.77
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_770.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_770.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.78
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_780.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_780.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.79
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_790.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_790.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.8
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_800.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_800.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.81
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_810.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_810.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.82
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_820.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_820.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.83
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_830.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_830.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.84
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_840.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_840.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.85
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_850.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_850.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.86
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_860.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_860.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.87
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_870.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_870.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.88
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_880.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_880.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.89
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_890.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_890.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.9
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_900.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_900.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.91
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_910.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_910.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.92
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_920.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_920.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.93
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_930.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_930.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.94
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_940.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_940.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.95
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_950.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_950.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.96
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_960.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_960.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.97
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_970.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_970.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.98
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_980.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_980.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 0.99
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_990.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_990.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+Time: 1
+    volScalarFields            : p
+    volVectorFields            : U
+
+    Internal  : "//data/VTK/data_1000.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_1000.vtk"
+Combining patches:
+    discarding empty/processor patch 0 back
+    discarding empty/processor patch 1 front
+    patch 2 left
+    patch 3 top
+    patch 4 right
+    patch 5 bottom
+    surfScalarFields  : phi
+End
+

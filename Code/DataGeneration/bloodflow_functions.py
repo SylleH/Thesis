@@ -17,12 +17,12 @@ def v_in(t):
     :param t: time vector
     :return v_list: velocity list containing corresponding velocity values
     """
-    y = [0.08,0.21,0.62,0.53,0.37,0.22,0.02,0.05,0.07,0.08]
-    x = np.linspace(0,0.5,10)
+    y = [0.08,0.21,0.62,0.53,0.37,0.22,0.02,0.05,0.07,0.08, 0.07, 0.08,  0.07, 0.08, 0.08]
+    x = np.linspace(0,0.75,15)
 
     v_coef = np.polyfit(x,y,5)
     p6 = np.poly1d(v_coef)
-    xp6 = np.linspace(0,0.5,500)
+    xp6 = np.linspace(0,0.8,500)
 
     vx_list = []
     vy_list = []
@@ -30,12 +30,12 @@ def v_in(t):
 
     v_list = [] #for plotting
     for count, value in enumerate(t):
-        if value<0.5:
+        if value<0.8:
             v_list.append(p6(value))
             vy_list.append(-p6(value))
         else:
-            v_list.append(0.08)
-            vy_list.append(-0.08)
+            v_list.append(p6(0.8))
+            vy_list.append(p6(0.8))
         vx_list.append(0)
         vz_list.append(0)
 
@@ -53,7 +53,8 @@ def p_out(t):
     :param t: time vector
     :return p_list: pressure list containing corresponding pressure values
     """
-    y = [62.5,75,82,85,87,85,84,82.5,80,76,74,72,70,69,68,66,65,64,63,62.5] #values in mmHg
+    #y = [62.5,75,82,85,87,85,84,82.5,80,76,74,72,70,69,68,66,65,64,63,62.5] #values in mmHg
+    y = [80, 90, 100, 110, 120, 115, 110, 112, 106, 105, 103, 100, 97, 94, 91, 87, 85, 83, 80, 80]
     x = np.linspace(0,1,20)
 
     p_coef = np.polyfit(x,y,10)
@@ -76,8 +77,8 @@ def p_out(t):
 def plot_figure(t, v_list, p_list):
     fig, ax1 = plt.subplots()
     ax1.set_xlabel('time [s]')
-    ax1.set_ylabel('velocity[m/s]', color = 'c')
-    ax1.plot(t, v_list, 'c')
+    ax1.set_ylabel('velocity[m/s]', color = 'b')
+    ax1.plot(t, v_list, 'b')
 
     ax2 = ax1.twinx()
     ax2.set_ylabel('pressure [mmHg]', color = 'r')

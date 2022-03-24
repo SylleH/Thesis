@@ -31,14 +31,17 @@ boundaryField
 
     bottom
     {
-    	type         uniformFixedValue;
+	type		uniformFixedValue;
     	uniformValue
     	{
-        	type            scale;
-		scale		squarePulse;
-		start		0.3;	
-        	duration	0.3;
-        	value        	15.1;
+		type			tableFile;
+		format			csv;
+		nHeaderLine		1;
+		refColumn		0;
+		componentColumns	(1);
+		separator		",";
+		mergeSeparators		no;
+        	file			"outlet_p.csv";
     	}
     }
 
