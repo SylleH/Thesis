@@ -10,6 +10,7 @@ FoamFile
     format      ascii;
     class       volScalarField;
     object      p;
+    version	9;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -31,14 +32,17 @@ boundaryField
 
     bottom
     {
-        type            uniformFixedValue;
-	  uniformValue
+	type		uniformFixedValue;
+    	uniformValue
     	{
-        	type            sine;
-		frequency	0.5;
-		amplitude	5;	
-        	scale		1;
-        	level		7;       	;
+		type			tableFile;
+		format			csv;
+		nHeaderLine		1;
+		refColumn		0;
+		componentColumns	(1);
+		separator		",";
+		mergeSeparators		no;
+        	file			"outlet_p.csv";
     	}
     }
 
@@ -52,14 +56,25 @@ boundaryField
         type		zeroGradient;
     }
 
-    right
+    right_main
     {
         type            zeroGradient;
     }
     
-    inner_arc
+    right_branch
     {
-        type            zeroGradient;
+    	type		uniformFixedValue;
+    	uniformValue
+    	{
+		type			tableFile;
+		format			csv;
+		nHeaderLine		1;
+		refColumn		0;
+		componentColumns	(1);
+		separator		",";
+		mergeSeparators		no;
+        	file			"outlet_p.csv";
+    	}
     }
 }
 

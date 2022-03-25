@@ -16,47 +16,54 @@ FoamFile
 
 7
 (
-    front
-    {
-        type            empty;
-        nFaces          578;
-        startFace       816;
-    }
     back
     {
         type            empty;
-        nFaces          578;
-        startFace       1394;
+        physicalType    patch;
+        nFaces          575;
+        startFace       821;
     }
-    bottom
+    front
     {
-        type            patch;
-        nFaces          12;
-        startFace       1972;
+        type            empty;
+        physicalType    patch;
+        nFaces          575;
+        startFace       1396;
     }
     left
     {
-        type            wall;
-        nFaces          28;
-        startFace       1984;
+        type            patch;
+        physicalType    patch;
+        nFaces          25;
+        startFace       1971;
     }
     top
     {
         type            patch;
+        physicalType    patch;
         nFaces          8;
-        startFace       2012;
+        startFace       1996;
     }
-    right
+    right_main
     {
-        type            wall;
-        nFaces          28;
-        startFace       2020;
+        type            patch;
+        physicalType    patch;
+        nFaces          38;
+        startFace       2004;
     }
-    inner_arc
+    right_branch
     {
-        type            wall;
-        nFaces          26;
-        startFace       2048;
+        type            patch;
+        physicalType    patch;
+        nFaces          4;
+        startFace       2042;
+    }
+    bottom
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          8;
+        startFace       2046;
     }
 )
 

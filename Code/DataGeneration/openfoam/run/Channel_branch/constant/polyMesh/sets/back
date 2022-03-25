@@ -10,12 +10,12 @@ FoamFile
     format      ascii;
     class       cellSet;
     location    "constant/polyMesh/sets";
-    object      front;
+    object      back;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 
-578
+575
 (
 0 
 1 
@@ -592,9 +592,6 @@ FoamFile
 572 
 573 
 574 
-575 
-576 
-577 
 )
 
 // ************************************************************************* //

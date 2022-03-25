@@ -66,6 +66,7 @@ def build_channel_branch(width, Lc):
     r = 2*w
     h1 = 5 * mm
     h2 = 4*mm
+    y = math.sqrt(math.pow(w,2) +2*w*r)
 
     factory.addPoint(-w, 0, 0, Lc, 1)
     factory.addPoint(-w, h1, 0, Lc, 2)
@@ -74,7 +75,7 @@ def build_channel_branch(width, Lc):
     factory.addPoint(w+r, h2, 0, Lc, 5) #midpoint circle
     factory.addPoint(w+r, h2-r, 0 , Lc, 6)
     factory.addPoint(w+r, h2-r-w, 0 , Lc, 7)
-    factory.addPoint(w, h2-r, 0 , Lc, 8) #ToDo: this point is not correct (y-pos)
+    factory.addPoint(w, h2-y, 0 , Lc, 8)
     factory.addPoint(w, 0, 0, Lc, 9)
 
     factory.addLine(1, 2, 1)
@@ -275,15 +276,17 @@ def main(argv):
     if scenario == 'bifurcation':
         build_channel_bifurcation(width, Lc)
 
+    # Launch the GUI to see the results:
+    if '-nopopup' not in argv:
+        gmsh.fltk.run()
+
     gmsh.finalize
 
 if __name__ == "__main__":
     main(sys.argv[1:])
 
 
-# Launch the GUI to see the results:
-# if '-nopopup' not in sys.argv:
-#     gmsh.fltk.run()
+
 
 
 

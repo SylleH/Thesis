@@ -16,11 +16,11 @@ FoamFile
 
 1
 (
-front
+back
 {
     type cellZone;
 cellLabels      List<label> 
-578
+575
 (
 0
 1
@@ -597,9 +597,6 @@ cellLabels      List<label>
 572
 573
 574
-575
-576
-577
 )
 ;
 }

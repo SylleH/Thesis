@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #run this pipeline from DataGeneration directory
-channel_widths='0.75 1.0' #NO SPACES
+channel_widths='0.75' #NO SPACES
 #pressure_range='120'
 
 source ../venv_thesis/bin/activate
@@ -11,7 +11,7 @@ read scenario
 #create all meshes --> works
 for width in ${channel_widths}
 do 
-	python create_mesh.py $scenario $width
+	python create_mesh.py $scenario $width -nopopup
 	cp Meshes/channel_${scenario}_w${width}.msh2 openfoam/run/Channel_${scenario}/	
 done
 
@@ -23,8 +23,8 @@ do
 	cd openfoam/run/channel_${scenario}
 	docker run --name openfoam_container --rm -t -v "$(PWD):/data" -w /data sylleh/openfoam9-macos ./Allrun ${scenario} ${width}
 	rm -r VTK/allPatches
-	cp -a VTK/ ../../../VTK_files/${scenario}/w${width}/
 	mkdir -p ../../../VTK_files/${scenario}/w${width}
+	cp -a VTK/ ../../../VTK_files/${scenario}/w${width}/
 	cd ../../../VTK_files/${scenario}/w${width}
 	for file in data_*; do mv "$file" "${file/data/${scenario}_w${width}_}"; done
 	cd ../../..
