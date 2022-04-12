@@ -7,9 +7,9 @@
 \*---------------------------------------------------------------------------*/
 Build  : 9-b456138dc4bc
 Exec   : foamToVTK -allPatches
-Date   : Mar 24 2022
-Time   : 13:05:57
-Host   : "3758fe76d85a"
+Date   : Mar 28 2022
+Time   : 15:58:05
+Host   : "32832f43405e"
 PID    : 130
 I/O    : uncollated
 Case   : //data
@@ -30,7 +30,7 @@ Time: 0
     volVectorFields            : U
 
     Internal  : "//data/VTK/data_0.vtk"
-    Original cells:606 points:678   Additional cells:0  additional points:0
+    Original cells:10918 points:11292   Additional cells:0  additional points:0
 
     Combined patches     : "//data/VTK/allPatches/allPatches_0.vtk"
 Combining patches:

@@ -16,7 +16,7 @@ def build_channel_straight(width, Lc):
     mm = 1e-03
 
     w = width*mm #0.75*mm
-    h = 5*mm
+    h = 100*mm #156*mm #mean length descending thoratic aorta is 332mm
 
     factory.addPoint(-w,0,0, Lc,1)
     factory.addPoint(-w,h,0, Lc,2)
@@ -64,8 +64,8 @@ def build_channel_branch(width, Lc):
 
     w = width * mm
     r = 2*w
-    h1 = 5 * mm
-    h2 = 4*mm
+    h1 = 100*mm
+    h2 = 80*mm
     y = math.sqrt(math.pow(w,2) +2*w*r)
 
     factory.addPoint(-w, 0, 0, Lc, 1)
@@ -118,16 +118,15 @@ def build_channel_branch(width, Lc):
     gmsh.write('Meshes/'+name+".msh2")
 
 
-def build_channel_bend(width, Lc):
-    deg = 90    # 0< deg < 180
+def build_channel_bend(width, deg, Lc):
     factory = gmsh.model.geo
     mm = 1e-03
 
     gmsh.model.add("channel_bend")
 
     w = width*mm
-    angle= np.deg2rad(deg)
-    r1 = 1*mm
+    angle= np.deg2rad(deg) # 0< deg < 180
+    r1 = 12*mm
     r2 = r1+w
 
 
@@ -175,14 +174,16 @@ def build_channel_bifurcation(width, Lc):
     factory = gmsh.model.geo
     mm = 1e-03
 
-    e1 = 1.25*mm
-    e2 = 1.15*mm
+    width2 = 6*mm
+
+    e1 = 12*mm #1.25*mm e1 > e3
+    e2 = e1 + width2
     e3 = width*mm
-    h1 = 2*mm
-    h2 = 3*mm
-    h3 = 1.25*mm
-    r1 = 1*mm
-    r2 = 0.5*mm
+    h1 = 45*mm
+    h2 = 55*mm
+    h3 = 25*mm
+    r1 = 10*mm
+    r2 = 5*mm
 
     def hypot(a, b):
         return math.sqrt(a * a + b * b)
@@ -196,14 +197,14 @@ def build_channel_bifurcation(width, Lc):
     factory.addPoint(-e1, 0, 0, Lc, 1)
     factory.addPoint(-e1 - e2, 0, 0, Lc, 2)
     factory.addPoint(-e1, h1, 0, Lc, 3)
-    factory.addPoint(-e3-r1, h1 + r1*math.sin(1/3*math.pi), 0, Lc, 4) #middlepoint left circle
-    factory.addPoint(-e3, h1 + r1, 0, Lc, 5)
+    factory.addPoint(-e3-r1, h1 + math.sqrt(math.pow(r1,2)-math.pow((e3+r1-e1),2)), 0, Lc, 4) #middlepoint left circle
+    factory.addPoint(-e3, h1 + math.sqrt(math.pow(r1,2)-math.pow((e3+r1-e1),2)), 0, Lc, 5)
     factory.addPoint(-e3, h1 + h2, 0, Lc, 6)
 
     factory.addPoint(e3, h1 + h2, 0, Lc, 7)
-    factory.addPoint(e3, h1 + r1, 0, Lc, 8)
-    factory.addPoint(e3+r1, h1 + r1*math.sin(1/3*math.pi), 0, Lc, 9) #middlepoint right circle
-    factory.addPoint(e1, h1, 0, Lc, 10)
+    factory.addPoint(e3, h1 + math.sqrt(math.pow(r1,2)-math.pow((e3+r1-e1),2)), 0, Lc, 8)
+    factory.addPoint(e3+r1, h1 + math.sqrt(math.pow(r1,2)-math.pow((e3+r1-e1),2)), 0, Lc, 9) #middlepoint right circle
+    factory.addPoint(e1, h1 , 0, Lc, 10)
     factory.addPoint(e1 + e2, 0, 0, Lc, 11)
     factory.addPoint(e1, 0, 0, Lc, 12)
 
@@ -265,7 +266,7 @@ def main(argv):
     scenario = argv[0]
     width = float(argv[1])  #width*2 is actual channel width, due to symmetrical building
     deg = 90                #ToDo: make optional system argument, also think about other optional arguments (width branch or bifurcation)
-    Lc = 0.0002             #this determines the coarseness of the mesh
+    Lc = 0.001             #this determines the coarseness of the mesh
 
     if scenario == 'straight':
         build_channel_straight(width, Lc)

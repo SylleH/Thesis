@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #run this pipeline from DataGeneration directory
-channel_widths='0.75' #NO SPACES
+channel_widths='10.0 11.0 13.0 14.0 15.0' #one decimal
 #pressure_range='120'
 
 source ../venv_thesis/bin/activate

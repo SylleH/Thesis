@@ -145,12 +145,12 @@ def plot_and_save(scenario, filename, x,y, U, triangle_id):
 
     #plot and save figure
     plt.figure()
-    plt.pcolor(xg,yg, U_int, cmap=cm.jet, vmin=0, vmax=0.8)
+    plt.pcolor(xg,yg, U_int, cmap=cm.jet, vmin=0, vmax=0.7)
     plt.axis('off')
-    plt.xlim(left=-0.0025, right =0.0025)
+    plt.xlim(left=-0.03, right =0.03)
     plt.savefig('Data_generated/'+scenario+'/'+os.path.splitext(filename)[0]+'.png', bbox_inches='tight')
-    # plt.colorbar()
-    # plt.show()
+    #plt.colorbar()
+    #plt.show()
     plt.close()
 
 
