@@ -10,7 +10,7 @@ export OMPI_MCA_btl_vader_single_copy_mechanism=none
 #convert gmsh file to polyMesh dict files
 gmshToFoam channel_${1}_w${2}.msh2 >log.gmshFoam
 
-#set back and front patches to empty 3D --> 2D
+#set back and front patches to empty 3D --> 2D and set walls for turbulence model
 cd constant/polyMesh
 search="back\s*\{\s*type\s*patch;"
 replace="back \n    \{\n        type            empty;"
@@ -20,9 +20,19 @@ search="front\s*\{\s*type\s*patch;"
 replace="front \n    \{\n        type            empty;"
 perl -0 -pi -e "s#$search#$replace#s" "boundary"
 
-#run simulation
-cd ../..
-icoFoam >log.icoFoam
+search="left\s*\{\s*type\s*patch;"
+replace="left \n    \{\n        type            wall;"
+perl -0 -pi -e "s#$search#$replace#s" "boundary"
 
-#convert foam output to VTK files
-foamToVTK -allPatches >log.FoamVTK
+search="right\s*\{\s*type\s*patch;"
+replace="right \n    \{\n        type            wall;"
+perl -0 -pi -e "s#$search#$replace#s" "boundary"
+
+#change parabolic inlet condition 
+cd ../..
+cd 0
+search="const scalar r = (.*?);"
+replace="const scalar r = ${2}*1e-3;"
+perl -0 -pi -e "s#$search#$replace#s" "U"
+cd ../
+

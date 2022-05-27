@@ -1,3 +1,7 @@
+"""
+Extra helper functions
+Author: Sylle Hoogeveen
+"""
 
 import os
 from PIL import Image
@@ -5,6 +9,18 @@ from PIL import Image
 scenario = "straight" #bifurcation, bend90 or branch
 data_in_dir ="../DataGeneration/Data_generated/"+scenario+"/"
 data_out_dir = "data/"+scenario+"/"
+
+def custom_save(filepath, *args, **kwargs):
+    """ Overwrite save function to save encoder and decoder separately during checkpoints """
+    global autoencoder, encoder, decoder
+
+    # fix name
+    path, ext = os.path.splitext(filepath)
+
+    # save encoder/decoder separately
+    autoencoder.save(path +'_autoencoder', *args, **kwargs)
+    encoder.save(path + '_encoder', *args, **kwargs)
+    decoder.save(path + '_decoder', *args, **kwargs)
 
 def int_shape(tensor):
     shape = tensor.get_shape().as_list()

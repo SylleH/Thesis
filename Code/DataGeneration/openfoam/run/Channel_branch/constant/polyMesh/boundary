@@ -20,50 +20,50 @@ FoamFile
     {
         type            empty;
         physicalType    patch;
-        nFaces          575;
-        startFace       821;
+        nFaces          8357;
+        startFace       12374;
     }
     front
     {
         type            empty;
         physicalType    patch;
-        nFaces          575;
-        startFace       1396;
+        nFaces          8357;
+        startFace       20731;
     }
     left
     {
         type            patch;
         physicalType    patch;
-        nFaces          25;
-        startFace       1971;
+        nFaces          100;
+        startFace       29088;
     }
     top
     {
         type            patch;
         physicalType    patch;
-        nFaces          8;
-        startFace       1996;
+        nFaces          30;
+        startFace       29188;
     }
     right_main
     {
         type            patch;
         physicalType    patch;
-        nFaces          38;
-        startFace       2004;
+        nFaces          148;
+        startFace       29218;
     }
     right_branch
     {
         type            patch;
         physicalType    patch;
-        nFaces          4;
-        startFace       2042;
+        nFaces          15;
+        startFace       29366;
     }
     bottom
     {
         type            patch;
         physicalType    patch;
-        nFaces          8;
-        startFace       2046;
+        nFaces          30;
+        startFace       29381;
     }
 )
 

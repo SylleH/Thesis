@@ -1,0 +1,6 @@
+# dynamicCode:
+# SHA1 = fb5cfb170e91438ca9755b551d46bb84a24ad2ea
+
+codedFixedValueFvPatchFieldTemplate.C
+
+LIB = $(PWD)/../platforms/$(WM_OPTIONS)/lib/libParabolicTimeDependentU_max_fb5cfb170e91438ca9755b551d46bb84a24ad2ea

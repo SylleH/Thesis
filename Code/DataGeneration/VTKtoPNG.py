@@ -8,6 +8,7 @@ Author: Sylle Hoogeveen
 import numpy as np
 import vtk
 from vtk.util.numpy_support import vtk_to_numpy
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import gmsh
@@ -145,10 +146,11 @@ def plot_and_save(scenario, filename, x,y, U, triangle_id):
 
     #plot and save figure
     plt.figure()
-    plt.pcolor(xg,yg, U_int, cmap=cm.jet, vmin=0, vmax=0.7)
+    plt.pcolor(xg,yg, U_int, cmap=cm.gray, vmin=0, vmax=0.5)
     plt.axis('off')
     plt.xlim(left=-0.03, right =0.03)
-    plt.savefig('Data_generated/'+scenario+'/'+os.path.splitext(filename)[0]+'.png', bbox_inches='tight')
+    plt.savefig('Data_generated/test_case/' + os.path.splitext(filename)[0] + '.png', bbox_inches='tight')
+    #plt.savefig('Data_generated/'+scenario+'/'+os.path.splitext(filename)[0]+'.png', bbox_inches='tight')
     #plt.colorbar()
     #plt.show()
     plt.close()
@@ -162,7 +164,7 @@ def main(argv):
 
     x, y, triangle_id = load_GMSH_data(mesh_path)
     count = 0
-    for filename in os.listdir('VTK_files/'+scenario+'/w'+width):
+    for filename in os.listdir('VTK_files/'+scenario+'/w'+width+''):
         if filename == '.DS_Store':
             continue
         VTK_path = 'VTK_files/'+scenario+"/w"+width+'/'+filename
@@ -182,6 +184,7 @@ def main(argv):
 
 
 if __name__ == "__main__":
+    matplotlib.use('agg')
     main(sys.argv[1:])
 
 """

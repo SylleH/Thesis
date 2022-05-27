@@ -30,6 +30,11 @@ boundaryField
         type            empty;
     }
 
+    patch3
+    {
+	type		empty;
+    }
+	
     bottom
     {
 	type		uniformFixedValue;

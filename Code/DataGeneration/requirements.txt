@@ -1,6 +1,5 @@
-numpy
-vtk
 matplotlib
-gmsh
-SciPy
+numpy
+scipy
+vtk
 pandas

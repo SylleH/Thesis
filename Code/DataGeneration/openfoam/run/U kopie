@@ -1,0 +1,73 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    front
+    {
+        type            empty;
+    }
+
+    back
+    {
+        type            empty;
+    }
+
+    bottom
+    {
+        type            zeroGradient;
+    }
+
+    left
+    {
+        type            noSlip;
+    }
+    
+    top
+    {
+	type		codedFixedValue;
+	value 		uniform (0 0 0);
+
+	name		ParabolicTimeDependentU_max;
+
+	code
+	#{
+		const fvPatch& patch = this->patch();
+		const vectorField& Cf = patch.Cf();
+
+		const scalar r = 0.015;
+		const scalar Umax = 0.6;
+
+		forAll(Cf, faceI)
+		{
+			const scalar x = Cf[faceI][0];
+			const scalar y = Cf[faceI][1];
+			field[faceI] = vector(0, Umax*(-1+((x*x)/(r*r))), 0);
+		}
+	#};
+    }
+
+    right
+    {
+        type            noSlip;
+    }
+
+}
+
+// ************************************************************************* //

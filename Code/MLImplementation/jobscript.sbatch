@@ -15,6 +15,6 @@ module load cuda/11.5
 module load cudnn
 module load miniconda
 conda activate env_thesis_ML
-cd MLImplementation
+cd /tudelft.net/staff-umbrella/trasientcnn/MLImplementation
 
 srun python main.py

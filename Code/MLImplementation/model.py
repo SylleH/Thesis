@@ -71,7 +71,7 @@ def Encoder(x, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.leaky_relu, 
     return z, encoder_model
 
 
-def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu, name='Generator'):
+def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu, name='decoder'):
     """
     Generator (or decoder) network to obtain velocity field from reduced dimension representation
 
@@ -128,7 +128,7 @@ def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf
     generator_model = keras.Model(z,out)
     return out, generator_model
 
-def AE(x, filters, z_num, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu, name='AE'):
+def AE(x, filters, z_num, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu, name='autoencoder'):
     """
     Combination of Encoder and Generator networks
 

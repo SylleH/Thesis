@@ -6,11 +6,11 @@
      \\/     M anipulation  |
 \*---------------------------------------------------------------------------*/
 Build  : 9-b456138dc4bc
-Exec   : foamToVTK -allPatches
-Date   : Mar 28 2022
-Time   : 15:58:05
-Host   : "32832f43405e"
-PID    : 130
+Exec   : foamToVTK -allPatches -time 2:
+Date   : May 26 2022
+Time   : 13:04:12
+Host   : "2d0e04371871"
+PID    : 128
 I/O    : uncollated
 Case   : //data
 nProcs : 1
@@ -21,18 +21,19 @@ allowSystemOperations : Allowing user-supplied system call operations
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 Create time
 
-Create mesh for time = 0
+Create mesh for time = 2
 
-Deleting old VTK files in "//data/VTK"
+Keeping old VTK files in "//data/VTK"
 
-Time: 0
+Time: 2
     volScalarFields            : p
+Using dynamicCode for codedFixedValue ParabolicTimeDependentU_max at line 2405 in "//data/2/U/boundaryField/top"
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_0.vtk"
-    Original cells:10918 points:11292   Additional cells:0  additional points:0
+    Internal  : "//data/VTK/data_2000.vtk"
+    Original cells:2364 points:2548   Additional cells:0  additional points:0
 
-    Combined patches     : "//data/VTK/allPatches/allPatches_0.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2000.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -40,82 +41,13 @@ Combining patches:
     patch 3 top
     patch 4 right
     patch 5 bottom
-Time: 0.01
-    volScalarFields            : p
-    volVectorFields            : U
-
-    Internal  : "//data/VTK/data_10.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_10.vtk"
-Combining patches:
-    discarding empty/processor patch 0 back
-    discarding empty/processor patch 1 front
-    patch 2 left
-    patch 3 top
-    patch 4 right
-    patch 5 bottom
-    surfScalarFields  : phi
-Time: 0.02
-    volScalarFields            : p
-    volVectorFields            : U
-
-    Internal  : "//data/VTK/data_20.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_20.vtk"
-Combining patches:
-    discarding empty/processor patch 0 back
-    discarding empty/processor patch 1 front
-    patch 2 left
-    patch 3 top
-    patch 4 right
-    patch 5 bottom
-    surfScalarFields  : phi
-Time: 0.03
-    volScalarFields            : p
-    volVectorFields            : U
-
-    Internal  : "//data/VTK/data_30.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_30.vtk"
-Combining patches:
-    discarding empty/processor patch 0 back
-    discarding empty/processor patch 1 front
-    patch 2 left
-    patch 3 top
-    patch 4 right
-    patch 5 bottom
-    surfScalarFields  : phi
-Time: 0.04
-    volScalarFields            : p
-    volVectorFields            : U
-
-    Internal  : "//data/VTK/data_40.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_40.vtk"
-Combining patches:
-    discarding empty/processor patch 0 back
-    discarding empty/processor patch 1 front
-    patch 2 left
-    patch 3 top
-    patch 4 right
-    patch 5 bottom
-    surfScalarFields  : phi
-Time: 0.05
-    volScalarFields            : p
-    volVectorFields            : U
-
-    Internal  : "//data/VTK/data_50.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_50.vtk"
-Combining patches:
-    discarding empty/processor patch 0 back
-    discarding empty/processor patch 1 front
-    patch 2 left
-    patch 3 top
-    patch 4 right
-    patch 5 bottom
     surfScalarFields  : phi
-Time: 0.06
+Time: 2.01
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_60.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_60.vtk"
+    Internal  : "//data/VTK/data_2010.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2010.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -124,12 +56,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.07
+Time: 2.02
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_70.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_70.vtk"
+    Internal  : "//data/VTK/data_2020.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2020.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -138,12 +70,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.08
+Time: 2.03
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_80.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_80.vtk"
+    Internal  : "//data/VTK/data_2030.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2030.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -152,12 +84,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.09
+Time: 2.04
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_90.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_90.vtk"
+    Internal  : "//data/VTK/data_2040.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2040.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -166,12 +98,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.1
+Time: 2.05
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_100.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_100.vtk"
+    Internal  : "//data/VTK/data_2050.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2050.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -180,12 +112,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.11
+Time: 2.06
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_110.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_110.vtk"
+    Internal  : "//data/VTK/data_2060.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2060.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -194,12 +126,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.12
+Time: 2.07
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_120.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_120.vtk"
+    Internal  : "//data/VTK/data_2070.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2070.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -208,12 +140,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.13
+Time: 2.08
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_130.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_130.vtk"
+    Internal  : "//data/VTK/data_2080.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2080.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -222,12 +154,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.14
+Time: 2.09
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_140.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_140.vtk"
+    Internal  : "//data/VTK/data_2090.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2090.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -236,12 +168,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.15
+Time: 2.1
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_150.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_150.vtk"
+    Internal  : "//data/VTK/data_2100.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2100.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -250,12 +182,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.16
+Time: 2.11
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_160.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_160.vtk"
+    Internal  : "//data/VTK/data_2110.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2110.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -264,12 +196,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.17
+Time: 2.12
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_170.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_170.vtk"
+    Internal  : "//data/VTK/data_2120.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2120.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -278,12 +210,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.18
+Time: 2.13
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_180.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_180.vtk"
+    Internal  : "//data/VTK/data_2130.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2130.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -292,12 +224,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.19
+Time: 2.14
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_190.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_190.vtk"
+    Internal  : "//data/VTK/data_2140.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2140.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -306,12 +238,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.2
+Time: 2.15
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_200.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_200.vtk"
+    Internal  : "//data/VTK/data_2150.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2150.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -320,12 +252,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.21
+Time: 2.16
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_210.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_210.vtk"
+    Internal  : "//data/VTK/data_2160.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2160.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -334,12 +266,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.22
+Time: 2.17
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_220.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_220.vtk"
+    Internal  : "//data/VTK/data_2170.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2170.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -348,12 +280,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.23
+Time: 2.18
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_230.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_230.vtk"
+    Internal  : "//data/VTK/data_2180.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2180.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -362,12 +294,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.24
+Time: 2.19
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_240.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_240.vtk"
+    Internal  : "//data/VTK/data_2190.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2190.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -376,12 +308,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.25
+Time: 2.2
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_250.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_250.vtk"
+    Internal  : "//data/VTK/data_2200.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2200.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -390,12 +322,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.26
+Time: 2.21
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_260.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_260.vtk"
+    Internal  : "//data/VTK/data_2210.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2210.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -404,12 +336,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.27
+Time: 2.22
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_270.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_270.vtk"
+    Internal  : "//data/VTK/data_2220.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2220.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -418,12 +350,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.28
+Time: 2.23
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_280.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_280.vtk"
+    Internal  : "//data/VTK/data_2230.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2230.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -432,12 +364,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.29
+Time: 2.24
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_290.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_290.vtk"
+    Internal  : "//data/VTK/data_2240.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2240.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -446,12 +378,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.3
+Time: 2.25
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_300.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_300.vtk"
+    Internal  : "//data/VTK/data_2250.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2250.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -460,12 +392,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.31
+Time: 2.26
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_310.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_310.vtk"
+    Internal  : "//data/VTK/data_2260.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2260.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -474,12 +406,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.32
+Time: 2.27
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_320.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_320.vtk"
+    Internal  : "//data/VTK/data_2270.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2270.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -488,12 +420,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.33
+Time: 2.28
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_330.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_330.vtk"
+    Internal  : "//data/VTK/data_2280.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2280.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -502,12 +434,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.34
+Time: 2.29
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_340.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_340.vtk"
+    Internal  : "//data/VTK/data_2290.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2290.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -516,12 +448,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.35
+Time: 2.3
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_350.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_350.vtk"
+    Internal  : "//data/VTK/data_2300.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2300.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -530,12 +462,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.36
+Time: 2.31
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_360.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_360.vtk"
+    Internal  : "//data/VTK/data_2310.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2310.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -544,12 +476,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.37
+Time: 2.32
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_370.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_370.vtk"
+    Internal  : "//data/VTK/data_2320.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2320.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -558,12 +490,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.38
+Time: 2.33
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_380.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_380.vtk"
+    Internal  : "//data/VTK/data_2330.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2330.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -572,12 +504,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.39
+Time: 2.34
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_390.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_390.vtk"
+    Internal  : "//data/VTK/data_2340.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2340.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -586,12 +518,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.4
+Time: 2.35
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_400.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_400.vtk"
+    Internal  : "//data/VTK/data_2350.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2350.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -600,12 +532,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.41
+Time: 2.36
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_410.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_410.vtk"
+    Internal  : "//data/VTK/data_2360.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2360.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -614,12 +546,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.42
+Time: 2.37
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_420.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_420.vtk"
+    Internal  : "//data/VTK/data_2370.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2370.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -628,12 +560,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.43
+Time: 2.38
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_430.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_430.vtk"
+    Internal  : "//data/VTK/data_2380.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2380.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -642,12 +574,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.44
+Time: 2.39
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_440.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_440.vtk"
+    Internal  : "//data/VTK/data_2390.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2390.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -656,12 +588,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.45
+Time: 2.4
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_450.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_450.vtk"
+    Internal  : "//data/VTK/data_2400.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2400.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -670,12 +602,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.46
+Time: 2.41
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_460.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_460.vtk"
+    Internal  : "//data/VTK/data_2410.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2410.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -684,12 +616,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.47
+Time: 2.42
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_470.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_470.vtk"
+    Internal  : "//data/VTK/data_2420.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2420.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -698,12 +630,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.48
+Time: 2.43
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_480.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_480.vtk"
+    Internal  : "//data/VTK/data_2430.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2430.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -712,12 +644,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.49
+Time: 2.44
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_490.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_490.vtk"
+    Internal  : "//data/VTK/data_2440.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2440.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -726,12 +658,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.5
+Time: 2.45
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_500.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_500.vtk"
+    Internal  : "//data/VTK/data_2450.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2450.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -740,12 +672,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.51
+Time: 2.46
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_510.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_510.vtk"
+    Internal  : "//data/VTK/data_2460.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2460.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -754,12 +686,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.52
+Time: 2.47
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_520.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_520.vtk"
+    Internal  : "//data/VTK/data_2470.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2470.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -768,12 +700,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.53
+Time: 2.48
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_530.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_530.vtk"
+    Internal  : "//data/VTK/data_2480.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2480.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -782,12 +714,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.54
+Time: 2.49
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_540.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_540.vtk"
+    Internal  : "//data/VTK/data_2490.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2490.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -796,12 +728,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.55
+Time: 2.5
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_550.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_550.vtk"
+    Internal  : "//data/VTK/data_2500.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2500.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -810,12 +742,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.56
+Time: 2.51
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_560.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_560.vtk"
+    Internal  : "//data/VTK/data_2510.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2510.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -824,12 +756,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.57
+Time: 2.52
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_570.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_570.vtk"
+    Internal  : "//data/VTK/data_2520.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2520.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -838,12 +770,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.58
+Time: 2.53
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_580.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_580.vtk"
+    Internal  : "//data/VTK/data_2530.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2530.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -852,12 +784,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.59
+Time: 2.54
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_590.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_590.vtk"
+    Internal  : "//data/VTK/data_2540.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2540.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -866,12 +798,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.6
+Time: 2.55
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_600.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_600.vtk"
+    Internal  : "//data/VTK/data_2550.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2550.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -880,12 +812,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.61
+Time: 2.56
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_610.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_610.vtk"
+    Internal  : "//data/VTK/data_2560.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2560.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -894,12 +826,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.62
+Time: 2.57
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_620.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_620.vtk"
+    Internal  : "//data/VTK/data_2570.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2570.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -908,12 +840,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.63
+Time: 2.58
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_630.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_630.vtk"
+    Internal  : "//data/VTK/data_2580.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2580.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -922,12 +854,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.64
+Time: 2.59
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_640.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_640.vtk"
+    Internal  : "//data/VTK/data_2590.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2590.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -936,12 +868,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.65
+Time: 2.6
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_650.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_650.vtk"
+    Internal  : "//data/VTK/data_2600.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2600.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -950,12 +882,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.66
+Time: 2.61
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_660.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_660.vtk"
+    Internal  : "//data/VTK/data_2610.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2610.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -964,12 +896,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.67
+Time: 2.62
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_670.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_670.vtk"
+    Internal  : "//data/VTK/data_2620.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2620.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -978,12 +910,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.68
+Time: 2.63
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_680.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_680.vtk"
+    Internal  : "//data/VTK/data_2630.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2630.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -992,12 +924,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.69
+Time: 2.64
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_690.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_690.vtk"
+    Internal  : "//data/VTK/data_2640.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2640.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1006,12 +938,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.7
+Time: 2.65
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_700.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_700.vtk"
+    Internal  : "//data/VTK/data_2650.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2650.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1020,12 +952,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.71
+Time: 2.66
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_710.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_710.vtk"
+    Internal  : "//data/VTK/data_2660.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2660.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1034,12 +966,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.72
+Time: 2.67
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_720.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_720.vtk"
+    Internal  : "//data/VTK/data_2670.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2670.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1048,12 +980,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.73
+Time: 2.68
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_730.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_730.vtk"
+    Internal  : "//data/VTK/data_2680.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2680.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1062,12 +994,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.74
+Time: 2.69
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_740.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_740.vtk"
+    Internal  : "//data/VTK/data_2690.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2690.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1076,12 +1008,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.75
+Time: 2.7
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_750.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_750.vtk"
+    Internal  : "//data/VTK/data_2700.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2700.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1090,12 +1022,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.76
+Time: 2.71
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_760.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_760.vtk"
+    Internal  : "//data/VTK/data_2710.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2710.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1104,12 +1036,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.77
+Time: 2.72
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_770.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_770.vtk"
+    Internal  : "//data/VTK/data_2720.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2720.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1118,12 +1050,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.78
+Time: 2.73
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_780.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_780.vtk"
+    Internal  : "//data/VTK/data_2730.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2730.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1132,12 +1064,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.79
+Time: 2.74
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_790.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_790.vtk"
+    Internal  : "//data/VTK/data_2740.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2740.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1146,12 +1078,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.8
+Time: 2.75
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_800.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_800.vtk"
+    Internal  : "//data/VTK/data_2750.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2750.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1160,12 +1092,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.81
+Time: 2.76
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_810.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_810.vtk"
+    Internal  : "//data/VTK/data_2760.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2760.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1174,12 +1106,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.82
+Time: 2.77
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_820.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_820.vtk"
+    Internal  : "//data/VTK/data_2770.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2770.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1188,12 +1120,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.83
+Time: 2.78
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_830.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_830.vtk"
+    Internal  : "//data/VTK/data_2780.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2780.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1202,12 +1134,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.84
+Time: 2.79
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_840.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_840.vtk"
+    Internal  : "//data/VTK/data_2790.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2790.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1216,12 +1148,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.85
+Time: 2.8
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_850.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_850.vtk"
+    Internal  : "//data/VTK/data_2800.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2800.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1230,12 +1162,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.86
+Time: 2.81
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_860.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_860.vtk"
+    Internal  : "//data/VTK/data_2810.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2810.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1244,12 +1176,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.87
+Time: 2.82
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_870.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_870.vtk"
+    Internal  : "//data/VTK/data_2820.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2820.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1258,12 +1190,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.88
+Time: 2.83
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_880.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_880.vtk"
+    Internal  : "//data/VTK/data_2830.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2830.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1272,12 +1204,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.89
+Time: 2.84
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_890.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_890.vtk"
+    Internal  : "//data/VTK/data_2840.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2840.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1286,12 +1218,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.9
+Time: 2.85
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_900.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_900.vtk"
+    Internal  : "//data/VTK/data_2850.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2850.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1300,12 +1232,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.91
+Time: 2.86
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_910.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_910.vtk"
+    Internal  : "//data/VTK/data_2860.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2860.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1314,12 +1246,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.92
+Time: 2.87
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_920.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_920.vtk"
+    Internal  : "//data/VTK/data_2870.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2870.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1328,12 +1260,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.93
+Time: 2.88
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_930.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_930.vtk"
+    Internal  : "//data/VTK/data_2880.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2880.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1342,12 +1274,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.94
+Time: 2.89
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_940.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_940.vtk"
+    Internal  : "//data/VTK/data_2890.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2890.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1356,12 +1288,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.95
+Time: 2.9
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_950.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_950.vtk"
+    Internal  : "//data/VTK/data_2900.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2900.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1370,12 +1302,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.96
+Time: 2.91
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_960.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_960.vtk"
+    Internal  : "//data/VTK/data_2910.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2910.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1384,12 +1316,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.97
+Time: 2.92
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_970.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_970.vtk"
+    Internal  : "//data/VTK/data_2920.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2920.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1398,12 +1330,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.98
+Time: 2.93
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_980.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_980.vtk"
+    Internal  : "//data/VTK/data_2930.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2930.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1412,12 +1344,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 0.99
+Time: 2.94
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_990.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_990.vtk"
+    Internal  : "//data/VTK/data_2940.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2940.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1426,12 +1358,12 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-Time: 1
+Time: 2.95
     volScalarFields            : p
     volVectorFields            : U
 
-    Internal  : "//data/VTK/data_1000.vtk"
-    Combined patches     : "//data/VTK/allPatches/allPatches_1000.vtk"
+    Internal  : "//data/VTK/data_2950.vtk"
+    Combined patches     : "//data/VTK/allPatches/allPatches_2950.vtk"
 Combining patches:
     discarding empty/processor patch 0 back
     discarding empty/processor patch 1 front
@@ -1440,5 +1372,4 @@ Combining patches:
     patch 4 right
     patch 5 bottom
     surfScalarFields  : phi
-End
-
+Time: 2.96

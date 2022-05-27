@@ -16,7 +16,7 @@ def build_channel_straight(width, Lc):
     mm = 1e-03
 
     w = width*mm #0.75*mm
-    h = 100*mm #156*mm #mean length descending thoratic aorta is 332mm
+    h = 156*mm #mean length descending thoratic aorta is 332mm
 
     factory.addPoint(-w,0,0, Lc,1)
     factory.addPoint(-w,h,0, Lc,2)
@@ -118,9 +118,10 @@ def build_channel_branch(width, Lc):
     gmsh.write('Meshes/'+name+".msh2")
 
 
-def build_channel_bend(width, deg, Lc):
+def build_channel_bend(width, Lc):
     factory = gmsh.model.geo
     mm = 1e-03
+    deg = 179
 
     gmsh.model.add("channel_bend")
 
@@ -265,13 +266,13 @@ def main(argv):
 
     scenario = argv[0]
     width = float(argv[1])  #width*2 is actual channel width, due to symmetrical building
-    deg = 90                #ToDo: make optional system argument, also think about other optional arguments (width branch or bifurcation)
-    Lc = 0.001             #this determines the coarseness of the mesh
+    width_2 = 10            #ToDo: make optional system argument (width branch or bifurcation)
+    Lc = 0.002             #this determines the coarseness of the mesh
 
     if scenario == 'straight':
         build_channel_straight(width, Lc)
     if scenario == 'bend':
-        build_channel_bend(width,deg, Lc)
+        build_channel_bend(width, Lc)
     if scenario == 'branch':
         build_channel_branch(width, Lc)
     if scenario == 'bifurcation':
@@ -282,6 +283,9 @@ def main(argv):
         gmsh.fltk.run()
 
     gmsh.finalize
+
+# argv = ['straight', '15.0']
+# main(argv)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

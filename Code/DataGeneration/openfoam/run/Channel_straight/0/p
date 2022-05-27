@@ -52,7 +52,7 @@ boundaryField
 
     top
     {
-        type		zeroGradient;
+	type		zeroGradient;
     }
 
     right

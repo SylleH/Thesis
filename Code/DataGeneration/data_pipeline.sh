@@ -1,39 +1,51 @@
 #!/bin/bash
 
 #run this pipeline from DataGeneration directory
-channel_widths='10.0 11.0 13.0 14.0 15.0' #one decimal
+channel_widths='13.0 14.0'  #10.0 11.0 12.0  15.0 14.0'  #one decimal
+viscosity_range='4 4.5 5 5.5' #3.5 
 #pressure_range='120'
 
-source ../venv_thesis/bin/activate
+#source ../venv_thesis/bin/activate
 echo 'Scenario to run:'
 read scenario
 
 #create all meshes --> works
-for width in ${channel_widths}
-do 
-	python create_mesh.py $scenario $width -nopopup
-	cp Meshes/channel_${scenario}_w${width}.msh2 openfoam/run/Channel_${scenario}/	
-done
+# for width in ${channel_widths}
+# do 
+# 	python create_mesh.py $scenario $width -nopopup
+# 	cp Meshes/channel_${scenario}_w${width}.msh2 openfoam/run/Channel_${scenario}/	
+# done
 
-deactivate
+#deactivate
 
 #run simulations, store VTK files and convert VTK to PNG ---> works
+cd openfoam/run/channel_${scenario}
 for width in ${channel_widths}
 do
-	cd openfoam/run/channel_${scenario}
+	#create mesh, set boundary conditions -> remove previous parabolic inletcondition (dependent on diameter)
+	rm -r dynamicCode
 	docker run --name openfoam_container --rm -t -v "$(PWD):/data" -w /data sylleh/openfoam9-macos ./Allrun ${scenario} ${width}
-	rm -r VTK/allPatches
-	mkdir -p ../../../VTK_files/${scenario}/w${width}
-	cp -a VTK/ ../../../VTK_files/${scenario}/w${width}/
-	cd ../../../VTK_files/${scenario}/w${width}
-	for file in data_*; do mv "$file" "${file/data/${scenario}_w${width}_}"; done
-	cd ../../..
-	source venv_data_thesis/bin/activate
-	python VTKtoPNG.py $scenario $width
-	deactivate
+	
+	#run simulation for different viscosities 
+	for vis in ${viscosity_range}
+	do
+		docker run --name openfoam_container --rm -t -v "$(PWD):/data" -w /data sylleh/openfoam9-macos ./Simulate ${vis}
+		rm -r VTK/allPatches
+		mkdir -p ../../../VTK_files/${scenario}/w${width}
+		cp -a VTK/ ../../../VTK_files/${scenario}/w${width}/
+		cd ../../../VTK_files/${scenario}/w${width}
+		for file in data_*; do mv "$file" "${file/data/${scenario}_w${width}_v${vis}}"; done
+		cd ../../../openfoam/run/channel_${scenario}
+		echo 'simulation for width '${width}' and viscocity '${vis}' is done'
+	done 
+	
+	
+	#source venv_data_thesis/bin/activate
+	#python VTKtoPNG.py $scenario $width
 
+	# deactivate
 done
-
+cd ../../..
 echo 'All done'
 
 

@@ -1,10 +1,11 @@
-from preprocessing import create_train_val_datagen, create_test_datagen, create_AE, train_and_store, predict_and_evaluate
+from utils.preprocessing import create_train_val_datagen, create_test_datagen
+from utils.tools import create_AE, train_and_store, predict_and_evaluate, custom_save
 import os
 import yaml
-import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow import keras
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
+from datetime import date
 
 #folder to load config file
 CONFIG_PATH = "."
@@ -44,13 +45,13 @@ epochs = config["AE"]["training"]["epochs"]
 model_path = model_dir+"AE_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_f"+str(filters)+"_z"+str(z_num)
 log_path = model_path+"/logs"
 checkpoint_filepath = model_path+"/checkpoint/"
-fig_name = f"loss_f{filters}_z{z_num}_nconv{num_conv}_r{repeat}_e{epochs}_0704.png"
+fig_name = f"loss_f{filters}_z{z_num}_nconv{num_conv}_r{repeat}_e{epochs}_"+str(date.today())
 
 
 #define callbacks
 tb_callback = TensorBoard(log_dir = log_path)
-es_callback = EarlyStopping(patience=10)
-modcheck_callback = ModelCheckpoint(filepath=os.path.join(checkpoint_filepath, 'model.{epoch:03d}-{val_loss:.5f}'),
+es_callback = EarlyStopping(patience=20)
+modcheck_callback = ModelCheckpoint(filepath=os.path.join(checkpoint_filepath, 'model_'+str(date.today())),
                                     save_weights_only=False, monitor= 'val_loss', mode='min',save_best_only=True)
 if scenario == "test":
     callbacks = [es_callback]
@@ -58,7 +59,8 @@ else:
     callbacks = [tb_callback, es_callback, modcheck_callback]
 
 #create data generators for training
-train_generator, val_generator = create_train_val_datagen(data_dir,batch_size,img_height,img_width)
+# train_generator, val_generator = create_train_val_datagen(data_dir,batch_size,img_height,img_width)
+
 
 #create model and train with determined strategy
 # with strategy.scope():
@@ -75,10 +77,10 @@ RUN CODE ABOVE ON CLUSTER (TRAINING), RUN CODE BELOW ON LAPTOP (PREDICT & EVALUA
 #create generator for testing
 test_generator = create_test_datagen('data/test/', img_height, img_width)
 
-#make predictions and evaluate model #ToDo: model name to be loaded is manual, make automatic
-if os.path.exists(os.path.join(checkpoint_filepath, 'model.034-0.00991')):
-   model = keras.models.load_model(os.path.join(checkpoint_filepath, 'model.034-0.00991'))
-   test_scores = predict_and_evaluate(model, test_generator, fig_name= f"f{filters}_z{z_num}_nconv{num_conv}_r{repeat}_e034_0704.png")
+#make predictions and evaluate model
+if os.path.exists(os.path.join(checkpoint_filepath, 'model_'+str(date.today()))):
+   model = keras.models.load_model(os.path.join(checkpoint_filepath, 'model_'+str(date.today())))
+   test_scores = predict_and_evaluate(model, test_generator, fig_name= f"f{filters}_z{z_num}_nconv{num_conv}_r{repeat}_e{epochs}"+str(date.today()))
    print(test_scores)
 else:
    print('train model first!')
