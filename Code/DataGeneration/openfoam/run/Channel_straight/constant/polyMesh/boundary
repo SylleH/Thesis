@@ -20,43 +20,43 @@ FoamFile
     {
         type            empty;
         physicalType    patch;
-        nFaces          2364;
-        startFace       3455;
+        nFaces          2510;
+        startFace       3673;
     }
     front 
     {
         type            empty;
         physicalType    patch;
-        nFaces          2364;
-        startFace       5819;
+        nFaces          2510;
+        startFace       6183;
     }
     left 
     {
         type            wall;
         physicalType    patch;
         nFaces          78;
-        startFace       8183;
+        startFace       8693;
     }
     top
     {
         type            patch;
         physicalType    patch;
-        nFaces          13;
-        startFace       8261;
+        nFaces          14;
+        startFace       8771;
     }
     right 
     {
         type            wall;
         physicalType    patch;
         nFaces          78;
-        startFace       8274;
+        startFace       8785;
     }
     bottom
     {
         type            patch;
         physicalType    patch;
-        nFaces          13;
-        startFace       8352;
+        nFaces          14;
+        startFace       8863;
     }
 )
 

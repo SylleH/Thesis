@@ -1,3 +1,4 @@
+architecture: AE #NN, LSTM, GRU, CNN
 data:
   scenario: colored #straight, bifurcation, bend90 or branch
   model_dir: model/

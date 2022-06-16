@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from scipy import optimize
 
-delta_T = 0.001
+delta_T = 0.0001
 t = np.linspace(0,1,int(1/delta_T)) #one cycle
 
 def test_func(x, a, b, c, d, e,f,g ,h):

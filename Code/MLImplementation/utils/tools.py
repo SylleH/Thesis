@@ -5,22 +5,37 @@ Author: Sylle Hoogeveen
 
 
 import tensorflow as tf
+from tensorflow import keras
 import matplotlib.pyplot as plt
-from model import AE
-from ops import custom_save
-import os
+from model import AE, Time_NN, Time_LSTM, Time_GRU
+
 
 def create_AE(img_inputs, filters, z_num, repeat, num_conv, conv_k, last_k):
     z, out, autoencoder = AE(img_inputs, filters=filters, z_num=z_num,
                              repeat=repeat, num_conv=num_conv, conv_k=conv_k, last_k=last_k)
-    setattr(autoencoder, 'save', custom_save)
 
     autoencoder.compile(loss="mse", optimizer="adam", metrics=["mse"])
-    print(autoencoder.summary())
-    # keras.utils.plot_model(autoencoder, "autoencoder_arc.png")
+    # keras.utils.plot_model(autoencoder, "autoencoder_arch.png")
     return autoencoder
 
+def create_TS_network(x, onum, model):
+    if model == 'NN':
+        delta_z, TS_network = Time_NN(x, onum)
+    if model == 'RNN_LSTM':
+        new_z, TS_network = Time_LSTM(x, onum)
+    if model== 'RNN_GRU':
+        new_z, TS_network = Time_GRU(x, onum)
+
+    TS_network.compile(loss=tf.losses.MeanSquaredError(),
+                optimizer=tf.optimizers.Adam(),
+                metrics=[tf.metrics.MeanAbsoluteError()])
+    #keras.utils.plot_model(TS_network, "TS_Network_arch.png")
+    return TS_network
+
+
+
 def train_and_store(model, train_generator,val_generator, batch_size, epochs, callbacks, fig_name):
+    # Note: model is stored by using the ModelCheckpoint callback
     history = model.fit(train_generator, validation_data = val_generator,
                           batch_size = batch_size, epochs= epochs, callbacks = callbacks)
 
@@ -34,6 +49,7 @@ def train_and_store(model, train_generator,val_generator, batch_size, epochs, ca
     plt.savefig(fig_name)
     plt.show()
     return history
+
 
 def predict_and_evaluate(model, test_generator, fig_name):
     #make predictions on test dataset
@@ -63,7 +79,5 @@ def predict_and_evaluate(model, test_generator, fig_name):
         ax.get_yaxis().set_visible(False)
     plt.savefig(fig_name) #ToDo: find good name result
     plt.show()
-
-
-
     return test_scores
+

@@ -6,10 +6,9 @@ Author: Sylle Hoogeveen
 
 
 
-import tensorflow as tf
 from tensorflow import keras
 from keras import layers
-from ops import *
+from utils.ops import *
 import numpy as np
 
 
@@ -65,7 +64,7 @@ def Encoder(x, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.leaky_relu, 
             x0=x
 
     flat = layers.Flatten()(x) #reshapes to flat tensor with same batch_size and dimension fitted to keep input size
-    z = layers.Dense(z_num, activation=act, name=str(layer_num)+'_fc')(flat)
+    z = layers.Dense(z_num, activation=act, name='encoded')(flat)
 
     encoder_model = keras.Model(x,z)
     return z, encoder_model
@@ -123,7 +122,7 @@ def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf
         else:
             x = layers.Add(name=str(idx)+"_add")([x, x0])
 
-    out = layers.Conv2D(output_shape[-1], kernel_size=last_k, strides=1, padding="same", activation= keras.activations.relu, name=str(layer_num) + '_deconv')(x)
+    out = layers.Conv2D(output_shape[-1], kernel_size=last_k, strides=1, padding="same", activation= keras.activations.relu, name='decoded')(x)
 
     generator_model = keras.Model(z,out)
     return out, generator_model
@@ -146,30 +145,80 @@ def AE(x, filters, z_num, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu
 
     return z, out, autoencoder
 
-def LatentIntNN(x, onum, node_num=512, act = tf.nn.elu, dropout=0.1, name='LatentIntNN'):
+def Time_NN(x, onum, node_num=512, act = tf.nn.elu, dropout=0.1, name='TS_NN'):
     """
-    Neural Network for time evolution in reduced dimension
+    Neural Network for time evolution in reduced dimension (encoded images)
 
     :param x: combination of z (reduced representation learned from encoder), p (known parameters) and
-            delta_p (difference known parameters time t with t+1)
+            delta_p (difference known parameters time t with t+1).
+            Format is [number of encoded vecs in batch, timesteps, features]
     :param nodenum: amount of nodes in second layer, first layer is nodenum*2 nodes
-    :param onum: amount of nodes output layer, is dimension of c
+    :param onum: amount of nodes output layer, is dimension of z
     :param act: activation function for all layers
     :param dropout: dropout rate, chance a node is DROPPED (not kept)
-    :returns delta_z: difference learned reduced representation time t with t+1
+    :returns delta_z: difference learned reduced representation time t with t+1, needs to be added to original z
     """
 
-
-    x = layers.BatchNormalization()(x)
-    x = layers.Dense(node_num*2, activation=act)(x)
+    x_shape = int_shape(x)[1:]
+    inputs = layers.Input(shape=x_shape)
+    #ToDo: add flatten layer if multiple timesteps are included to predict future timestep
+    #x = layers.BatchNormalization(inputs)
+    x = layers.Dense(node_num*2, activation=act, name='dense_1')(inputs)
     x = layers.Dropout(dropout)(x) #keras automatically sets training to True only for training phase
 
     x = layers.BatchNormalization()(x)
-    x = layers.Dense(node_num, activation=act)(x)
+    x = layers.Dense(node_num, activation=act, name='dense_2')(x)
     x = layers.Dropout(dropout)(x)  # keras automatically sets training to True only for training phase
 
     delta_z = layers.Dense(onum)(x)
-    return delta_z
 
-def LatentIntLSTM():
-    return 0
+    TS_NN = keras.Model(inputs,delta_z)
+    return delta_z, TS_NN
+
+def Time_LSTM(x, onum, dropout=0.1, train = True, name='TS_RNN_LSTM'):
+    """
+    Recurrent NN with LSTM units for time evolution in reduced dimension (encoded images)
+
+    :param x: encoded image as tensor with format [# encoded images in batch, timesteps, features]
+    :param onum: amount of nodes in output layer, dimension of z
+    :param dropout: dropout rate, chance a node is DROPPED (not kept)
+    :param training: to determine if dropout should be used, True (training) or False (inference)
+    :return: new z, input to decoder
+    """
+
+    x_shape = int_shape(x)[1:]
+    inputs = layers.Input(shape=x_shape)
+    # ToDo: add flatten layer if multiple timesteps are included to predict future timestep
+
+    # Shape [batch, time, features] => [batch, time, lstm_units]
+    x = layers.LSTM(x_shape[-1],  dropout= dropout,activation="tanh",recurrent_activation="sigmoid",
+                    return_sequences=True)(inputs, training =train )
+    new_z = layers.Dense(onum)(x)
+
+    Time_LSTM = keras.Model(inputs, new_z)
+
+    return new_z, Time_LSTM
+
+def Time_GRU(x, onum, dropout=0.1, train=True, name='TS_RNN_GRU'):
+    """
+    Recurrent NN with GRU for time evolution in reduced dimension (encoded images)
+
+    :param x: encoded image as tensor with format [# encoded images in batch, timesteps, features]
+    :param onum: amount of nodes in output layer, dimension of z
+    :param dropout: dropout rate, chance a node is DROPPED (not kept)
+    :param training: to determine if dropout should be used, True (training) or False (inference)
+    :return: new z, input to decoder
+    """
+
+    x_shape = int_shape(x)[1:]
+    inputs = layers.Input(shape=x_shape)
+    # ToDo: add flatten layer if multiple timesteps are included to predict future timestep
+
+    # Shape [batch, time, features] => [batch, time, lstm_units]
+    x = layers.GRU(x_shape[-1], dropout=dropout, activation="tanh", recurrent_activation="sigmoid",
+                    return_sequences=True)(inputs, training = train)
+    new_z = layers.Dense(onum)(x)
+
+    Time_GRU = keras.Model(inputs, new_z)
+
+    return new_z, Time_GRU
