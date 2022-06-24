@@ -80,9 +80,9 @@ def p_out(t):
     for count, value in enumerate(t):
         p_list.append(p10(value))
 
-    p_list_1 = p_list.copy()
-    p_list.extend(p_list_1)
-    p_list.extend(p_list_1)
+    # p_list_1 = p_list.copy()
+    # p_list.extend(p_list_1)
+    # p_list.extend(p_list_1)
 
     p_conv_list = p_list.copy()
     for count, value in enumerate(p_list):
@@ -98,7 +98,7 @@ def plot_figure(t, p_list):
     fig, ax1 = plt.subplots()
     ax1.set_xlabel('time [s]')
     ax1.set_ylabel('velocity[m/s]', color = 'b')
-    ax1.plot(t, v_poly(0.6,0.02,t), 'b')
+    ax1.plot(t, v_poly(0.4,0.02,t), 'b')
 
     ax2 = ax1.twinx()
     ax2.set_ylabel('pressure [mmHg]', color = 'r')
@@ -134,8 +134,8 @@ def v_in_sine():
 if __name__ == "__main__":
 #    v_list, v_dict = v_in(t)
     p_list, p_conv_list = p_out(t)
-    t = np.linspace(0,3,int(3/delta_T))
-    plt.plot(t, p_list)
-    plt.show()
-#    plot_figure(t, p_list)
-    data_table(t, p_conv_list)
+#    t = np.linspace(0,3,int(3/delta_T))
+#    plt.plot(t, p_list)
+#    plt.show()
+    plot_figure(t, p_list)
+    #data_table(t, p_conv_list)

@@ -15,7 +15,7 @@ import pandas as pd
 # data_dir = "data/"+scenario+"/"
 
 def create_train_val_datagen(data_dir, batch_size, img_height, img_width):
-    image_gen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1./255, validation_split=0.2) #lots of options to specify
+    image_gen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1./255, validation_split=0.01) #lots of options to specify
     train_generator = image_gen.flow_from_directory(data_dir,
                                                     target_size=(img_height,img_width),
                                                     color_mode="grayscale",
@@ -36,13 +36,13 @@ def create_train_val_datagen(data_dir, batch_size, img_height, img_width):
 
     return train_generator, val_generator
 
-def create_test_datagen(data_test_dir, img_height, img_width):
+def create_test_datagen(data_test_dir, batch_size, img_height, img_width):
     image_gen = tf.keras.preprocessing.image.ImageDataGenerator(rescale=1./255)  # lots of options to specify
     test_generator = image_gen.flow_from_directory(data_test_dir,
                                                    target_size=(img_height, img_width),
-                                                   color_mode="rgb",
+                                                   color_mode="grayscale",
                                                    shuffle=False,
-                                                   batch_size=10,
+                                                   batch_size=batch_size,
                                                    class_mode="input",
                                                    seed=123)
     return test_generator
@@ -58,44 +58,60 @@ def create_test_datagen(data_test_dir, img_height, img_width):
 #     plt.imshow(first_image)
 #     plt.show()
 
-def create_TS_dataset(encoder, test_generator):
+def create_TS_dataset(data_dir, encoder, train_split, val_split, test):
     """
     Function that encodes images supplied by test_generator with stored encoder and stores the encoded vectors
     in data.datasets which can be used as input for the Time models Every encoded vector is a training example,
     last encoded time cannot be used (no label available).
 
+    :param data_dir: directory to image data
     :param encoder: trained encoder model
-    :param test_generator: datagenerator containing images to be encoded
+    :param train_split, val_split: portion of dataset to go into train and validaiton dataset
+    :param test: either True or False, if true al data in data_dit will be in test_ds
     :return window: instance of the class WindowGenerator (see ops.py),
-                    containing train, validation and test datasets
+                    returned to be able to show some specs
+    :return train_ds, val_ds, test_ds: tf.data.Datasets for training, validation and testing
+            if test = True train_ds and val_ds are None, if test= False test_ds is None
     """
 
-    #ToDo: encode all sequences, make sure they are NOT shuffled, then splitting in to train/val/test goes correctly
-    data_NN_dir = 'data/test/'
-    encoded = encoder.predict(test_generator)
-    #print(encoded)
-    TS_df = pd.DataFrame(encoded)
-    label_column_names = ['feat '+str(x) for x in range(len(TS_df.columns))]
-    TS_df.columns =  label_column_names
+    count  = 0
 
-    #print(TS_df)
-    #ToDo:   - concat with known parameters: timeserie characteristic,
-    #           timestep, inlet velocity, outlet pressure and change in those
-    #        - TS_df['timestep'] = timestep_list etc.
-    timestep_list = []
-    inlet_v_list = []
-    outlet_p_list = []
+    for folder in os.listdir(data_dir):
+        if folder == '.DS_Store':
+            continue
+        if not test:
+            test_generator = create_test_datagen(data_dir+"/"+folder, 36, 192,256 )
+        else:
+            test_generator = create_test_datagen(data_dir, 36, 192, 256)
 
-    # Split the data in training, validation and test 70/20/10
-    column_indices = {name: i for i, name in enumerate(TS_df.columns)}
+        encoded = encoder.predict(test_generator)
+        #print(encoded)
+        TS_df = pd.DataFrame(encoded)
+        label_column_names = ['feat '+str(x) for x in range(len(TS_df.columns))]
+        TS_df.columns =  label_column_names
 
-    n = len(TS_df)
-    train_df = TS_df[0:int(n * 0.7)]
-    val_df = TS_df[int(n * 0.7):int(n * 0.9)]
-    test_df = TS_df[int(n * 0.9):]
+        #print(TS_df)
+        #ToDo:   - concat with known parameters: timeserie characteristic,
+        #           timestep, inlet velocity, outlet pressure and change in those
+        #        - TS_df['timestep'] = timestep_list etc.
+        timestep_list = []
+        inlet_v_list = []
+        outlet_p_list = []
 
-    num_features = TS_df.shape[1]
-    window = WindowGenerator(input_width=1, label_width=1, shift=1,
-                             train_df=train_df, val_df=val_df, test_df=test_df,
-                             label_columns=label_column_names)
-    return window
+        column_indices = {name: i for i, name in enumerate(TS_df.columns)}
+
+        n = len(TS_df)
+        num_features = TS_df.shape[1]
+        window = WindowGenerator(input_width=1, label_width=1, shift=1,
+                             df=TS_df,label_columns=label_column_names)
+        if count == 0:
+            TS_ds = window.ds
+        else:
+            TS_ds = TS_ds.concatenate(window.ds)
+        #print(tf.data.experimental.cardinality(TS_ds).numpy())
+        count+=1
+
+    ds_size = tf.data.experimental.cardinality(TS_ds).numpy()
+    train_ds, val_ds, test_ds = get_dataset_partitions_tf(TS_ds, ds_size, train_split=train_split,
+                                                          val_split=val_split, test=test, shuffle=True)
+    return window, train_ds, val_ds, test_ds

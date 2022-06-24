@@ -1,114 +1,94 @@
-from utils.preprocessing import *
+from trainer import *
 from utils.tools import *
-import os
-import yaml
+import sys
 import tensorflow as tf
-from tensorflow import keras
-from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
 from datetime import date
-import matplotlib.pyplot as plt
-
-# folder to load config file
-CONFIG_PATH = "."
-
-# check for GPUs and set strategy according
-print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
-if tf.config.list_physical_devices('GPU'):
-    strategy = tf.distribute.MirroredStrategy()
-else:  # Use the Default Strategy = no distribution strategy (CPU training)
-    strategy = tf.distribute.get_strategy()
-
-# load directories and hyperparameters
-def load_config(config_name):
-    with open(os.path.join(CONFIG_PATH,config_name)) as file:
-        config_dict = yaml.safe_load(file)
-        return config_dict
-
-config = load_config("config.yaml")
-# expand to see all loaded configs
-network = config["architecture"]
-scenario = config["data"]["scenario"]
-data_dir = "data/"+scenario+"/"
-model_dir = config["data"]["model_dir"]
-
-img_height = config["preprocess"]["img_height"]
-img_width = config["preprocess"]["img_width"]
-channels = config["preprocess"]["channels"]
-
-filters = config["AE"]["filters"]
-z_num = config["AE"]["z_num"]
-num_conv= config["AE"]["num_conv"]
-conv_k= config["AE"]["conv_k"]
-last_k= config["AE"]["last_k"]
-repeat= config["AE"]["repeat"]
-
-batch_size = config["AE"]["training"]["batch_size"]
-epochs = config["AE"]["training"]["epochs"]
-model_path = model_dir+"AE_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_f"+str(filters)+"_z"+str(z_num)
-log_path = model_path+"/logs"
-checkpoint_filepath = model_path+"/checkpoint/"
-fig_name = f"loss_f{filters}_z{z_num}_nconv{num_conv}_r{repeat}_e{epochs}_"+str(date.today())
 
 
-#define callbacks
-tb_callback = TensorBoard(log_dir = log_path)
-es_callback = EarlyStopping(patience=20)
-modcheck_callback = ModelCheckpoint(filepath=os.path.join(checkpoint_filepath, 'model_'+str(date.today())),
-                                    save_weights_only=False, monitor= 'val_loss', mode='min',save_best_only=True)
-if scenario == "test":
-    callbacks = [es_callback]
-else:
-    callbacks = [tb_callback, es_callback, modcheck_callback]
+def main(argv):
+   """
+   Main function that can run train or evaluate scenario for either Autoencoder, TimeSeries
+   or Total network.
+   :param argv[0]: train or eval
+   :param argv[1]: AE, TS or total
+   :param argv[2]: AE model configuration name (not which specific model, that is specified by date)
+   :param argv[3]: TS model configuration name (not which specific model, that is specified by date)
+   :return:
+   """
+   config = load_config('config.yaml')
 
-#create data generators for training AE
-# if network == 'AE':
-#   train_generator, val_generator = create_train_val_datagen(data_dir,batch_size,img_height,img_width)
-#
-#
-#   #create model and train with determined strategy
-#   with strategy.scope():
-#       img_inputs = keras.Input(shape=(img_height, img_width, channels)) #shape of each sample needs to be supplied, this is after cropping
-#       autoencoder = create_AE(img_inputs, filters=filters, z_num=z_num,
-#                              repeat=repeat, num_conv=num_conv, conv_k=conv_k, last_k=last_k)
-#
-#       history = train_and_store(autoencoder, train_generator, val_generator,
-#                           batch_size, epochs, callbacks, fig_name)
+   if argv[0] == "train":
+      # check for GPUs and set strategy according
+      print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+      if tf.config.list_physical_devices('GPU'):
+         strategy = tf.distribute.MirroredStrategy()
+      else:  # Use the Default Strategy = no distribution strategy (CPU training)
+         strategy = tf.distribute.get_strategy()
+
+      if argv[1] == "AE":
+         history, checkpoint_filepath = trainer_AE(config, strategy)
+
+      elif argv[1] == "TS":
+         checkpoint_filepath_AE = str(argv[2]) + '/checkpoint/'
+         _, encoder, _ = load_model("AE", checkpoint_filepath_AE, date='2022-06-20')
+         history, checkpoint_filepath = trainer_TS(config, strategy, encoder)
+
+      else:
+         print('Choose "AE" or "TS" as second argument :)')
+
+   elif argv[0] == "eval":
+      val_performance = {}
+      test_performance = {}
+      #ToDo: create csv_file were model performance with model and data charateristics is stored
+      #     or use MLflow..?
+
+      if argv[1] == "AE":
+         checkpoint_filepath = str(argv[2]) + '/checkpoint/'
+         fig_name = str(argv[2])+'_'+str(date.today())
+
+         autoencoder, _, _ = load_model("AE",checkpoint_filepath, date='2022-06-20')
+         batch_size = 36 #BIGGEST NUMBER POSSIBLE = ALL TEST EXAMPLES (only influences inference speed)
+         test_generator = create_test_datagen('data/AE_testset', batch_size, 192, 256)
+
+         test_scores = predict_and_evaluate(autoencoder, test_generator, fig_name=fig_name)
+         print(test_scores)
+
+      elif argv[1] == "TS":
+         checkpoint_filepath_AE = str(argv[2]) + '/checkpoint/'
+         checkpoint_filepath_TS = str(argv[3]) + '/checkpoint/'
+
+         _,encoder,_ = load_model('AE', checkpoint_filepath_AE, date='2022-06-20')
+         TS_network = load_model('TS', checkpoint_filepath_TS)
+         batch_size = 10 #BIGGEST NUMBER POSSIBLE = ALL TEST EXAMPLES (only influences inference speed)
+
+         #Note: given dataset must be a sequence!
+         _, _, _, test_ds = create_TS_dataset('data/NN_testset',encoder, train_split=1, val_split = 0, test=True)
+         test_performance['NN'] = TS_network.evaluate(test_ds, verbose=1)
 
 
-"""
-RUN CODE ABOVE ON CLUSTER (TRAINING), RUN CODE BELOW ON LAPTOP (PREDICT & EVALUATE)
-"""
-#create generator for testing
-test_generator = create_test_datagen('data/test/', img_height, img_width)
+      elif argv[1] == "total":
+         checkpoint_filepath_AE = str(argv[2]) + '/checkpoint/'
+         checkpoint_filepath_TS = str(argv[3]) + '/checkpoint/'
+         fig_name = 'E_TS_D_' + str(date.today())
 
-#make predictions and evaluate model
-if os.path.exists(os.path.join(checkpoint_filepath, 'model_2022-05-26')): #+str(date.today()))):
-   model = keras.models.load_model(os.path.join(checkpoint_filepath, 'model_2022-05-26'))#+str(date.today())))
-   print(model.summary())
-   #ToDo: change names of these layers such that the are the same for each model
-   encoder = keras.Model(model.input, model.get_layer(name='12_fc').output)
-   decoder = keras.Model(model.get_layer(name='12_fc').output, model.get_layer(name='9_deconv').output)
+         _, encoder, decoder = load_model('AE', checkpoint_filepath_AE, date='2022-06-20')
+         TS_Network = load_model('TS', checkpoint_filepath_TS)
+         _, _,_,test_ds = create_TS_dataset('data/NN_testset',encoder, train_split=1, val_split = 0, test=True)
+         predicted = TS_Network.predict(test_ds)
+
+         #ToDo: make different function for predicting and evaluating, because batches contain arrays, match with original images
+         test_scores = predict_and_evaluate(decoder, predicted, fig_name=fig_name)
+         print('test scored decoder: '+ test_scores)
+
+      else:
+         print('Choose "AE", "TS" or "total" as second argument :)')
+
+   else:
+      print('Choose "train" or "eval" as first argument :)')
+
+
+if __name__ == "__main__":
+   main(sys.argv[1:])
 
 
 
-   #test_scores = predict_and_evaluate(model, test_generator, fig_name= f"f{filters}_z{z_num}_nconv{num_conv}_r{repeat}_e{epochs}"+str(date.today()))
-   #print(test_scores)
-else:
-   print('train model first!')
-
-#use encoded images to train NN
-window = create_TS_dataset(encoder, test_generator)
-print('Input shape:', window.example[0].shape)
-
-encoded_inputs = keras.Input(shape=window.example[0].shape[1:])
-#print(encoded_inputs)
-# create_TS_network can take NN, RNN_LSTM and RNN_GRU as inputs for model
-TS_network = create_TS_network(x=encoded_inputs, onum=100, model='RNN_GRU')
-print(TS_network.summary())
-history = train_and_store(TS_network, window.train ,window.val, batch_size=10, epochs=20, callbacks=[es_callback], fig_name='testNN')
-
-#store performance of models
-val_performance = {}
-performance = {}
-val_performance['NN'] = TS_network.evaluate(window.val)
-performance['NN'] = TS_network.evaluate(window.test, verbose=0)

@@ -57,13 +57,14 @@ def build_channel_straight(width, Lc):
     name='channel_straight_w'+str(width)
     gmsh.write('Meshes/'+name+".msh2")
 
-def build_channel_branch(width, Lc):
+def build_channel_branch(width, width2, Lc):
     gmsh.model.add("channel_branch")
     factory = gmsh.model.geo
     mm = 1e-03
 
     w = width * mm
     r = 2*w
+    w2 = w
     h1 = 100*mm
     h2 = 80*mm
     y = math.sqrt(math.pow(w,2) +2*w*r)
@@ -74,7 +75,7 @@ def build_channel_branch(width, Lc):
     factory.addPoint(w, h2, 0, Lc,4)
     factory.addPoint(w+r, h2, 0, Lc, 5) #midpoint circle
     factory.addPoint(w+r, h2-r, 0 , Lc, 6)
-    factory.addPoint(w+r, h2-r-w, 0 , Lc, 7)
+    factory.addPoint(w+r, h2-r-w2, 0 , Lc, 7)
     factory.addPoint(w, h2-y, 0 , Lc, 8)
     factory.addPoint(w, 0, 0, Lc, 9)
 
@@ -114,7 +115,7 @@ def build_channel_branch(width, Lc):
 
     gmsh.model.mesh.generate(3)
 
-    name='channel_branch_w'+str(width)
+    name='channel_branch_w'+str(width)+'_o'+str(width2)
     gmsh.write('Meshes/'+name+".msh2")
 
 
@@ -167,19 +168,19 @@ def build_channel_bend(width, Lc):
 
     gmsh.model.mesh.generate(3)
 
-    name='channel_bend_w'+str(width)+'_a'+str(deg)
+    name='channel_bend_w'+str(width) #+'_a'+str(deg)
     gmsh.write('Meshes/'+name+".msh2")
 
-def build_channel_bifurcation(width, Lc):
+def build_channel_bifurcation(rad, rad2, Lc):
     gmsh.model.add("channel_bifurcation")
     factory = gmsh.model.geo
     mm = 1e-03
 
-    width2 = 6*mm
+    width2 = rad2*2*mm#6*mm
 
     e1 = 12*mm #1.25*mm e1 > e3
     e2 = e1 + width2
-    e3 = width*mm
+    e3 = rad*mm
     h1 = 45*mm
     h2 = 55*mm
     h3 = 25*mm
@@ -196,7 +197,7 @@ def build_channel_bifurcation(width, Lc):
 
 
     factory.addPoint(-e1, 0, 0, Lc, 1)
-    factory.addPoint(-e1 - e2, 0, 0, Lc, 2)
+    factory.addPoint(- e2, 0, 0, Lc, 2)
     factory.addPoint(-e1, h1, 0, Lc, 3)
     factory.addPoint(-e3-r1, h1 + math.sqrt(math.pow(r1,2)-math.pow((e3+r1-e1),2)), 0, Lc, 4) #middlepoint left circle
     factory.addPoint(-e3, h1 + math.sqrt(math.pow(r1,2)-math.pow((e3+r1-e1),2)), 0, Lc, 5)
@@ -206,7 +207,7 @@ def build_channel_bifurcation(width, Lc):
     factory.addPoint(e3, h1 + math.sqrt(math.pow(r1,2)-math.pow((e3+r1-e1),2)), 0, Lc, 8)
     factory.addPoint(e3+r1, h1 + math.sqrt(math.pow(r1,2)-math.pow((e3+r1-e1),2)), 0, Lc, 9) #middlepoint right circle
     factory.addPoint(e1, h1 , 0, Lc, 10)
-    factory.addPoint(e1 + e2, 0, 0, Lc, 11)
+    factory.addPoint(e2, 0, 0, Lc, 11)
     factory.addPoint(e1, 0, 0, Lc, 12)
 
     factory.addPoint(r2 / ssin, h3 + r2 * ccos, 0, Lc, 13)
@@ -257,7 +258,7 @@ def build_channel_bifurcation(width, Lc):
 
 
     gmsh.model.mesh.generate(3)
-    name='channel_bifurcation_w'+str(width)
+    name='channel_bifurcation_w'+str(rad)+'_o'+str(width2)
     gmsh.write('Meshes/'+name+".msh2")
 
 
@@ -265,18 +266,20 @@ def main(argv):
     gmsh.initialize()
 
     scenario = argv[0]
-    width = float(argv[1])  #width*2 is actual channel width, due to symmetrical building
-    width_2 = 10            #ToDo: make optional system argument (width branch or bifurcation)
+    rad = float(argv[1])  #width*2 is actual channel width, due to symmetrical building
+    if len(argv)>2:
+        width_2 = argv[2]            #ToDo: make optional system argument (width branch or bifurcation)
+
     Lc = 0.002             #this determines the coarseness of the mesh
 
     if scenario == 'straight':
-        build_channel_straight(width, Lc)
+        build_channel_straight(rad, Lc)
     if scenario == 'bend':
-        build_channel_bend(width, Lc)
+        build_channel_bend(rad, Lc)
     if scenario == 'branch':
-        build_channel_branch(width, Lc)
+        build_channel_branch(rad, width_2, Lc)
     if scenario == 'bifurcation':
-        build_channel_bifurcation(width, Lc)
+        build_channel_bifurcation(rad, width_2, Lc)
 
     # Launch the GUI to see the results:
     if '-nopopup' not in argv:

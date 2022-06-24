@@ -8,6 +8,7 @@ import os
 from PIL import Image
 import tensorflow as tf
 import numpy as np
+import yaml
 
 scenario = "straight" #bifurcation, bend90 or branch
 data_in_dir ="../DataGeneration/Data_generated/"+scenario+"/"
@@ -17,14 +18,12 @@ class WindowGenerator():
     """
     WindowGenerator class copied from https://www.tensorflow.org/tutorials/structured_data/time_series
     creates data windows to train the time evolution networks
+    Note: editted to return one dataset which is later split into train, validation, test
     """
     def __init__(self, input_width, label_width, shift,
-               train_df, val_df, test_df,
-               label_columns=None):
+               df, label_columns=None):
         # Store the raw data.
-        self.train_df = train_df
-        self.val_df = val_df
-        self.test_df = test_df
+        self.df = df
 
         # Work out the label column indices.
         self.label_columns = label_columns
@@ -32,7 +31,7 @@ class WindowGenerator():
             self.label_columns_indices = {name: i for i, name in
                                     enumerate(label_columns)}
         self.column_indices = {name: i for i, name in
-                           enumerate(train_df.columns)}
+                           enumerate(df.columns)}
 
         # Work out the window parameters.
         self.input_width = input_width
@@ -78,34 +77,61 @@ class WindowGenerator():
           sequence_length=self.total_window_size,
           sequence_stride=1,
           shuffle=True,
-          batch_size=10, )
+          batch_size=10)
 
         ds = ds.map(self.split_window)
 
         return ds
 
     @property
-    def train(self):
-        return self.make_dataset(self.train_df)
+    def ds(self):
+        return self.make_dataset(self.df)
 
-    @property
-    def val(self):
-        return self.make_dataset(self.val_df)
-
-    @property
-    def test(self):
-        return self.make_dataset(self.test_df)
 
     @property
     def example(self):
         """Get and cache an example batch of `inputs, labels` for plotting."""
         result = getattr(self, '_example', None)
         if result is None:
-            # No example batch was found, so get one from the `.train` dataset
-            result = next(iter(self.train))
+            # No example batch was found, so get one from the dataset
+            result = next(iter(self.ds))
             # And cache it for next time
             self._example = result
         return result
+
+
+def get_dataset_partitions_tf(ds, ds_size, train_split=0.8, val_split=0.2, test=False, shuffle=True):
+    """
+    For more info, see https://towardsdatascience.com/how-to-split-a-tensorflow-dataset-into-train-validation-and-test-sets-526c8dd29438
+    """
+    assert (train_split + val_split) == 1
+
+    shuffle_size = ds_size
+    if shuffle:
+        # Specify seed to always have the same split distribution between runs
+        ds = ds.shuffle(shuffle_size, seed=12)
+
+    train_size = int(train_split * ds_size)
+    val_size = int(val_split * ds_size)
+
+    if not test:
+        train_ds = ds.take(train_size)
+        val_ds = ds.skip(train_size).take(val_size)
+        test_ds = None
+    else:
+        train_ds = None
+        val_ds = None
+        test_ds = ds
+
+    return train_ds, val_ds, test_ds
+
+
+def load_config(config_name):
+    # load directories and hyperparameters from config file to config dict
+    CONFIG_PATH = "."
+    with open(os.path.join(CONFIG_PATH,config_name)) as file:
+        config_dict = yaml.safe_load(file)
+        return config_dict
 
 def int_shape(tensor):
     shape = tensor.get_shape().as_list()

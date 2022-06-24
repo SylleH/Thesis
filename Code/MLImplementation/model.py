@@ -13,7 +13,7 @@ import numpy as np
 
 
 
-def Encoder(x, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.leaky_relu, name='encoder'):
+def Encoder(input, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.leaky_relu, name='encoder'):
     """
     Encoder network to obtain reduced dimension representation from velocity field input
 
@@ -29,8 +29,8 @@ def Encoder(x, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.leaky_relu, 
     :return encoder_model: keras model of encoder
     """
 
-    x_shape = get_conv_shape(x)[1:] #returns list with [H,W,C]
-
+    x_shape = get_conv_shape(input)[1:] #returns list with [H,W,C]
+    #inputs = layers.Input(shape=x_shape)
     if repeat == 0:
         repeat_num = int(np.log2(np.max(x_shape[:-1])))-2 #nearest integer to log2(max(H,W))-3
     else:
@@ -38,7 +38,7 @@ def Encoder(x, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.leaky_relu, 
 
     ch = filters
     layer_num = 0
-    x = layers.Conv2D(ch, kernel_size=conv_k,strides=1,activation=act, padding="same",name=str(layer_num)+'_conv')(x)
+    x = layers.Conv2D(ch, kernel_size=conv_k,strides=1,activation=act, padding="same",name=str(layer_num)+'_conv')(input)
     # make copy for skip connection
     x0 = x
 
@@ -66,8 +66,8 @@ def Encoder(x, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.leaky_relu, 
     flat = layers.Flatten()(x) #reshapes to flat tensor with same batch_size and dimension fitted to keep input size
     z = layers.Dense(z_num, activation=act, name='encoded')(flat)
 
-    encoder_model = keras.Model(x,z)
-    return z, encoder_model
+    #encoder_model = keras.Model(input,z)
+    return z #, encoder_model
 
 
 def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu, name='decoder'):
@@ -101,7 +101,7 @@ def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf
     x = layers.Dense(num_output, name= str(layer_num)+'_fc')(z)
     layer_num +=1
 
-    #why not conv2DTranspose?
+
     x = layers.Reshape([x0_shape[0], x0_shape[1], x0_shape[2]])(x) #shape does not include batch size dimension
     x0=x
 
@@ -110,7 +110,8 @@ def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf
 
         #SMALL BLOCK
         for _ in range(num_conv):
-            x = layers.Conv2DTranspose(filters=filters, kernel_size=conv_k, strides=1, activation=act, padding="same",name=str(layer_num) + '_deconv')(x)
+            #convolutional layer together with upsampling is 'same' as Conv2DTranspose with stride 2, does not work
+            x = layers.Conv2D(filters=filters, kernel_size=conv_k, strides=1, activation=act, padding="same",name=str(layer_num) + '_genconv')(x)
             layer_num += 1
 
         if idx < repeat_num - 1:
@@ -124,10 +125,10 @@ def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf
 
     out = layers.Conv2D(output_shape[-1], kernel_size=last_k, strides=1, padding="same", activation= keras.activations.relu, name='decoded')(x)
 
-    generator_model = keras.Model(z,out)
-    return out, generator_model
+    #generator_model = keras.Model(z,out)
+    return out #, generator_model
 
-def AE(x, filters, z_num, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu, name='autoencoder'):
+def AE(input, filters, z_num, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu, name='autoencoder'):
     """
     Combination of Encoder and Generator networks
 
@@ -136,16 +137,16 @@ def AE(x, filters, z_num, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu
     :return out: generated velocity field from reduced representation
     """
 
-    z,_ = Encoder(x, filters=filters, z_num=z_num, num_conv= num_conv, conv_k= conv_k, repeat= repeat, act=act)
+    z = Encoder(input, filters=filters, z_num=z_num, num_conv= num_conv, conv_k= conv_k, repeat= repeat, act=act)
 
     #z is new latent representation = z + output NN
-    out,_ = Generator(z, filters=filters, output_shape = get_conv_shape(x)[1:],
+    out = Generator(z, filters=filters, output_shape = get_conv_shape(input)[1:],
                              num_conv=num_conv, conv_k=conv_k, last_k=last_k, repeat=repeat, act=act)
-    autoencoder = keras.Model(x, out)
+    autoencoder = keras.Model(input, out)
 
     return z, out, autoencoder
 
-def Time_NN(x, onum, node_num=512, act = tf.nn.elu, dropout=0.1, name='TS_NN'):
+def Time_NN(x, onum, node_num, dropout,act = tf.nn.elu, name='TS_NN'):
     """
     Neural Network for time evolution in reduced dimension (encoded images)
 
@@ -161,16 +162,21 @@ def Time_NN(x, onum, node_num=512, act = tf.nn.elu, dropout=0.1, name='TS_NN'):
 
     x_shape = int_shape(x)[1:]
     inputs = layers.Input(shape=x_shape)
-    #ToDo: add flatten layer if multiple timesteps are included to predict future timestep
+    #Flatten layer if multiple previous timesteps are included to predict future timestep
+    x = layers.Flatten()(inputs)
+
     #x = layers.BatchNormalization(inputs)
-    x = layers.Dense(node_num*2, activation=act, name='dense_1')(inputs)
+    x = layers.Dense(node_num*2, activation=act, name='dense_1')(x)
     x = layers.Dropout(dropout)(x) #keras automatically sets training to True only for training phase
 
     x = layers.BatchNormalization()(x)
     x = layers.Dense(node_num, activation=act, name='dense_2')(x)
     x = layers.Dropout(dropout)(x)  # keras automatically sets training to True only for training phase
 
-    delta_z = layers.Dense(onum)(x)
+    x = layers.Dense(onum)(x)
+    #ToDo: note sure if this is legit if we predict more than one timestep in the future, then we don't want to flatten
+    #   but decode each entry in the second dimension (BS, Timesteps, features)
+    delta_z = layers.Flatten()(x)
 
     TS_NN = keras.Model(inputs,delta_z)
     return delta_z, TS_NN
