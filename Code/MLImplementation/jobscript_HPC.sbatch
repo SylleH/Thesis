@@ -14,7 +14,7 @@ module use /opt/insy/modulefiles
 module load cuda/11.5
 module load cudnn
 module load miniconda
-conda activate env_ML_thesis_2
+conda activate tf
 cd /tudelft.net/staff-umbrella/trasientcnn/MLImplementation
 
-srun python main.py train TS AE_straight_OVERFIT_val001_E126_f16_z150
+srun python main.py train total

@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from scipy import optimize
 
-delta_T = 0.0001
-t = np.linspace(0,1,int(1/delta_T)) #one cycle
+delta_T = 0.01
+t = np.linspace(0,1,int(1/delta_T)+1) #one cycle
 
 def test_func(x, a, b, c, d, e,f,g ,h):
     return a*np.sin(b*x) + c*np.sin(d*x) + e*np.sin(f*x) + g*np.sin(h*x)
@@ -51,7 +51,7 @@ def v_in(t):
     plt.show()
     return v_list, v_dict
 
-def v_poly(U_max, U_min, t):
+def v_sine(U_max, U_min, t):
     U_0 = np.zeros_like(t)
     for count, value in enumerate(t):
         if (value<=0.35):
@@ -98,7 +98,7 @@ def plot_figure(t, p_list):
     fig, ax1 = plt.subplots()
     ax1.set_xlabel('time [s]')
     ax1.set_ylabel('velocity[m/s]', color = 'b')
-    ax1.plot(t, v_poly(0.4,0.02,t), 'b')
+    ax1.plot(t, v_sine(0.4,0.02,t), 'b')
 
     ax2 = ax1.twinx()
     ax2.set_ylabel('pressure [mmHg]', color = 'r')
@@ -109,7 +109,8 @@ def plot_figure(t, p_list):
 
 def data_table(t, p_conv_list):
     t_list = t.tolist()
-
+    # v_list = v_sine(0.4, 0.02,t).tolist()
+    # v_dict = {'time':t_list, 'velocity':v_list}
     # v_df = pd.DataFrame(v_dict)
     # v_df = v_df.round(3)
     # v_df.to_csv('inlet_v.csv', index=False)
@@ -119,7 +120,7 @@ def data_table(t, p_conv_list):
     p_df = p_df.round(4)
     p_df.to_csv('outlet_p.csv', index=False)
 
-def v_in_sine():
+def v_in_poly():
     y = [0.08,0.21,0.62,0.53,0.37,0.22,0.02,0.05,0.07,0.08, 0.07, 0.08,  0.07, 0.08, 0.08]
     x = np.linspace(0,0.75,15)
 
@@ -132,10 +133,12 @@ def v_in_sine():
 
 
 if __name__ == "__main__":
+#    data_table(t, None)
 #    v_list, v_dict = v_in(t)
     p_list, p_conv_list = p_out(t)
+#    data_table(t, p_conv_list)
 #    t = np.linspace(0,3,int(3/delta_T))
-#    plt.plot(t, p_list)
-#    plt.show()
-    plot_figure(t, p_list)
+    plt.plot(t, p_conv_list)
+    plt.show()
+#    plot_figure(t, p_list)
     #data_table(t, p_conv_list)

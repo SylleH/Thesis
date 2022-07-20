@@ -9,10 +9,69 @@ from PIL import Image
 import tensorflow as tf
 import numpy as np
 import yaml
+import cv2
 
 scenario = "straight" #bifurcation, bend90 or branch
 data_in_dir ="../DataGeneration/Data_generated/"+scenario+"/"
 data_out_dir = "data/"+scenario+"/"
+
+class CustomDataGen(tf.keras.utils.Sequence):
+    """
+    Custom Image data generator for multiple inputs and outputs, adapted from:
+    https://medium.com/analytics-vidhya/write-your-own-custom-data-generator-for-tensorflow-keras-1252b64e41c3
+    """
+
+    def __init__(self, df, X_col, y_col, batch_size, input_size, shuffle=True):
+        self.df = df.copy()
+        self.X_col = X_col
+        self.y_col = y_col
+        self.batch_size = batch_size
+        self.input_size = input_size
+        self.shuffle = shuffle
+
+        self.n = len(self.df)
+
+    def on_epoch_end(self):
+        if self.shuffle:
+            self.df = self.df.sample(frac=1).reset_index(drop=True)
+
+    def __get_image_input(self, path, target_size):
+
+        image = tf.keras.preprocessing.image.load_img(path, color_mode="grayscale")
+        image_arr = tf.keras.preprocessing.image.img_to_array(image)
+
+        image_arr = tf.image.resize(image_arr, (target_size[0], target_size[1])).numpy()
+
+        return image_arr / 255.
+
+    def __get_data(self, batches):
+        # Generates data containing batch_size samples
+
+        step0_batch = batches[self.X_col['path']]
+
+        step1_batch = batches[self.y_col['out1']]
+        step2_batch = batches[self.y_col['out2']]
+        step3_batch = batches[self.y_col['out3']]
+        step4_batch = batches[self.y_col['out4']]
+        step5_batch = batches[self.y_col['out5']]
+
+        X_batch = np.asarray([self.__get_image_input(x, self.input_size) for x in step0_batch])
+
+        y0_batch = np.asarray([self.__get_image_input(y, self.input_size) for y in step1_batch])
+        y1_batch = np.asarray([self.__get_image_input(y, self.input_size) for y in step2_batch])
+        y2_batch = np.asarray([self.__get_image_input(y, self.input_size) for y in step3_batch])
+        y3_batch = np.asarray([self.__get_image_input(y, self.input_size) for y in step4_batch])
+        y4_batch = np.asarray([self.__get_image_input(y, self.input_size) for y in step5_batch])
+
+        return X_batch, tuple([y0_batch, y1_batch, y2_batch, y3_batch, y4_batch])
+
+    def __getitem__(self, index):
+        batches = self.df[index*self.batch_size:(index+1)*self.batch_size]
+        X, y = self.__get_data(batches)
+        return X, y
+
+    def __len__(self):
+        return self.n // self.batch_size
 
 class WindowGenerator():
     """
@@ -21,9 +80,11 @@ class WindowGenerator():
     Note: editted to return one dataset which is later split into train, validation, test
     """
     def __init__(self, input_width, label_width, shift,
-               df, label_columns=None):
+               df, batchsize, label_columns=None, shuffle=True):
+        self.shuffle = shuffle
         # Store the raw data.
         self.df = df
+        self.bs = batchsize
 
         # Work out the label column indices.
         self.label_columns = label_columns
@@ -76,8 +137,8 @@ class WindowGenerator():
           targets=None,
           sequence_length=self.total_window_size,
           sequence_stride=1,
-          shuffle=True,
-          batch_size=10)
+          shuffle=self.shuffle,
+          batch_size=self.bs)
 
         ds = ds.map(self.split_window)
 
@@ -125,6 +186,13 @@ def get_dataset_partitions_tf(ds, ds_size, train_split=0.8, val_split=0.2, test=
 
     return train_ds, val_ds, test_ds
 
+def load_images(data, file_list, path, width, height):
+    for myFile in file_list:
+        myFile = path + myFile
+        image = cv2.imread(myFile, cv2.IMREAD_GRAYSCALE)
+        image = cv2.resize(image, (width, height))
+        data.append(image)
+    return data
 
 def load_config(config_name):
     # load directories and hyperparameters from config file to config dict
