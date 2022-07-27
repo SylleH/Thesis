@@ -13,14 +13,14 @@ AE:
   last_k: 1 #channels
   repeat: 4 #0 = calculated = 6 (previously 4), more repeats is more downsampling, less trainable parameters
   training:
-    patience: 25
+    patience: 20
     batch_size: 18
     epochs: 250
 TS:
   window:
       input: 1
       shift: 1
-      label: 1
+      label: 5
   architecture: NN #NN GRU LSTM
   node_num: 512 #512 used in deep Fluids
   num_layers: 2 #2 in Deep Fluids

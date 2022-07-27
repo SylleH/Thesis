@@ -126,9 +126,9 @@ def build_channel_bend(width, Lc):
 
     gmsh.model.add("channel_bend")
 
-    w = width*mm
+    w = 2*width*mm
     angle= np.deg2rad(deg) # 0< deg < 180
-    r1 = 12*mm
+    r1 = 20*mm
     r2 = r1+w
 
 
@@ -161,9 +161,9 @@ def build_channel_bend(width, Lc):
     gmsh.model.setPhysicalName(2, 1, "front")
     gmsh.model.setPhysicalName(2, 2, "back")
     gmsh.model.setPhysicalName(2, 3, "outer_arc")
-    gmsh.model.setPhysicalName(2, 4, "right")
+    gmsh.model.setPhysicalName(2, 4, "bottom")      #actually this is right, but outlet
     gmsh.model.setPhysicalName(2, 5, "inner_arc")
-    gmsh.model.setPhysicalName(2, 6, "top")
+    gmsh.model.setPhysicalName(2, 6, "top")         #actually this is left, but inlet
     gmsh.model.setPhysicalName(3, 2, "the volume")
 
     gmsh.model.mesh.generate(3)
@@ -270,7 +270,7 @@ def main(argv):
     if len(argv)>2:
         width_2 = argv[2]            #ToDo: make optional system argument (width branch or bifurcation)
 
-    Lc = 0.002             #this determines the coarseness of the mesh
+    Lc = 0.0025             #this determines the coarseness of the mesh, 0.002 for straight channel, 0.0025 bend
 
     if scenario == 'straight':
         build_channel_straight(rad, Lc)

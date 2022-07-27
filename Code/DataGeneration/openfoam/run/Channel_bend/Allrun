@@ -1,0 +1,38 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # Run from this directory
+
+#Source OpenFoam BASH profile
+. /opt/openfoam9/etc/bashrc
+
+#Export fix for OpenMPI in container
+export OMPI_MCA_btl_vader_single_copy_mechanism=none
+
+#convert gmsh file to polyMesh dict files
+gmshToFoam channel_${1}_w${2}.msh2 >log.gmshFoam
+
+#set back and front patches to empty 3D --> 2D and set walls for turbulence model
+cd constant/polyMesh
+search="back\s*\{\s*type\s*patch;"
+replace="back \n    \{\n        type            empty;"
+perl -0 -pi -e "s#$search#$replace#s" "boundary"
+
+search="front\s*\{\s*type\s*patch;"
+replace="front \n    \{\n        type            empty;"
+perl -0 -pi -e "s#$search#$replace#s" "boundary"
+
+search="outer_arc\s*\{\s*type\s*patch;"
+replace="outer_arc \n    \{\n        type            wall;"
+perl -0 -pi -e "s#$search#$replace#s" "boundary"
+
+search="inner_arc\s*\{\s*type\s*patch;"
+replace="inner_arc \n    \{\n        type            wall;"
+perl -0 -pi -e "s#$search#$replace#s" "boundary"
+
+#change parabolic inlet condition 
+cd ../..
+cd 0
+search="const scalar r = (.*?);"
+replace="const scalar r = ${2}*1e-3;"
+perl -0 -pi -e "s#$search#$replace#s" "U"
+cd ../
+

@@ -9,7 +9,7 @@ from PIL import Image
 import tensorflow as tf
 import numpy as np
 import yaml
-import cv2
+#import cv2
 
 scenario = "straight" #bifurcation, bend90 or branch
 data_in_dir ="../DataGeneration/Data_generated/"+scenario+"/"
@@ -46,24 +46,25 @@ class CustomDataGen(tf.keras.utils.Sequence):
 
     def __get_data(self, batches):
         # Generates data containing batch_size samples
+        in_batches = [[] for i in range(len(self.X_col))]
+        in_names = [f"in{x}" for x in range(len(self.X_col))]
+        for i in range(len(self.X_col)):
+            in_batches[i] = batches[self.X_col[in_names[i]]]
 
-        step0_batch = batches[self.X_col['path']]
+        out_batches = [[] for i in range(len(self.y_col))]
+        out_names = [f"out{x}" for x in range(len(self.y_col))]
+        for i in range(len(self.y_col)):
+            out_batches[i] = batches[self.y_col[out_names[i]]]
 
-        step1_batch = batches[self.y_col['out1']]
-        step2_batch = batches[self.y_col['out2']]
-        step3_batch = batches[self.y_col['out3']]
-        step4_batch = batches[self.y_col['out4']]
-        step5_batch = batches[self.y_col['out5']]
+        X_batches = [[] for i in range(len(self.X_col))]
+        for i in range(len(self.X_col)):
+            X_batches[i] = np.asarray([self.__get_image_input(x, self.input_size) for x in in_batches[i]])
 
-        X_batch = np.asarray([self.__get_image_input(x, self.input_size) for x in step0_batch])
+        y_batches = [[] for i in range(len(self.y_col))]
+        for i in range(len(self.y_col)):
+            y_batches[i] = np.array([self.__get_image_input(y, self.input_size) for y in out_batches[i]])
 
-        y0_batch = np.asarray([self.__get_image_input(y, self.input_size) for y in step1_batch])
-        y1_batch = np.asarray([self.__get_image_input(y, self.input_size) for y in step2_batch])
-        y2_batch = np.asarray([self.__get_image_input(y, self.input_size) for y in step3_batch])
-        y3_batch = np.asarray([self.__get_image_input(y, self.input_size) for y in step4_batch])
-        y4_batch = np.asarray([self.__get_image_input(y, self.input_size) for y in step5_batch])
-
-        return X_batch, tuple([y0_batch, y1_batch, y2_batch, y3_batch, y4_batch])
+        return X_batches[0], tuple(y_batches)
 
     def __getitem__(self, index):
         batches = self.df[index*self.batch_size:(index+1)*self.batch_size]
@@ -186,13 +187,13 @@ def get_dataset_partitions_tf(ds, ds_size, train_split=0.8, val_split=0.2, test=
 
     return train_ds, val_ds, test_ds
 
-def load_images(data, file_list, path, width, height):
-    for myFile in file_list:
-        myFile = path + myFile
-        image = cv2.imread(myFile, cv2.IMREAD_GRAYSCALE)
-        image = cv2.resize(image, (width, height))
-        data.append(image)
-    return data
+# def load_images(data, file_list, path, width, height):
+#     for myFile in file_list:
+#         myFile = path + myFile
+#         image = cv2.imread(myFile, cv2.IMREAD_GRAYSCALE)
+#         image = cv2.resize(image, (width, height))
+#         data.append(image)
+#     return data
 
 def load_config(config_name):
     # load directories and hyperparameters from config file to config dict

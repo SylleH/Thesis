@@ -10,7 +10,6 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import pandas as pd
 import glob
-import cv2
 #import hypertools as hyp
 
 # scenario = "straight" #bifurcation, bend90 or branch
@@ -50,27 +49,29 @@ def create_test_datagen(data_test_dir, batch_size, img_height, img_width):
     return test_generator
 
 
-def create_input_multi_output_gen(data_dir, img_height, img_width, batch_size, val_split, test=False):
+def create_input_multi_output_gen(data_dir, img_height, img_width, batch_size,
+                                  previous_ts, predicted_ts, val_split=0.1, test=False):
     """
-    Function to create train and validation image generator for 1 input, 5 outputs model
+    Function to create train and validation image generator for multi input, multi output model
+        !!! Note inputs overlap and outputs overlap, but inputs and outputs never overlap !!!
+        Shift not implemented
     Note: if all data is loaded at once instead of using a generator, Out Of Memory error van occur
-    :param data_dir:
-    :param img_height:
-    :param img_width:
-    :param batch_size:
-    :param val_split:
-    :param test:
-    :return train_generator:
-    :return val_generator
+
+    :param data_dir: directory that contains 'straight' folder(s) with images
+    :param img_height: height of input images
+    :param img_width: width of input images
+    :param batch_size: batch size, set to max for testing
+    :param previous_ts: amount of timesteps to use as input
+    :param predicted_ts: amount of timesteps to predict
+    :param val_split: portion of data to use as validation
+    :param test: Boolean True or False, affects the directory pattern and shuffle parameter
+
+    :return train_generator: custom generator with training data, multi inout, multi output allowed
+    :return val_generator: custom generator with validation data, multi input, multi output allowed
     """
 
-    #ToDo: hardcoded 1 input 5 outputs, make flexible
-    input_files = []
-    out1_files = []
-    out2_files = []
-    out3_files = []
-    out4_files = []
-    out5_files = []
+    input = [[] for i in range(previous_ts)]
+    output = [[] for i in range(predicted_ts)]
 
     for dir in os.listdir(data_dir):
         if dir == ".DS_Store":
@@ -78,48 +79,55 @@ def create_input_multi_output_gen(data_dir, img_height, img_width, batch_size, v
         if test:
             path = data_dir+"/straight/"
             files = os.listdir(path)
+            shuffle = False
         else:
             path = data_dir+dir+"/straight/"
             files = os.listdir(path)
+            shuffle = True
         if '.DS_Store' in files: files.remove('.DS_Store')
         files_sorted = sorted(files)
-        #print(files_sorted)
         label_files= files_sorted.copy()
-        label_files.pop(0)
 
-        for i in range(5):
+        #Remove the first entries of the label_files list as they are used as the first inputs
+        for i in range(previous_ts):
+            label_files.pop(0)
+
+        #Remove the last entries of the inout files list as they are used as the last labels
+        for i in range(predicted_ts):
              files_sorted.pop(-1)
 
+        for i in range(len(files_sorted)-previous_ts+1):
+            for k in range(previous_ts):
+                input[k].append(path+files_sorted[i+k])
 
-        for i in range(len(files_sorted)):
-            input_files.append(path+files_sorted[i])
-            out1_files.append(path+label_files[i])
-            out2_files.append(path+label_files[i+1])
-            out3_files.append(path+label_files[i+2])
-            out4_files.append(path+label_files[i+3])
-            out5_files.append(path+label_files[i+4])
+            for k in range(predicted_ts):
+                output[k].append(path+label_files[i+k])
 
-    df_in = pd.DataFrame(input_files)
-    df_out1 = pd.DataFrame(out1_files)
-    df_out2 = pd.DataFrame(out2_files)
-    df_out3 = pd.DataFrame(out3_files)
-    df_out4 = pd.DataFrame(out4_files)
-    df_out5 = pd.DataFrame(out5_files)
-    df_all = pd.concat([df_in, df_out1, df_out2, df_out3, df_out4, df_out5], axis=1)
-    for df in [df_in, df_out1, df_out2, df_out3, df_out4, df_out5]:
-        df.columns = ['filename']
+    df_in = pd.concat([pd.Series(x) for x in input], axis=1)
+    df_out = pd.concat([pd.Series(x) for x in output], axis=1)
+    df_all = pd.concat([df_in, df_out], axis=1)
 
-    df_all.columns = ['filename', 'out1', 'out2', 'out3', 'out4', 'out5']
-    df_train = df_all.sample(frac=val_split)
-    df_val = df_all.drop(df_train.index)
+    input_names = [f"in{x}" for x in range(previous_ts)]
+    output_names = [f"out{x}" for x in range(predicted_ts)]
 
-    train_generator = CustomDataGen(df_train, X_col={'path': 'filename'},
-                              y_col={'out1': 'out1','out2': 'out2','out3': 'out3','out4': 'out4',
-                                     'out5': 'out5'}, batch_size=batch_size, input_size=(img_height,img_width))
+    df_all.columns = input_names+output_names
 
-    val_generator = CustomDataGen(df_val, X_col={'path': 'filename'},
-                              y_col={'out1': 'out1','out2': 'out2','out3': 'out3','out4': 'out4',
-                                     'out5': 'out5'}, batch_size=batch_size, input_size=(img_height,img_width))
+    input_dict = {input_names[i]: input_names[i] for i in range(len(input_names))}
+    output_dict = {output_names[i] : output_names[i] for i in range(len(output_names))}
+
+    if not test:
+        df_train = df_all.sample(frac=val_split)
+        df_val = df_all.drop(df_train.index)
+
+        val_generator = CustomDataGen(df_val, X_col=input_dict,
+                                      y_col=output_dict, batch_size=batch_size, input_size=(img_height, img_width), shuffle = shuffle)
+    else:
+        df_train = df_all
+        val_generator = None
+
+    train_generator = CustomDataGen(df_train, X_col=input_dict,
+                                    y_col=output_dict, batch_size=batch_size, input_size=(img_height,img_width), shuffle = shuffle)
+
 
     return train_generator, val_generator
 

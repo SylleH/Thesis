@@ -8,10 +8,7 @@ import tensorflow as tf
 from tensorflow import keras
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
 from datetime import date
-import pydot
-import pydotplus
-from pydotplus import graphviz
-from keras.utils.vis_utils import plot_model
+
 
 
 
@@ -44,16 +41,20 @@ def trainer_AE(config, strategy, total=False):
     epochs = config["AE"]["training"]["epochs"]
 
     if total:
+        input = config["TS"]["window"]["input"]
+        shift = config["TS"]["window"]["shift"]
+        output = config["TS"]["window"]["label"]
         node_num = config["TS"]["node_num"]
         num_layers = config["TS"]["num_layers"]
         dropout = config["TS"]["training"]["dropout"]
+
 
     #data_dir = "data/" + scenario + "/"
     data_dir = 'data/NN_testset/'
     #model_path = model_dir+"AE_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_f"+str(filters)+"_z"+str(z_num)
     model_path = model_dir + "AE_straight_OVERFIT_val0.01_E126_f16_z150_oneTS"
     if total:
-        model_path = model_dir+"total_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_5steps"
+        model_path = model_dir+"total_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_5steps_testexcl_1135"
     log_path = model_path + "/logs"
     checkpoint_filepath = model_path + "/checkpoint/"
     #fig_name = "loss_"+"AE_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_f"+str(filters)+"_z"+str(z_num)
@@ -70,7 +71,8 @@ def trainer_AE(config, strategy, total=False):
     callbacks = [tb_callback, es_callback, modcheck_callback]
 
     if total:
-        train_generator, val_generator = create_input_multi_output_gen("data/TS_seperately/", img_height, img_width,
+        train_generator, val_generator = create_input_multi_output_gen("data/TS_seperately/", img_height, img_width, previous_ts=input,
+                                                                       predicted_ts=output,
                                                                        batch_size=batch_size, val_split=0.9)
     else:
         train_generator, val_generator = create_train_val_datagen(data_dir, batch_size, img_height, img_width)
@@ -87,11 +89,10 @@ def trainer_AE(config, strategy, total=False):
         else:
             z, out, model = E_TS_D(img_inputs, filters, z_num, num_conv, conv_k, last_k, repeat,
                                     onum=150, num_layers=num_layers, node_num=node_num, dropout=dropout)
-            tf.keras.utils.plot_model(model, to_file='model_plot.png', show_shapes=True, show_layer_names=True)
             model.compile(loss="mse", optimizer="adam", metrics=["mse"])
             print(model.summary())
 
-            #history = model.fit(train_generator, validation_data=val_generator, epochs=epochs, callbacks=callbacks)
+            history = model.fit(train_generator, validation_data=val_generator, epochs=epochs, callbacks=callbacks)
 
     return history, checkpoint_filepath
 

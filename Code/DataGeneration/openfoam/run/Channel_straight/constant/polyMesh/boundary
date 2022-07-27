@@ -16,47 +16,47 @@ FoamFile
 
 6
 (
-    back 
+    back
     {
-        type            empty;
+        type            patch;
         physicalType    patch;
-        nFaces          2510;
-        startFace       3673;
+        nFaces          2044;
+        startFace       2977;
     }
-    front 
+    front
     {
-        type            empty;
+        type            patch;
         physicalType    patch;
-        nFaces          2510;
-        startFace       6183;
+        nFaces          2044;
+        startFace       5021;
     }
-    left 
+    left
     {
-        type            wall;
+        type            patch;
         physicalType    patch;
         nFaces          78;
-        startFace       8693;
+        startFace       7065;
     }
     top
     {
         type            patch;
         physicalType    patch;
-        nFaces          14;
-        startFace       8771;
+        nFaces          11;
+        startFace       7143;
     }
-    right 
+    right
     {
-        type            wall;
+        type            patch;
         physicalType    patch;
         nFaces          78;
-        startFace       8785;
+        startFace       7154;
     }
     bottom
     {
         type            patch;
         physicalType    patch;
-        nFaces          14;
-        startFace       8863;
+        nFaces          11;
+        startFace       7232;
     }
 )
 

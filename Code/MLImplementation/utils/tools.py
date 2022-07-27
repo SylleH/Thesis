@@ -24,15 +24,7 @@ def create_AE(img_inputs, filters, z_num, repeat, num_conv, conv_k, last_k, hp=N
     z, out, autoencoder, encoder_model, generator_model = AE(img_inputs, filters=filters, z_num=z_num,
                              repeat=repeat, num_conv=num_conv, conv_k=conv_k, last_k=last_k)
 
-        # # Hyperparameters for tuning
-        # hp_filters = hp.Int('nodes', min_value=8, max_value=32, step=8)
-        # hp_BB = hp.Int('BigBlocks', min_value=2, max_value=6, step=2)
-        # hp_SB = hp.Int('SmallBlocks', min_value=2, max_value=5, steps=1)
-        # hp_zdim = hp.Int('z_num', min_value = 25, max_value=150, steps=25)
-        # hp_kernel = hp.Int('conv_k', min_value = 2, max_value = 4, steps =1)
-        #
-        # z, out, autoencoder, encoder_model, generator_model = AE(img_inputs, filters=hp_filters, z_num=hp_zdim,
-        #                      repeat=hp_BB, num_conv=hp_SB, conv_k=hp_kernel, last_k=last_k)
+
 
     autoencoder.compile(loss="mse", optimizer="adam", metrics=["mse"])
     # keras.utils.plot_model(autoencoder, "autoencoder_arch.png")
@@ -79,14 +71,14 @@ def predict_and_evaluate(model, test_set, fig_name, pipe, images=None, encoded=N
     #matplotlib.use('agg')
 
     #make predictions on test dataset
-    predicted = model.predict(test_set)
-    print(predicted.shape)
-    predicted_beat= np.empty([20,192,256,1])
-    for i in range(20):
-        predicted = model.predict(predicted)
-        print(predicted[0].shape)
-        predicted_beat[i,:,:,:] = predicted[0]
-        print(predicted_beat.shape)
+    predicted, predicted2, predicted3, predicted4, predicted5 = model.predict(test_set)
+    #print(predicted.shape)
+    # predicted_beat= np.empty([20,192,256,1])
+    # for i in range(20):
+    #     predicted = model.predict(predicted)
+    #     print(predicted[0].shape)
+    #     predicted_beat[i,:,:,:] = predicted[0]
+    #     print(predicted_beat.shape)
 
 
 
@@ -96,6 +88,7 @@ def predict_and_evaluate(model, test_set, fig_name, pipe, images=None, encoded=N
         test_scores = model.evaluate(test_set)
         plt.figure(figsize=(20, 4))
         plt.suptitle('test_loss =' + str(test_scores[0]))
+        n = 10  # number of images to display
         r = 2
     #if images are supplied, the decoder is given as model (eval - total_sep pipeline), encoded is supplied
     #or total network is given as model (eval - total_comb pipeline), encoded is not supplied
@@ -105,22 +98,28 @@ def predict_and_evaluate(model, test_set, fig_name, pipe, images=None, encoded=N
         test_scores = None
         plt.figure(figsize=(20,6))
         #plt.suptitle("Feature " + str(num))
+        n = 10  # number of images to display
         r = 3
     elif pipe == 'total_com':
-        img_batch = test_set
-        test_scores = model.evaluate(x=test_set, y=images)
-        plt.figure(figsize=(20, 6))
+        img_batch, _ = test_set[0]
+        test_scores = model.evaluate(test_set)
+        plt.figure(figsize=(20, 4))
         plt.suptitle('test_loss =' + str(test_scores[0]))
-        r = 3
+        n = 10  # number of images to display
+        r = 2
 
-    n  = 10 #number of images to display
     for i in range(n):
         # Display original
-        ax = plt.subplot(r, n, i+1)
+        if not pipe == 'total_com':
+            ax = plt.subplot(r, n, i+1)
+        else:
+            ax = plt.subplot(r, n, 1)
 
         # Need to shift the index for comparison
         if pipe == 'total_sep':
             plt.imshow(img_original_batch[i])
+        elif pipe == 'total_com':
+            plt.imshow(img_batch[10])
         else:
             plt.imshow(img_batch[i])
         plt.gray()
@@ -130,7 +129,8 @@ def predict_and_evaluate(model, test_set, fig_name, pipe, images=None, encoded=N
 
         # Display reconstruction or prediction of TS network
         ax = plt.subplot(r, n, i + 1 + n)
-        plt.imshow(predicted_beat[i])
+        plt.imshow(predicted[i])
+
         plt.gray()
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
@@ -142,17 +142,59 @@ def predict_and_evaluate(model, test_set, fig_name, pipe, images=None, encoded=N
             plt.gray()
             ax.get_xaxis().set_visible(False)
             ax.get_yaxis().set_visible(False)
-        if pipe == 'total_com':
-            ax = plt.subplot(r ,n, i+1+2*n)
-            plt.imshow(predicted_beat[i+10])
-            plt.gray()
-            ax.get_xaxis().set_visible(False)
-            ax.get_yaxis().set_visible(False)
+        # if pipe == 'total_com':
+        #     ax = plt.subplot(r ,n, i+1+2*n)
+        #     plt.imshow(predicted_beat[i+10])
+        #     plt.gray()
+        #     ax.get_xaxis().set_visible(False)
+        #     ax.get_yaxis().set_visible(False)
 
 
     plt.savefig(fig_name) #ToDo: find good name result
     plt.show()
     return test_scores
+
+def predict_and_plot_total(model, test_set, predicted_ts):
+    predicted1, predicted2, predicted3, predicted4, predicted5 = model.predict(test_set)
+    predicted_list = [predicted1, predicted2, predicted3, predicted4, predicted5]
+
+    img_batch,_ = test_set[0]
+    test_scores = model.evaluate(test_set)
+    print('total_test_loss =' + str(test_scores[0]))
+    n = int(predicted_ts*2)  # number of images to display
+    r = 3
+    for i in range(int(len(img_batch)/6)):
+        plt.figure(figsize=(20, 6))
+        plt.suptitle(f"predictions {(i*2)*6} and {(2*i+1)*6}")
+        ax = plt.subplot(r, n, 1)
+        ax.title.set_text(f"t={(i*2)*6}")
+        plt.imshow(img_batch[(i*2)*6])
+        plt.gray()
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+
+        ax = plt.subplot(r, n, 6)
+        ax.title.set_text(f"t={(2*i+1)*6}")
+        plt.imshow(img_batch[(2*i+1)*6])
+        plt.gray()
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+
+        for j in range(predicted_ts):
+            ax = plt.subplot(r, n, j+1+n)
+            ax.title.set_text(f"t={(i * 12)+1+j}")
+            plt.imshow(predicted_list[j][(i*12)])
+            ax.get_xaxis().set_visible(False)
+            ax.get_yaxis().set_visible(False)
+        for j in range(predicted_ts):
+            ax = plt.subplot(r,n,j+predicted_ts+1+n)
+            ax.title.set_text(f"t={((2*i+1)*6) + 1 + j}")
+            plt.imshow(predicted_list[j][(2*i+1)*6])
+            ax.get_xaxis().set_visible(False)
+            ax.get_yaxis().set_visible(False)
+        plt.show()
+
+
 
 def load_model(network, checkpoint_filepath, date=str(date.today())):
     checkpoint_filepath = 'model/' + checkpoint_filepath
@@ -176,3 +218,6 @@ def load_model(network, checkpoint_filepath, date=str(date.today())):
 
     else:
         print('train model first!')
+
+
+

@@ -10,6 +10,10 @@ from tensorflow import keras
 from keras import layers
 from utils.ops import *
 import numpy as np
+# import pydot
+# import pydotplus
+# from pydotplus import graphviz
+# from keras.utils.vis_utils import plot_model
 
 
 
@@ -67,7 +71,9 @@ def Encoder(input, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.leaky_re
     z = layers.Dense(z_num, activation=act, name='encoded')(flat)
 
     encoder_model = keras.Model(input,z, name=name)
-    return z ,encoder_model
+    tf.keras.utils.plot_model(encoder_model, to_file='Encoder_model_plot.png', show_shapes=True, show_layer_names=True)
+
+    return encoder_model #,z
 
 
 def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu, name='decoder'):
@@ -93,7 +99,7 @@ def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf
         repeat_num = repeat
 
     x0_shape = [int(i/np.power(2, repeat_num-1)) for i in output_shape[:-1]] + [filters]#+(filters*repeat_num)]
-    print('first layer:', x0_shape, 'to', output_shape)
+    print('first layer generator:', x0_shape, 'to', output_shape)
 
     num_output = int(np.prod(x0_shape)) #number of output nodes flattend H*W*filters
     layer_num = 0
@@ -127,7 +133,9 @@ def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf
     out = layers.Conv2D(output_shape[-1], kernel_size=last_k, strides=1, padding="same", activation= keras.activations.elu, name='decoded')(x)
 
     generator_model = keras.Model(z,out, name =name)
-    return out , generator_model
+    tf.keras.utils.plot_model(generator_model, to_file='Decoder_model_plot.png', show_shapes=True, show_layer_names=True)
+
+    return generator_model #,out
 
 def AE(input, filters, z_num, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_relu, name='autoencoder'):
     """
@@ -137,7 +145,6 @@ def AE(input, filters, z_num, num_conv, conv_k, last_k, repeat, act=tf.nn.leaky_
     :return z: reduced representation learned by encoder
     :return out: generated velocity field from reduced representation
     """
-    img_inputs = keras.Input(shape=(192, 256, 1))  # shape of each sample needs to be supplied, this is after cropping
 
     z, encoder_model = Encoder(input, filters=filters, z_num=z_num, num_conv= num_conv, conv_k= conv_k, repeat= repeat, act=act)
 
@@ -163,7 +170,7 @@ def Time_NN(input, onum, num_layers, node_num, dropout, act = tf.nn.elu, name='T
     :returns delta_z: difference learned reduced representation time t with t+1, needs to be added to original z
     """
 
-    #x_shape = int_shape(x)[1:]
+    #x_shape = int_shape(input)[1:]
     #inputs = layers.Input(shape=x_shape)
     #Flatten layer if multiple previous timesteps are included to predict future timestep
     x = layers.Flatten()(input)
@@ -185,38 +192,36 @@ def Time_NN(input, onum, num_layers, node_num, dropout, act = tf.nn.elu, name='T
     #delta_z, time_vel = tf.split(x, num_or_size_splits=[150, 2],axis=1)
 
     TS_NN = keras.Model(input,delta_z, name=name)
-    return delta_z, TS_NN
+    tf.keras.utils.plot_model(TS_NN, to_file='TS_NN_model_plot.png', show_shapes=True, show_layer_names=True)
+
+    return TS_NN #,delta_z
 
 def E_TS_D(input, filters, z_num, num_conv, conv_k, last_k, repeat,
-           onum, num_layers, node_num, dropout, predicted_ts = 5, name='E_TS_D'):
-    z, encoder_model = Encoder(input, filters=filters, z_num=z_num, num_conv=num_conv, conv_k=conv_k, repeat=repeat,
+           onum, num_layers, node_num, dropout, previous_ts=1, predicted_ts = 5, name='E_TS_D'):
+
+
+    #ToDo: make model compatible with multi inputs
+    #Create models
+    encoder_model = Encoder(input, filters=filters, z_num=z_num, num_conv=num_conv, conv_k=conv_k, repeat=repeat,
                                act=tf.nn.leaky_relu)
 
-    #ToDo: maak dit minder gebeunt
-    _, TS_NN = Time_NN(z, onum=onum, num_layers=num_layers, node_num=node_num, dropout=dropout,act = tf.nn.elu)
-    z1 = TS_NN(z)
-    z2 = TS_NN(z1)
-    z3 = TS_NN(z2)
-    z4 = TS_NN(z3)
-    z5 = TS_NN(z4)
+    z_input = keras.Input(shape=z_num*previous_ts)
 
-    _ , generator_model = Generator(z1, filters=filters, output_shape=get_conv_shape(input)[1:],
+    TS_NN = Time_NN(z_input, onum=onum, num_layers=num_layers, node_num=node_num, dropout=dropout,act = tf.nn.elu)
+    generator_model = Generator(z_input, filters=filters, output_shape=get_conv_shape(input)[1:],
                                      num_conv=num_conv, conv_k=conv_k, last_k=last_k, repeat=repeat,
                                      act=tf.nn.leaky_relu)
-    out1 = generator_model(z1)
-    out2 = generator_model(z2)
-    out3 = generator_model(z3)
-    out4 = generator_model(z4)
-    out5 = generator_model(z5)
 
-    outputs = [out1, out2, out3, out4, out5]
+    z = [TS_NN(encoder_model(input))]
+    out = [generator_model(z[0])]
+    for i in range(predicted_ts-1):
+        z.append(TS_NN(z[i]))
+        out.append(generator_model(z[i+1]))
 
-    # z is new latent representation = z + output NN
+    Enc_time_Dec = keras.Model(inputs = input, outputs=out, name=name)
+    tf.keras.utils.plot_model(Enc_time_Dec, to_file='total_model_plot.png', show_shapes=True, show_layer_names=True)
 
-
-    Enc_time_Dec = keras.Model(inputs = input, outputs=outputs)
-
-    return z, outputs, Enc_time_Dec
+    return input, out, Enc_time_Dec
 
 def Time_RNN(x, onum, dropout, train=True):
     x_shape = int_shape(x)[1:]
@@ -241,39 +246,63 @@ def E_RTS_SD(input, filters, z_num, num_conv, conv_k, last_k, repeat,
 
     return z, out, Enc_RecurrentTime_SharedDec
 
-
-def hyperbuild_TS_NN(hp):
-    hp_layers = hp.Int('layers', min_value=2, max_value=5, step=1)
-    hp_nodes = hp.Int('nodes', min_value=250, max_value=1000, step=250)
-    onum= 152
-
-    #x_shape = int_shape(152)
-    inputs = layers.Input(shape=(5,152))
-    #Flatten layer if multiple previous timesteps are included to predict future timestep
-    x = layers.Flatten()(inputs)
+def TS_NN_layers(hp_nodes, hp_layers, hp_zdim):
+    flatten_layer = layers.Flatten()
+    TS_layers = keras.Sequential(name="TS_layers")
+    #create multiple dense and dropout layers
     for i in range(hp_layers):
-        #x = layers.BatchNormalization()(x)
-        x = layers.Dense(hp_nodes*(hp_layers-i), activation=tf.nn.elu, name='dense_'+str(i))(x)
-        x = layers.Dropout(0.1)(x) #keras automatically sets training to True only for training phase
-
-    #x = layers.BatchNormalization()(x)
-    # x = layers.Dense(node_num, activation=act, name='dense_2')(x)
-    # x = layers.Dropout(dropout)(x)  # keras automatically sets training to True only for training phase
+        shared_layers = keras.Sequential([layers.Dense(hp_nodes * (hp_layers - i), activation=tf.nn.elu, name='dense_' + str(i)),
+                      layers.Dropout(0.1)])
+        TS_layers.add(shared_layers)
+    final_dense_layer = layers.Dense(hp_zdim)
+    return keras.Sequential([flatten_layer,TS_layers, final_dense_layer])
 
 
-    x = layers.Dense(onum)(x)
-    #ToDo: note sure if this is legit if we predict more than one timestep in the future, then we don't want to flatten
-    #   but decode each entry in the second dimension (BS, Timesteps, features)
-    #   or do flatten but break afterwards before decoding
-    delta_z = layers.Flatten()(x)
-    #delta_z, time_vel = tf.split(x, num_or_size_splits=[150, 2],axis=1)
+def create_hyp_ETSD(hp):
+    # Hyperparameters for tuning
+    hp_filters = hp.Int('filters', min_value=8, max_value=32, step=8)
+    hp_BB = hp.Int('BigBlocks', min_value=2, max_value=6, step=2)
+    hp_SB = hp.Int('SmallBlocks', min_value=2, max_value=5, step=1)
+    hp_zdim = hp.Int('z_num', min_value = 25, max_value=150, step=25)
+    hp_kernel = hp.Int('conv_k', min_value = 2, max_value = 4, step =1)
 
-    TS_NN = keras.Model(inputs,delta_z)
-    TS_NN.compile(loss=tf.losses.MeanSquaredError(),
-                optimizer=tf.optimizers.Adam(),
-                metrics=[tf.metrics.MeanAbsoluteError()])
-    return TS_NN
+    hp_layers = hp.Int('NN_layers', min_value=2, max_value=5, step=1)
+    hp_nodes = hp.Int('NN_nodes', min_value=250, max_value=1000, step=250)
 
+    #ENCODER
+    img_inputs = keras.Input(shape=(192, 256, 1))
+    encoder_model = Encoder(img_inputs, filters=hp_filters, z_num=hp_zdim, num_conv=hp_SB, conv_k=hp_kernel, repeat=hp_BB,
+                               act=tf.nn.leaky_relu)
+
+
+    z_input = keras.Input(shape=hp_zdim)
+
+    #TIME NN
+    Time_Network = Time_NN(z_input, onum=hp_zdim, num_layers=hp_layers, node_num=hp_nodes, dropout=0.1, act = tf.nn.elu, name='TS_NN')
+    z1 = Time_Network(encoder_model(img_inputs))
+    z2 = Time_Network(z1)
+    z3 = Time_Network(z2)
+    z4 = Time_Network(z3)
+    z5 = Time_Network(z4)
+
+    #DECODER
+    generator_model = Generator(z_input, filters=hp_filters, output_shape=get_conv_shape(img_inputs)[1:], num_conv=hp_SB,
+                                conv_k=hp_kernel, last_k=1, repeat=hp_BB,
+                                act=tf.nn.leaky_relu, name='decoder')
+
+    out1 = generator_model(z1)
+    out2 = generator_model(z2)
+    out3 = generator_model(z3)
+    out4 = generator_model(z4)
+    out5 = generator_model(z5)
+    out = [out1,out2,out3,out4,out5]
+
+    Enc_time_Dec = keras.Model(inputs = img_inputs, outputs=out, name="E_TS_D_HYPER")
+    print(Enc_time_Dec.summary())
+
+    Enc_time_Dec.compile(loss="mse", optimizer="adam", metrics=["mse"])
+
+    return Enc_time_Dec
 
 
 def Time_LSTM(x, onum, dropout=0.1, train = True, name='TS_RNN_LSTM'):

@@ -1,13 +1,12 @@
-import pandas as pd
 
 from trainer import *
-from model import hyperbuild_TS_NN
+from model import create_hyp_ETSD
 from utils.ops import *
 from utils.tools import *
 import sys
 import tensorflow as tf
 from datetime import date
-#import keras_tuner as kt
+import keras_tuner as kt
 
 
 def main(argv):
@@ -102,9 +101,10 @@ def main(argv):
       elif argv[1] == "total_com":
           checkpoint_filepath_total = str(argv[2]) + '/checkpoint'
           fig_name = 'tot' +str(date.today())
-          total_network = load_model('TS', checkpoint_filepath_total, date='2022-07-06')
-          input_data, label_data = create_input_label_data('data/NN_testset/', 192, 256, test=True)
-          test_scores = predict_and_evaluate(total_network, input_data, fig_name=fig_name, pipe=str(argv[1]), images=label_data)
+          total_network = load_model('TS', checkpoint_filepath_total, date='2022-07-26')
+          test_generator, _ = create_input_multi_output_gen('data/NN_testset/', 192, 256, batch_size=96, previous_ts=1,
+                                                            predicted_ts =5, test=True)
+          test_scores = predict_and_plot_total(total_network, test_generator, predicted_ts=5)
 
 
 
@@ -112,43 +112,38 @@ def main(argv):
          print('Choose "AE", "TS", "total_com" or "total_sep" as second argument :)')
 
    elif argv[0] == "hyptun":
-      #ToDo: Not working yet :-(
-      if argv[1] == "AE":
-         train_generator, val_generator = create_train_val_datagen(data_dir='data/NN_testset',
-                                                                   batch_size =36,
-                                                                   img_height=192,
-                                                                   img_width=256)
-
-         tuner = kt.Hyperband(create_AE,
-                           objective='val_accuracy',
-                           max_epochs=10,
+       if argv[1] == "total":
+           train_generator, val_generator = create_input_multi_output_gen('data/TS_seperately/', 192, 256,
+                                                                          previous_ts=1,
+                                                                          predicted_ts=5,
+                                                                          batch_size=18, val_split=0.9)
+           tuner = kt.Hyperband(create_hyp_ETSD,
+                           objective='val_loss',
+                           max_epochs=100,
                            factor=3,
                            directory='hypertest',
-                           project_name='AEtest')
-         tuner.search(train_generator, validation_data = val_generator,
-                          batch_size =36, epochs= 50)
+                           project_name='Hyper_Total')
 
-      elif argv[1] == 'TS':
-         data_dir = 'data/TS_seperately'
-         checkpoint_filepath_AE = str(argv[2]) + '/checkpoint/'
+           es_callback = EarlyStopping(patience=20)
 
-         _, encoder, decoder = load_model('AE', checkpoint_filepath_AE, date='2022-06-20')
-         window, train_ds, val_ds, test_ds, _, _ = create_TS_dataset(data_dir, encoder, batch_size=10,
-                                                                     train_split=0.9, val_split=0.1, test=False)
-         print(window)
-         tuner = kt.Hyperband(hyperbuild_TS_NN,
-                              objective='val_accuracy',
-                              max_epochs=10,
-                              factor=3,
-                              directory='hypertest',
-                              project_name='TStest')
-         tuner.search(train_ds, validation_data=val_ds, batch_size=10, epochs=50)
+           tuner.search(train_generator, validation_data = val_generator,
+                        epochs=250, callbacks=[es_callback])
+           best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
 
-         best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
+           print(f"""
+           The hyperparameter search is complete. The optimal parameters are {best_hps}.
+           """)
 
+           final_model = tuner.hypermodel.build(best_hps)
+           modcheck_callback = ModelCheckpoint(filepath=os.path.join('model/hypertuned_total/', 'model_' + str(date.today())),
+                                               save_weights_only=False, monitor='val_loss', mode='min',
+                                               save_best_only=True)
+
+           callbacks = [es_callback, modcheck_callback]
+           history = final_model.fit(train_generator, validation_data=val_generator, epochs=250, callbacks=callbacks)
 
    else:
-      print('Choose "train" or "eval" as first argument :)')
+      print('Choose "train", "eval" or "hyptun" as first argument :)')
 
 
 if __name__ == "__main__":
