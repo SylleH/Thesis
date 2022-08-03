@@ -6,12 +6,17 @@ Author: Sylle Hoogeveen
 
 import tensorflow as tf
 from tensorflow import keras
+from utils.ops import *
 import matplotlib
+from matplotlib import cm
+from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+
 import matplotlib.pyplot as plt
 from model import AE, Time_NN, Time_LSTM, Time_GRU
 import os
 from datetime import date
 import numpy as np
+import cv2
 
 
 def create_AE(img_inputs, filters, z_num, repeat, num_conv, conv_k, last_k, hp=None):
@@ -219,5 +224,89 @@ def load_model(network, checkpoint_filepath, date=str(date.today())):
     else:
         print('train model first!')
 
+class ErrorMetrics():
+
+    def __init__(self, images, timeseries, prediction):
+        self.images,_ = images[0]
+        self.image = self.images[0]
+        self.timeseries = timeseries
+        self.prediction = prediction[0]
+
+        gray = cm.get_cmap('gray')
+        self.colormap_lookup = gray(range(256))[:,0]
+
+    def boundary_check(self):
+        true_boundary, _ = find_boundary(self.image)
+        pred_boundary, _ = find_boundary(self.prediction)
+        #ToDo: find measure for boundary displacement? Array length contour is unequal
+        if not np.array_equal(true_boundary, pred_boundary):
+            boundary_error = 1
+        else:
+            boundary_error = 0
+        return boundary_error
+
+    def noslip(self):
+        # image = cv2.imread('../data/NN_testset/straight/straight_w11.0_v3.5_2000.png', cv2.IMREAD_GRAYSCALE)
+        # image = cv2.resize(src=image, dsize=(256,192))
+        side, _, _ = find_walls_inlet_outlet(self.prediction)
+
+        #ToDo: discuss if normalization is legal or cheating, otherwise cut off...?
+        prediction = (self.prediction - np.min(self.prediction)) / np.ptp(self.prediction)
+        prediction = prediction * 255
+        prediction = prediction.astype(np.uint8)
+
+        side_values = [prediction[coord] for coord in side]
+        side_values.pop(0)
+        side_values.pop(-1)
+        #convert from pixel color error to velocity error
+        side_values = [self.colormap_lookup[value[0]]*0.5 for value in side_values]
+
+        # print(side)
+        print(side_values)
+        slip_violation = sum(side_values)
+        print(slip_violation)
+        return slip_violation
+
+    def out_domain_flow(self):
+        #ToDo: is this a usefull parameter, background is white so that is 'max velocity'
+        _, mask = find_boundary(self.prediction)
+        mask = ~mask
+        masked = cv2.bitwise_and(self.prediction, self.prediction, mask=mask)
+        cv2.imshow('masked', masked)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        flow_out_domain = 0
+        return flow_out_domain
+
+    def conservation(self):
+        #ToDo: now we get pixel intensity difference, which corresponds to velocity
+        # we should have in = out flow for every timestep, as assumed newtonian fluid?
+        total_inlet = []
+        total_outlet = []
+        for image in self.timeseries:
+            inlet, outlet = find_walls_inlet_outlet(image)
+            inlet_values = [image[coord] for coord in inlet]
+            outlet_values = [image[coord] for coord in outlet]
+            total_inlet.append(sum(inlet_values))
+            total_outlet.append(sum(outlet_values))
+
+
+        net_flow = sum(total_inlet) - sum(total_outlet)
+        return net_flow
+
+    def comp_dom_errors(self):
+        _, mask = find_boundary(self.image)
+        masked_im = cv2.bitwise_and(self.image, self.image, mask=mask)
+        masked_pred = cv2.bitwise_and(self.prediction, self.prediction, mask=mask)
+
+        conv_im = convert_pixel_to_vel(masked_im, name='image')
+        conv_pred = convert_pixel_to_vel(masked_pred, name = 'prediction')
+
+        # Root MSE instead of MSE for interpretability
+        RMSE = np.sqrt(((conv_im - conv_pred)**2).mean(axis=None))
+        MAE = np.mean(np.abs(conv_im - conv_pred))
+        ME = np.amax(np.abs(conv_im - conv_pred))
+
+        return RMSE, MAE, ME
 
 

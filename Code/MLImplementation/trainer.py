@@ -54,13 +54,13 @@ def trainer_AE(config, strategy, total=False):
     #model_path = model_dir+"AE_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_f"+str(filters)+"_z"+str(z_num)
     model_path = model_dir + "AE_straight_OVERFIT_val0.01_E126_f16_z150_oneTS"
     if total:
-        model_path = model_dir+"total_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_5steps_testexcl_1135"
+        model_path = model_dir+"total_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_hypertuned"
     log_path = model_path + "/logs"
     checkpoint_filepath = model_path + "/checkpoint/"
     #fig_name = "loss_"+"AE_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_f"+str(filters)+"_z"+str(z_num)
     fig_name = "loss" + "AE_straight_OVERFIT_val0.01_E126_f16_z150_oneTS"
     if total:
-        fig_name = "loss_"+"total_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_5steps"
+        fig_name = "loss_"+"total_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_hypertuned"
 
     # define callbacks AE
     tb_callback = TensorBoard(log_dir=log_path)
@@ -88,7 +88,7 @@ def trainer_AE(config, strategy, total=False):
                                       batch_size, epochs, callbacks, fig_name)
         else:
             z, out, model = E_TS_D(img_inputs, filters, z_num, num_conv, conv_k, last_k, repeat,
-                                    onum=150, num_layers=num_layers, node_num=node_num, dropout=dropout)
+                                    onum=z_num, num_layers=num_layers, node_num=node_num, dropout=dropout)
             model.compile(loss="mse", optimizer="adam", metrics=["mse"])
             print(model.summary())
 

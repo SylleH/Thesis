@@ -6,12 +6,12 @@ preprocess:
   img_width: 256 #512 original = 515, make divisible by 2 multiple times
   channels: 1 #3=RGB, 1=GRAYSCALE
 AE:
-  filters: 16 #128 is not possible, allocating tensor error
-  z_num: 150
+  filters: 24 #128 is not possible, allocating tensor error
+  z_num: 75
   num_conv:  3 #previously 3, 4-5 in Deep Fluids
   conv_k: 3
   last_k: 1 #channels
-  repeat: 4 #0 = calculated = 6 (previously 4), more repeats is more downsampling, less trainable parameters
+  repeat: 2 #0 = calculated = 6 (previously 4), more repeats is more downsampling, less trainable parameters
   training:
     patience: 20
     batch_size: 18
@@ -22,7 +22,7 @@ TS:
       shift: 1
       label: 5
   architecture: NN #NN GRU LSTM
-  node_num: 512 #512 used in deep Fluids
+  node_num: 1000 #512 used in deep Fluids
   num_layers: 2 #2 in Deep Fluids
   training:
     dropout: 0.1

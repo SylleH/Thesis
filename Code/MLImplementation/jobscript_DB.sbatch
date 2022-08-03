@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-#SBATCH --account=education-eemcs-msc
-#SBATCH --job-name="TStrain"
+#SBATCH --account=research-eemcs-diam
+#SBATCH --job-name="hypertun"
 #SBATCH --partition=gpu
-#SBATCH --time=5:00:00
+#SBATCH --time=4:00:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=10G

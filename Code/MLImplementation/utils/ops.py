@@ -9,7 +9,9 @@ from PIL import Image
 import tensorflow as tf
 import numpy as np
 import yaml
-#import cv2
+import cv2
+import matplotlib
+from matplotlib import cm
 
 scenario = "straight" #bifurcation, bend90 or branch
 data_in_dir ="../DataGeneration/Data_generated/"+scenario+"/"
@@ -230,4 +232,77 @@ def crop(image):
     print(cropped_image.shape)
     return cropped_image
 
-#create_cropped_images()
+def find_boundary(image):
+    """
+    Function to find the boundary of the channel
+    :param image: on individual, grayscale, image of a velocity field
+    :return contour[0]: the boundary of the channel, represented as numpy array of (x,y) coordinates
+    """
+    # First convert image such that boundary can be found
+    image_copy = image.copy()
+    image_copy = (image_copy - np.min(image_copy))/np.ptp(image_copy)
+    image_copy = image_copy*255
+    image_copy = image_copy.astype(np.uint8)
+
+    # Create binary image and find boundary
+    ret, thresh = cv2.threshold(image_copy, 150, 255, cv2.THRESH_BINARY)
+    thresh = ~thresh
+
+    contours, hierarchy = cv2.findContours(image=thresh, mode=cv2.RETR_EXTERNAL,
+                                           method=cv2.CHAIN_APPROX_NONE)
+
+    # Next part is only necessary for boundary visualisation and visual check images
+    # cv2.imshow('image grayscale',image_copy)
+    # cv2.imshow('Binary image', thresh)
+    # image_color = cv2.cvtColor(thresh, cv2.COLOR_GRAY2RGB)
+    # image_color_copy = image_color.copy()
+    # cv2.drawContours(image=image_color_copy, contours=contours, contourIdx=-1, color=(0, 255, 0),
+    #                  thickness=1, lineType=cv2.LINE_AA)
+    # cv2.imshow("contours", image_color_copy)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+    return contours[0], thresh
+
+def find_walls_inlet_outlet(image):
+    boundary_coords, _ = find_boundary(image)
+    boundary_coords = boundary_coords[:, 0]
+    boundary_coords = [tuple(e) for e in boundary_coords]
+    # Change order from x-y coordinate to row - column format
+    boundary_coords = [(sub[1], sub[0]) for sub in boundary_coords]
+
+    # Use known inlet at row 4 and outlet at row 186 to differentiate between sides, inlet & outlet
+    #ToDo: check if this is true for every image, also for branch/bifurcation?
+    inlet_coords = []
+    outlet_coords = []
+    side_coords = []
+    for idx, coord in enumerate(boundary_coords):
+        if coord[0] == 4:
+            inlet_coords.append(boundary_coords[idx])
+        elif coord[0] == 186:
+            outlet_coords.append(boundary_coords[idx])
+        else:
+            side_coords.append(boundary_coords[idx])
+
+    # side_boundary = np.where(np.array(boundary_values) == 0)[0]
+    # inout_boundary = np.where(np.array(boundary_values) != 0)[0]
+    # side_coords = [boundary_coords[idx] for idx in side_boundary.tolist()]
+    # inout_coords = [boundary_coords[idx] for idx in inout_boundary.tolist()]
+
+    return side_coords, inlet_coords, outlet_coords
+
+def convert_pixel_to_vel(image, name):
+    # ToDo: discuss if normalization is legal or cheating, otherwise cut off...?
+    gray = cm.get_cmap('gray')
+    colormap_lookup = gray(range(256))[:, 0]
+
+    image = (image - np.min(image)) / np.ptp(image)
+    image = image * 255
+    image = image.astype(np.uint8)
+
+    converted_im = np.ones_like(image, dtype='float')
+    for i in range(image.shape[0]):
+        for j in range(image.shape[1]):
+            converted_im[i][j] = colormap_lookup[image[i][j]]*0.5
+
+    return converted_im

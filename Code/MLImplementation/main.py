@@ -7,6 +7,7 @@ import sys
 import tensorflow as tf
 from datetime import date
 import keras_tuner as kt
+import matplotlib.pyplot as plt
 
 
 def main(argv):
@@ -104,7 +105,18 @@ def main(argv):
           total_network = load_model('TS', checkpoint_filepath_total, date='2022-07-26')
           test_generator, _ = create_input_multi_output_gen('data/NN_testset/', 192, 256, batch_size=96, previous_ts=1,
                                                             predicted_ts =5, test=True)
-          test_scores = predict_and_plot_total(total_network, test_generator, predicted_ts=5)
+          predicted1, predicted2, predicted3, predicted4, predicted5 = total_network.predict(test_generator)
+
+          errors = ErrorMetrics(images=test_generator, timeseries=None, prediction=predicted1)
+          #boundary_error = errors.boundary_check()
+          #noslip_error = errors.noslip()
+          RMSE, MAE, ME = errors.comp_dom_errors()
+          print(f'RMSE:{RMSE}')
+          print(f'MAE:{MAE}')
+          print(f'Max Error:{ME}')
+          #out_domain_flow = errors.out_domain_flow()
+
+          #test_scores = predict_and_plot_total(total_network, test_generator, predicted_ts=5)
 
 
 
@@ -112,6 +124,13 @@ def main(argv):
          print('Choose "AE", "TS", "total_com" or "total_sep" as second argument :)')
 
    elif argv[0] == "hyptun":
+       # check for GPUs and set strategy according
+       print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+       if tf.config.list_physical_devices('GPU'):
+           strategy = tf.distribute.MirroredStrategy()
+       else:  # Use the Default Strategy = no distribution strategy (CPU training)
+           strategy = tf.distribute.get_strategy()
+
        if argv[1] == "total":
            train_generator, val_generator = create_input_multi_output_gen('data/TS_seperately/', 192, 256,
                                                                           previous_ts=1,
@@ -121,6 +140,7 @@ def main(argv):
                            objective='val_loss',
                            max_epochs=100,
                            factor=3,
+                            distribution_strategy= strategy,
                            directory='hypertest',
                            project_name='Hyper_Total')
 
@@ -140,8 +160,18 @@ def main(argv):
                                                save_best_only=True)
 
            callbacks = [es_callback, modcheck_callback]
-           history = final_model.fit(train_generator, validation_data=val_generator, epochs=250, callbacks=callbacks)
 
+           with strategy.scope():
+               history = final_model.fit(train_generator, validation_data=val_generator, epochs=250, callbacks=callbacks)
+
+           plt.figure()
+           plt.plot(history.history['loss'])
+           plt.plot(history.history['val_loss'])
+           plt.title('model loss')
+           plt.ylabel('loss')
+           plt.xlabel('epoch')
+           plt.legend(['train', 'test'], loc='upper left')
+           plt.savefig('hypermodel_trained_loss.png')
    else:
       print('Choose "train", "eval" or "hyptun" as first argument :)')
 
