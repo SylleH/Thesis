@@ -1,3 +1,4 @@
+import pandas as pd
 
 from trainer import *
 from model import create_hyp_ETSD
@@ -8,7 +9,8 @@ import tensorflow as tf
 from datetime import date
 import keras_tuner as kt
 import matplotlib.pyplot as plt
-
+import seaborn as sns
+matplotlib.use('agg')
 
 def main(argv):
    """
@@ -39,10 +41,15 @@ def main(argv):
          history, checkpoint_filepath = trainer_TS(config, strategy, encoder)
 
       elif argv[1] == "total":
-          history, checkpoint_filepath = trainer_AE(config, strategy, total=True)
+          data_dir = str(argv[2])
+          history, checkpoint_filepath = trainer_AE(config, strategy, data_dir, total=True)
 
+      elif argv[1] == "load":
+          data_dir = argv[2]
+          history, checkpoint_filepath = trainer_loaded_model(config, strategy, data_dir)
+          print(checkpoint_filepath)
       else:
-         print('Choose "AE" or "TS" as second argument :)')
+         print('Choose "AE", "TS", "total" or "load" as second argument :)')
 
    elif argv[0] == "eval":
       val_performance = {}
@@ -100,22 +107,82 @@ def main(argv):
          # predicted,_ = np.split(predicted, indices_or_sections=[150], axis=1)
 
       elif argv[1] == "total_com":
+          scenario = 'straight'
           checkpoint_filepath_total = str(argv[2]) + '/checkpoint'
+          model_name = str(argv[3])
           fig_name = 'tot' +str(date.today())
-          total_network = load_model('TS', checkpoint_filepath_total, date='2022-07-26')
+          total_network = load_model('TS', checkpoint_filepath_total, date=model_name)
+
           test_generator, _ = create_input_multi_output_gen('data/NN_testset/', 192, 256, batch_size=96, previous_ts=1,
-                                                            predicted_ts =5, test=True)
-          predicted1, predicted2, predicted3, predicted4, predicted5 = total_network.predict(test_generator)
-
-          errors = ErrorMetrics(images=test_generator, timeseries=None, prediction=predicted1)
-          #boundary_error = errors.boundary_check()
-          #noslip_error = errors.noslip()
-          RMSE, MAE, ME = errors.comp_dom_errors()
-          print(f'RMSE:{RMSE}')
-          print(f'MAE:{MAE}')
-          print(f'Max Error:{ME}')
-          #out_domain_flow = errors.out_domain_flow()
-
+                                                             predicted_ts =5, test=True)
+          # images, labels = test_generator[0]
+          # label1, label2, label3, label4, label5 = labels\
+          #     #,label6, label7, label8, label9, label10= labels
+          # predicted1, predicted2, predicted3, predicted4, predicted5 = total_network.predict(test_generator) \
+          #     #, predicted6, predicted7, predicted8, predicted9, predicted10 = total_network.predict(test_generator)
+          #
+          # # errors_0 = ErrorMetrics(images=test_generator, timeseries=None, prediction=None)
+          # errors_1 = ErrorMetrics(images=label1, prediction=predicted1, scenario=scenario)
+          # errors_2 = ErrorMetrics(images=label2, prediction=predicted2, scenario=scenario)
+          # errors_3 = ErrorMetrics(images=label3, prediction=predicted3, scenario=scenario)
+          # errors_4 = ErrorMetrics(images=label4, prediction=predicted4, scenario=scenario)
+          # errors_5 = ErrorMetrics(images=label5, prediction=predicted5, scenario=scenario)
+          # # errors_6 = ErrorMetrics(images=label6, prediction=predicted6, scenario=scenario)
+          # # errors_7 = ErrorMetrics(images=label7, prediction=predicted7, scenario=scenario)
+          # # errors_8 = ErrorMetrics(images=label8, prediction=predicted8, scenario=scenario)
+          # # errors_9 = ErrorMetrics(images=label9, prediction=predicted9, scenario=scenario)
+          # # errors_10 = ErrorMetrics(images=label10, prediction=predicted10, scenario=scenario)
+          # error_list = [errors_1, errors_2, errors_3, errors_4, errors_5] \
+          #               #,errors_6, errors_7, errors_8, errors_9, errors_10]
+          #
+          # df = pd.DataFrame(index=['boundary MAE rel','domain MAE rel','boundary ME rel', 'domain ME rel','domain RRMSE','boundary MAE abs','domain MAE abs',
+          #                           'boundary ME abs','domain ME abs','domain RMSE',
+          #                            'net flow error'],
+          #                   columns=['pred1', 'pred2', 'pred3', 'pred4', 'pred5'])#, 'pred6', 'pred7', 'pred8', 'pred9', 'pred10'])
+          #
+          #
+          # for idx, error in enumerate(error_list):
+          #     column_name = 'pred' + str(idx+1)
+          #
+          #     avg_slip_mean_rel, avg_slip_mean_abs, max_slip_max_rel, max_slip_max_abs, avg_RMSE, avg_RRMSE, \
+          #     avg_MAE_rel, avg_MAE_abs, max_ME_rel, max_ME_abs, df_max_abs, df_max_rel = error.evaluate()
+          #     df.at['boundary MAE rel', column_name] = avg_slip_mean_rel
+          #     df.at['boundary MAE abs', column_name] = avg_slip_mean_abs
+          #     df.at['boundary ME rel', column_name] = max_slip_max_rel
+          #     df.at['boundary ME abs', column_name] = max_slip_max_abs
+          #     df.at['domain RMSE', column_name] = avg_RMSE
+          #     df.at['domain RRMSE', column_name] = avg_RRMSE
+          #     df.at['domain MAE rel', column_name] = avg_MAE_rel
+          #     df.at['domain MAE abs', column_name] = avg_MAE_abs
+          #     df.at['domain ME rel', column_name] = max_ME_rel
+          #     df.at['domain ME abs', column_name] = max_ME_abs
+          #
+          #     net_flow_im = error.conservation(pred=False, ts=1)
+          #     net_flow_pred = error.conservation(pred=True, ts=1)
+          #     print(f"netflow image: {net_flow_im}")
+          #     print(f"netflow prediction: {net_flow_pred}")
+          #     net_flow_error = np.abs(net_flow_im - net_flow_pred)
+          #     print(f"netflow error: {net_flow_error}")
+          #     df.at['net flow error', column_name] = net_flow_error
+          #
+          #     # #ToDo: seaborn scatter plots (rel and abs) with name of prediction
+          #     # df_max_abs['y_loc'] = -1*df_max_abs['y_loc']
+          #     # abs = sns.relplot(data=df_max_abs, x='x_loc', y='y_loc', hue='group', size='count')
+          #     # abs.set(ylim=(-192,0), xlim=(0,256))
+          #     # abs.fig.suptitle(column_name +' max absolute error')
+          #     # abs.savefig(column_name +'_max absolute error.png')
+          #     #
+          #     # df_max_rel['y_loc'] = -1 * df_max_rel['y_loc']
+          #     # rel = sns.relplot(data=df_max_rel, x='x_loc', y='y_loc', hue='group', size='count')
+          #     # rel.set(ylim=(-192, 0), xlim=(0, 256))
+          #     # rel.fig.suptitle(column_name + ' max relative error')
+          #     # rel.savefig(column_name + '_max relative error.png')
+          #
+          #     print(f"{column_name} done")
+          #
+          # print(df)
+          # df.to_csv('results_csv/'+str(argv[2])+'_oldmodel_straight_GRU.csv')
+          predict_one_beat(total_network, test_generator, t=1, scenario=scenario, directory ="oldmodel_straight_NN" )
           #test_scores = predict_and_plot_total(total_network, test_generator, predicted_ts=5)
 
 

@@ -1,0 +1,110 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 -0.08 0);
+
+boundaryField
+{
+    front
+    {
+        type            empty;
+    }
+
+    back
+    {
+        type            empty;
+    }
+
+    bottom
+    {
+        type            zeroGradient;
+    }
+
+    left
+    {
+        type            noSlip;
+    }
+    
+    top
+    {
+	type		codedFixedValue;
+	value 		uniform (0 -0.08 0);
+
+	name		ParabolicTimeDependentU_max;
+
+	code
+	#{
+		const vectorField& Cf = patch().Cf();
+		vectorField& field = *this;
+
+		const scalar r = 11.0*1e-3;
+		const scalar Umax = 0.216;
+		const scalar Umin = 0.006;
+		const scalar Utwo = 0.12;
+		const scalar tb = 0.23;
+		const scalar td = 0.29;
+		const scalar tp = 0.16;
+
+		scalar 	Uvar = 0.08;
+		scalar 	t = this->db().time().value();
+		scalar	tau = fmod(t,1);
+		
+		if (tau > 0 && tau <= tb)
+		{
+			Uvar = 0.08+Umax*(1-(pow(tau-(tb/2),2)/((tb/2)*(tb/2))));
+		}
+		if (td > 0)
+		{
+			if (tau > tb && tau <= tb+td)
+			{
+				Uvar = 0.08+Umin*(-1+(pow(tau-(tb+td/2),2)/((td/2)*(td/2))));
+			}
+		}
+		if (tp > 0)
+		{		
+			if (tau > td+td && tau <= tb+td+tp)
+			{
+				Uvar = 0.08+Utwo*(1-(pow(tau-(tb+td+tp/2),2)/((tp/2)*(tp/2))));
+			}
+		}
+		if (tau > tb+td+tp && tau <= 1)
+		{
+			Uvar = 0.08;
+		}
+		
+		forAll(Cf, faceI)
+		{
+			const scalar x = Cf[faceI][0];
+			const scalar y = Cf[faceI][1];
+			field[faceI] = vector(0, Uvar*(-1+((x*x)/(r*r))), 0);
+		}
+	#};
+    }
+    
+    right
+    {
+        type            noSlip;
+    }
+
+    inner_arc
+    {
+        type            noSlip;
+    }
+
+}
+
+// ************************************************************************* //

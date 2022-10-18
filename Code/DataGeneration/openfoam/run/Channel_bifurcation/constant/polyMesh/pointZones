@@ -11,7 +11,6 @@ FoamFile
     class       regIOobject;
     location    "constant/polyMesh";
     object      pointZones;
-    version	9;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

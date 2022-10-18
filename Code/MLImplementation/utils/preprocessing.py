@@ -9,6 +9,7 @@ from utils.ops import *
 import tensorflow as tf
 import matplotlib.pyplot as plt
 import pandas as pd
+import random
 import glob
 #import hypertools as hyp
 
@@ -50,7 +51,7 @@ def create_test_datagen(data_test_dir, batch_size, img_height, img_width):
 
 
 def create_input_multi_output_gen(data_dir, img_height, img_width, batch_size,
-                                  previous_ts, predicted_ts, val_split=0.1, test=False):
+                                  previous_ts, predicted_ts, val_split=0.9, test=False):
     """
     Function to create train and validation image generator for multi input, multi output model
         !!! Note inputs overlap and outputs overlap, but inputs and outputs never overlap !!!
@@ -70,21 +71,38 @@ def create_input_multi_output_gen(data_dir, img_height, img_width, batch_size,
     :return val_generator: custom generator with validation data, multi input, multi output allowed
     """
 
-    input = [[] for i in range(previous_ts)]
+    input = [[] for i in range(previous_ts+predicted_ts+1)]
     output = [[] for i in range(predicted_ts)]
+
 
     for dir in os.listdir(data_dir):
         if dir == ".DS_Store":
             continue
         if test:
-            path = data_dir+"/straight/"
-            files = os.listdir(path)
+            # path = data_dir+dir+"/"
+            # files = os.listdir(path)
             shuffle = False
+            augmentation = False
         else:
-            path = data_dir+dir+"/straight/"
-            files = os.listdir(path)
             shuffle = True
+            augmentation = False
+        case = dir.split('_')[0]
+        path = data_dir + dir + "/" + case + "/"
+        files = os.listdir(path)
         if '.DS_Store' in files: files.remove('.DS_Store')
+        vel_prof = os.path.splitext(files[0])[0].split('_')[-1]
+        print(vel_prof)
+        if vel_prof == 'vp6' or vel_prof == 'vp5' or vel_prof == 'vp7':
+            idx = dir.split('_')[-1]
+            df_U = pd.read_csv(f"inlet_Us/inlet_U_{vel_prof}_{idx}.csv")
+
+        else:
+            df_U = pd.read_csv(f"inlet_Us/inlet_U_{vel_prof}.csv")
+        #df_U = df_U.drop(labels=['time', 'Udif6', 'Udif7', 'Udif8', 'Udif9', 'Udif10'], axis=1)
+        df_U = df_U.drop(labels=['time'], axis = 1)
+        list_to_drop = [100-n for n in range(predicted_ts)]
+        df_U = df_U.drop(labels=list_to_drop, axis =0)
+        #print(df_U)
         files_sorted = sorted(files)
         label_files= files_sorted.copy()
 
@@ -100,34 +118,75 @@ def create_input_multi_output_gen(data_dir, img_height, img_width, batch_size,
             for k in range(previous_ts):
                 input[k].append(path+files_sorted[i+k])
 
-            for k in range(predicted_ts):
-                output[k].append(path+label_files[i+k])
+            for k in range(predicted_ts+1):
+                if k in range(predicted_ts):
+                    output[k].append(path+label_files[i+k])
+                input[k+1].append(df_U.iloc[i,k])
 
     df_in = pd.concat([pd.Series(x) for x in input], axis=1)
     df_out = pd.concat([pd.Series(x) for x in output], axis=1)
     df_all = pd.concat([df_in, df_out], axis=1)
 
-    input_names = [f"in{x}" for x in range(previous_ts)]
+    input_names = [f"in{x}" for x in range(previous_ts)]+[f"vel{x}" for x in range(predicted_ts+1)]
+    no_vel_names = [f"in{x}" for x in range(previous_ts)]
     output_names = [f"out{x}" for x in range(predicted_ts)]
-
     df_all.columns = input_names+output_names
 
-    input_dict = {input_names[i]: input_names[i] for i in range(len(input_names))}
-    output_dict = {output_names[i] : output_names[i] for i in range(len(output_names))}
+    df_all['low_vel'] = 0
+    count = 0
+    # for idx, row in df_all.iterrows():
+    #     if row['vel0'] == 0.08 and (row['vel1'] == 0.0 and row['vel2'] == 0.0):
+    #         df_all.loc[idx, 'low_vel'] = 1
+    #         row = pd.DataFrame(row).transpose()
+    #         if count == 0:
+    #             df_low_vel = row
+    #         df_low_vel = pd.concat([df_low_vel, row], axis = 0, ignore_index=True)
+    #         count += 1
+    # df_low_vel['low_vel'] = 1
+    # df_all_low = pd.concat([df_all, df_low_vel], axis =0, ignore_index =True)
+    df_all['flip'] = 0
+
+    # df_copy = df_all_low.copy()
+    # df_all_low['flip'] = 0
+    # df_copy['flip'] = 1
+    # df_big = pd.concat([df_all_low, df_copy], axis = 0, ignore_index = True)
+    #df_all_low['flip'] = 0
+    df_big = df_all.copy()
+
+    random_list = []
+    for i in range(len(df_big)):
+        random_list.append(random.uniform(0,0.02))
+
+    #random_flip_list = random.choices(range(0,2), k =len(df_big))
+    df_big['shift'] = random_list
+    #df_big['flip'] = random_flip_list
+
+    input_dict = {input_names[i]: no_vel_names[i] for i in range(len(no_vel_names))}
+    output_dict = {output_names[i]: output_names[i] for i in range(len(output_names))}
 
     if not test:
-        df_train = df_all.sample(frac=val_split)
-        df_val = df_all.drop(df_train.index)
+        print(count)
+        df_train = df_big.sample(frac=val_split)
+        df_val = df_big.drop(df_train.index)
+        df_all.to_csv("data_all.csv", index=False)
+        df_train.to_csv("data_train.csv", index=False)
+        df_val.to_csv("data_validation.csv", index=False)
 
-        val_generator = CustomDataGen(df_val, X_col=input_dict,
-                                      y_col=output_dict, batch_size=batch_size, input_size=(img_height, img_width), shuffle = shuffle)
+        val_generator = CustomDataGen(df_val, X_col=input_dict, y_col=output_dict, batch_size=batch_size,
+                                      input_size=(img_height, img_width), augmentation = augmentation, shuffle = shuffle)
     else:
+        random_list = []
+        for i in range(len(df_all)):
+            random_list.append(random.uniform(0, 0.1))
+        random_flip_list = random.choices(range(0, 2), k=len(df_all))
+        df_all['shift'] = random_list
+        #df_all['flip'] = random_flip_list
         df_train = df_all
+        df_train.to_csv("data_test.csv", index=False)
         val_generator = None
 
-    train_generator = CustomDataGen(df_train, X_col=input_dict,
-                                    y_col=output_dict, batch_size=batch_size, input_size=(img_height,img_width), shuffle = shuffle)
-
+    train_generator = CustomDataGen(df_train, X_col=input_dict, y_col=output_dict, batch_size=batch_size,
+                                    input_size=(img_height,img_width), augmentation = augmentation, shuffle = shuffle)
 
     return train_generator, val_generator
 

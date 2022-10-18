@@ -6,10 +6,10 @@
      \\/     M anipulation  |
 \*---------------------------------------------------------------------------*/
 Build  : 9-b456138dc4bc
-Exec   : gmshToFoam channel_bend_w12.0.msh2
-Date   : Jul 27 2022
-Time   : 14:24:43
-Host   : "c75b9f1e877d"
+Exec   : gmshToFoam channel_bend_w18.0.msh2
+Date   : Aug 16 2022
+Time   : 01:54:45
+Host   : "a264291f9a65"
 PID    : 127
 I/O    : uncollated
 Case   : //data
@@ -34,11 +34,11 @@ Physical names:7
     Surface 6	top
 
 Starting to read points at line 15
-Vertices to be read:1044
-Vertices read:1044
+Vertices to be read:1782
+Vertices read:1782
 
-Starting to read cells at line 1062
-Cells to be read:2926
+Starting to read cells at line 1800
+Cells to be read:5090
 
 Mapping region 2 to Foam patch 0
 Mapping region 1 to Foam patch 1
@@ -48,17 +48,17 @@ Mapping region 4 to Foam patch 4
 Mapping region 5 to Foam patch 5
 Mapping region 2 to Foam cellZone 0
 Cells:
-    total:942
+    total:1655
     hex  :0
-    prism:942
+    prism:1655
     pyr  :0
     tet  :0
 
 CellZones:
 Zone	Size
-    0	942
+    0	1655
 
-Skipping tag  at line 3991
+Skipping tag  at line 6893
 Patch 0 gets name back
 Patch 1 gets name front
 Patch 2 gets name top
@@ -69,7 +69,7 @@ Patch 5 gets name inner_arc
 --> FOAM Warning : 
     From function Foam::polyMesh::polyMesh(const Foam::IOobject&, Foam::pointField&&, const cellShapeList&, const faceListList&, const wordList&, const wordList&, const Foam::word&, const Foam::word&, const wordList&, bool)
     in file meshes/polyMesh/polyMeshFromShapeMesh.C at line 595
-    Found 1984 undefined faces in mesh; adding to default patch.
+    Found 3435 undefined faces in mesh; adding to default patch.
 Finding faces of patch 0
 Finding faces of patch 1
 Finding faces of patch 2

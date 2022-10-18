@@ -4,6 +4,7 @@
 Output OpenFoam to input ML network -->  convert VTK files to PNG images
 Author: Sylle Hoogeveen
 """
+import random
 
 import numpy as np
 import vtk
@@ -114,7 +115,7 @@ def load_GMSH_data(filepath):
     return x, y, triangle_id
 
 
-def plot_and_save(scenario, filename, x,y, U, triangle_id):
+def plot_and_save(scenario, width,vis,out, filename, x,y, U, triangle_id):
     """
     Function to create and save png image from VTK and GMSH data
     :param scenario: either straight, bifurcation, bend or branch
@@ -146,11 +147,14 @@ def plot_and_save(scenario, filename, x,y, U, triangle_id):
 
     #plot and save figure
     plt.figure()
-    plt.pcolor(xg,yg, U_int, cmap=cm.gray, vmin=0, vmax=0.5)
+    plt.pcolor(xg,yg, U_int, cmap=cm.gray, vmin=0, vmax=0.7)
     plt.axis('off')
-    plt.xlim(left=-0.02, right =0.02)
+    #plt.xlim(left=-0.02, right =0.02)
     #plt.savefig('Data_generated/test_case/' + os.path.splitext(filename)[0] + '.png', bbox_inches='tight')
-    plt.savefig('Data_generated/Grayscale/'+scenario+'/'+os.path.splitext(filename)[0]+'.png', bbox_inches='tight')
+    results_dir = 'Data_generated/Grayscale/'+'/TestSets/'+scenario+'_w'+width+'_o'+out+'_v'+vis+'_real_3/'+scenario+'/'
+    if not os.path.isdir(results_dir):
+        os.makedirs(results_dir)
+    plt.savefig(results_dir+os.path.splitext(filename)[0]+'_vp7.png', bbox_inches='tight')
     #plt.colorbar()
     #plt.show()
     plt.close()
@@ -158,30 +162,44 @@ def plot_and_save(scenario, filename, x,y, U, triangle_id):
 
 def main(argv):
     scenario = argv[0]
-    width = argv[1]
+    widths = [10.0]
+    viscosity = [4.0] #3.5, 4.0, 4.5,
+    outlet = [3.25] #,4.25, 5.25, 6.25
 
-    mesh_path = 'Meshes/channel_'+scenario+'_w'+width+'.msh2'
+    for width in widths:
+        width = str(width)
+        for out in outlet:
+            out = str(out)
+            count = 0
+            for vis in viscosity:
+                vis = str(vis)
+                try:
+                    #for filename in os.listdir('VTK_files/'+scenario+'/w'+width+'/o'+out+'/v'+vis):
+                    for filename in os.listdir('VTK_files/'+scenario+'/realbeat_aorta'):
+                        if filename == '.DS_Store': #or os.path.splitext(filename)[0]+'.png' \
+                                #in os.listdir('Data_generated/Grayscale/'+'/'+scenario+'/'+scenario+'_w'+width+'_o'+out+'_v'+vis+'/'+scenario):
+                            continue
+                        #VTK_path = 'VTK_files/'+scenario+"/w"+width+'/o'+out+'/v'+vis+'/'+filename
+                        VTK_path = 'VTK_files/'+scenario+'/realbeat_aorta/'+filename
+                        x_VTK, y_VTK, U = load_VTK_data(VTK_path)
 
-    x, y, triangle_id = load_GMSH_data(mesh_path)
-    count = 0
-    for filename in os.listdir('VTK_files/'+scenario+'/w'+width):
-        if filename == '.DS_Store' or os.path.splitext(filename)[0]+'.png' in os.listdir('Data_generated/Grayscale/'+scenario):
-            continue
-        VTK_path = 'VTK_files/'+scenario+"/w"+width+'/'+filename
-        x_VTK, y_VTK, U = load_VTK_data(VTK_path)
+                        # check if mesh and VTK file are matched correctly, only need to check once
+                        if count == 0:
+                            mesh_path = 'Meshes/channel_' + scenario + '_w' + width + '_o' + out + '.msh2'
+                            # mesh_path = 'openfoam/run/Channel_'+scenario+'/channel_' + scenario + '_w' + width + '_o' + out + '.msh2'
+                            x, y, triangle_id = load_GMSH_data(mesh_path)
+                            if np.allclose(x_VTK, x, atol=1e-05) == False:
+                                sys.exit('x coordinates mesh and VTK data are not equal')
+                            if np.allclose(y_VTK, y, atol=1e-05) == False:
+                                sys.exit('y coordinates mesh and VTK data are not equal')
+                            else:
+                                print('Mesh and VTK data coordinates match, yeah')
 
-        # check if mesh and VTK file are matched correctly, only need to check once
-        if count == 0:
-            if np.allclose(x_VTK, x, atol=1e-05) == False:
-                sys.exit('x coordinates mesh and VTK data are not equal')
-            if np.allclose(y_VTK, y, atol=1e05) == False:
-                sys.exit('y coordinates mesh and VTK data are not equal')
-            else:
-                print('Mesh and VTK data coordinates match, yeah')
-
-        plot_and_save(scenario, filename, x, y, U, triangle_id)
-        count+=1
-    print('All VTK files for width ' + width + ' are converted :)')
+                        plot_and_save(scenario, width,vis,out, filename, x, y, U, triangle_id)
+                        count+=1
+                    print('All VTK files for width ' + width + ', outlet '+ out+' and viscosity '+vis+' are converted :)')
+                except FileNotFoundError:
+                    continue
 
 
 if __name__ == "__main__":

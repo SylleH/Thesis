@@ -64,10 +64,10 @@ def build_channel_branch(width, width2, Lc):
 
     w = width * mm
     r = 2*w
-    w2 = w
-    h1 = 100*mm
-    h2 = 80*mm
-    y = math.sqrt(math.pow(w,2) +2*w*r)
+    w2 = width2*mm
+    h1 = 80*mm
+    h2 = 60*mm #determines branch height
+    y = math.sqrt(math.pow(w2,2) +2*w2*r)
 
     factory.addPoint(-w, 0, 0, Lc, 1)
     factory.addPoint(-w, h1, 0, Lc, 2)
@@ -110,7 +110,7 @@ def build_channel_branch(width, width2, Lc):
     gmsh.model.setPhysicalName(2, 4, "right_branch")
     gmsh.model.setPhysicalName(2, 5, "left")
     gmsh.model.setPhysicalName(2, 6, "bottom")
-    gmsh.model.setPhysicalName(2, 6, "top")
+    gmsh.model.setPhysicalName(2, 7, "top")
     gmsh.model.setPhysicalName(3, 2, "the volume")
 
     gmsh.model.mesh.generate(3)
@@ -181,11 +181,11 @@ def build_channel_bifurcation(rad, rad2, Lc):
     e1 = 12*mm #1.25*mm e1 > e3
     e2 = e1 + width2
     e3 = rad*mm
-    h1 = 45*mm
-    h2 = 55*mm
-    h3 = 25*mm
-    r1 = 10*mm
-    r2 = 5*mm
+    h1 = 30*mm#45*mm
+    h2 = 40*mm#55*mm
+    h3 = 20*mm#25*mm
+    r1 = 20*mm#10*mm
+    r2 = 3*mm#5*mm
 
     def hypot(a, b):
         return math.sqrt(a * a + b * b)
@@ -258,7 +258,7 @@ def build_channel_bifurcation(rad, rad2, Lc):
 
 
     gmsh.model.mesh.generate(3)
-    name='channel_bifurcation_w'+str(rad)+'_o'+str(width2)
+    name='channel_bifurcation_w'+str(rad)+'_o'+str(rad2)
     gmsh.write('Meshes/'+name+".msh2")
 
 
@@ -268,18 +268,19 @@ def main(argv):
     scenario = argv[0]
     rad = float(argv[1])  #width*2 is actual channel width, due to symmetrical building
     if len(argv)>2:
-        width_2 = argv[2]            #ToDo: make optional system argument (width branch or bifurcation)
+        width_2 = argv[2] #ToDo: make optional system argument (width branch or bifurcation)
+        rad2 = float(width_2)
 
-    Lc = 0.0025             #this determines the coarseness of the mesh, 0.002 for straight channel, 0.0025 bend
+    Lc = 0.002             #this determines the coarseness of the mesh, 0.002 for straight channel, 0.0025 bend, 0.0015 bifurcation, 0.002 branch
 
     if scenario == 'straight':
         build_channel_straight(rad, Lc)
     if scenario == 'bend':
         build_channel_bend(rad, Lc)
     if scenario == 'branch':
-        build_channel_branch(rad, width_2, Lc)
+        build_channel_branch(rad, rad2, Lc)
     if scenario == 'bifurcation':
-        build_channel_bifurcation(rad, width_2, Lc)
+        build_channel_bifurcation(rad, rad2, Lc)
 
     # Launch the GUI to see the results:
     if '-nopopup' not in argv:
@@ -287,7 +288,7 @@ def main(argv):
 
     gmsh.finalize
 
-# argv = ['straight', '15.0']
+# argv = ['branch', '10.0', '6.3']
 # main(argv)
 
 if __name__ == "__main__":

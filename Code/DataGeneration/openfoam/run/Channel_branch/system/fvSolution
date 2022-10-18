@@ -14,6 +14,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+
 solvers
 {
     p
@@ -37,23 +38,71 @@ solvers
         tolerance       1e-05;
         relTol          0;
     }
+
+    UFinal
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-05;
+        relTol          0;
+    }
+
+
+    omega
+    {
+	solver		PCG;
+	preconditioner	DIC;
+	tolerance	1e-08;
+	relTol		0;
+	minIter		3;
+    }
+
+    omegaFinal
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-05;
+        relTol          0;
+    }
+
+    k
+    {
+	solver		PCG;
+	preconditioner	DIC;
+	tolerance	1e-08;
+	relTol		0;
+	minIter		3;
+    }
+
+    kFinal
+    {
+        solver          smoothSolver;
+        smoother        symGaussSeidel;
+        tolerance       1e-05;
+        relTol          0;
+    }
+
 }
 
-PISO
+PIMPLE
 {
-    nCorrectors     2;
-    nNonOrthogonalCorrectors 0;
-    pRefCell        0;
-    pRefValue       0;
-}
+   nOuterCorrectors 1;
+   nCorrectors     3;
+   nNonOrthogonalCorrectors 1;
+
 
 
 relaxationFactors
 {
+    fields
+    {
+	p		0.3;
+    }
     equations
     {
-        U               0.9; // 0.9 is more stable but 0.95 more convergent
-        ".*"            0.9; // 0.9 is more stable but 0.95 more convergent
+	U		0.7;
+	k		0.7;
+	omega		0.7;
     }
 }
 

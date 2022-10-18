@@ -10,7 +10,6 @@ FoamFile
     format      ascii;
     class       volScalarField;
     object      p;
-    version	9;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -53,18 +52,19 @@ boundaryField
 
     top
     {
-        type		zeroGradient;
+	type		zeroGradient;
     }
 
     right
     {
         type            zeroGradient;
     }
-    
+
     inner_arc
     {
-        type            zeroGradient;
+	type		zeroGradient;
     }
+    
 }
 
 // ************************************************************************* //

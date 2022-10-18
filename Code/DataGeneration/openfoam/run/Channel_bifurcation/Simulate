@@ -1,0 +1,21 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # Run from this directory
+
+#Source OpenFoam BASH profile
+. /opt/openfoam9/etc/bashrc
+
+#Export fix for OpenMPI in container
+export OMPI_MCA_btl_vader_single_copy_mechanism=none
+
+#change viscocity in transportProperties
+cd constant
+search="nu (.*?);"
+replace="nu              [ 0 2 -1 0 0 0 0 ] ${1}e-06;"
+perl -0 -pi -e "s#$search#$replace#s" "transportProperties"
+cd ../
+
+#run simulation
+pimpleFoam >log.pimpleFoam
+
+#convert foam output to VTK files
+foamToVTK -allPatches -time '2:' >log.FoamVTK

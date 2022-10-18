@@ -51,7 +51,7 @@ boundaryField
 		const vectorField& Cf = patch().Cf();
 		vectorField& field = *this;
 
-		const scalar r = 12.0*1e-3;
+		const scalar r = 18.0*1e-3;
 		const scalar Umax = 0.4;
 		const scalar Umin = 0.02;
 

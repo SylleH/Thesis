@@ -1,17 +1,18 @@
 data:
-  scenario: straight #straight, bifurcation, bend90 or branch
+  scenario: bifurcation #straight, bifurcation, bend or branch
   model_dir: model/
+  model: model/total_bifurcation_BS18_E250_LSTM
 preprocess:
   img_height: 192 #384 original = 389, make divisible by 2 multiple times
   img_width: 256 #512 original = 515, make divisible by 2 multiple times
   channels: 1 #3=RGB, 1=GRAYSCALE
 AE:
-  filters: 24 #128 is not possible, allocating tensor error
-  z_num: 75
+  filters: 16 #hypertuned = 24, 128 is not possible, allocating tensor error
+  z_num: 150   #hypertuned = 75
   num_conv:  3 #previously 3, 4-5 in Deep Fluids
   conv_k: 3
   last_k: 1 #channels
-  repeat: 2 #0 = calculated = 6 (previously 4), more repeats is more downsampling, less trainable parameters
+  repeat: 4 #hypertuned = 2, 0 = calculated = 6 (previously 4), more repeats is more downsampling, less trainable parameters
   training:
     patience: 20
     batch_size: 18
@@ -21,8 +22,8 @@ TS:
       input: 1
       shift: 1
       label: 5
-  architecture: NN #NN GRU LSTM
-  node_num: 1000 #512 used in deep Fluids
+  architecture: LSTM #NN GRU LSTM
+  node_num: 512 #hypertuned = 1000, 512 used in deep Fluids
   num_layers: 2 #2 in Deep Fluids
   training:
     dropout: 0.1

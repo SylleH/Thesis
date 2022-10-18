@@ -5,7 +5,7 @@ Author: Sylle Hoogeveen
 """
 
 
-
+import tensorflow as tf
 from tensorflow import keras
 from keras import layers
 from utils.ops import *
@@ -45,7 +45,7 @@ def Encoder(input, filters, z_num,  num_conv, conv_k, repeat, act=tf.nn.leaky_re
     x = layers.Conv2D(ch, kernel_size=conv_k,strides=1,activation=act, padding="same",name=str(layer_num)+'_conv')(input)
     # make copy for skip connection
     x0 = x
-
+    #x = layers.BatchNormalization()(x)
     layer_num+=1
 
     #BIG BLOCK
@@ -123,7 +123,9 @@ def Generator(z, filters, output_shape, num_conv, conv_k, last_k, repeat, act=tf
         if idx < repeat_num - 1:
             #residual skip connection = element-wise sum of feature maps of input & output each convolutional layer block
             x = layers.Add(name=str(idx)+"_add")([x, x0])
-            x = layers.UpSampling2D(size=(2,2), data_format='channels_last', interpolation='bilinear', name=str(idx)+"_upsample")(x)
+
+            x = layers.UpSampling2D(size=(2, 2), data_format='channels_last', interpolation='bilinear',
+                                    name=str(idx) + "_upsample")(x)
             x0 = x
 
         else:
@@ -196,8 +198,10 @@ def Time_NN(input, onum, num_layers, node_num, dropout, act = tf.nn.elu, name='T
 
     return TS_NN #,delta_z
 
-def E_TS_D(input, filters, z_num, num_conv, conv_k, last_k, repeat,
-           onum, num_layers, node_num, dropout, previous_ts=1, predicted_ts = 5, name='E_TS_D'):
+def E_TS_D(inputs, filters, z_num, num_conv, conv_k, last_k, repeat,
+           onum, num_layers, node_num, dropout, TS, previous_ts=1, predicted_ts = 5, name='E_TS_D'):
+    input = inputs[0] #image input
+    vel_inputs = inputs[1:]
 
 
     #ToDo: make model compatible with multi inputs
@@ -206,19 +210,36 @@ def E_TS_D(input, filters, z_num, num_conv, conv_k, last_k, repeat,
                                act=tf.nn.leaky_relu)
 
     z_input = keras.Input(shape=z_num*previous_ts)
+    #diffs_input = keras.Input(shape=(5,1))
+    time_inputs = [z_input, vel_inputs]
 
-    TS_NN = Time_NN(z_input, onum=onum, num_layers=num_layers, node_num=node_num, dropout=dropout,act = tf.nn.elu)
     generator_model = Generator(z_input, filters=filters, output_shape=get_conv_shape(input)[1:],
                                      num_conv=num_conv, conv_k=conv_k, last_k=last_k, repeat=repeat,
                                      act=tf.nn.leaky_relu)
 
-    z = [TS_NN(encoder_model(input))]
-    out = [generator_model(z[0])]
-    for i in range(predicted_ts-1):
-        z.append(TS_NN(z[i]))
-        out.append(generator_model(z[i+1]))
+    if TS == 'NN':
+        TS_NN = Time_NN(z_input, onum=onum, num_layers=num_layers, node_num=node_num, dropout=dropout,act = tf.nn.elu)
+        z = [TS_NN(encoder_model(input))]
+        out = [generator_model(z[0])]
+        for i in range(predicted_ts - 1):
+            z.append(TS_NN(z[i]))
+            out.append(generator_model(z[i + 1]))
+    elif TS == 'LSTM':
+        TS_LSTM = Time_LSTM(time_inputs, onum=onum, dropout=dropout)
+        z = TS_LSTM([encoder_model(input), vel_inputs])
+        out = []
+        for i in range(predicted_ts):
+            out.append(generator_model(z[:,i,:]))
+    elif TS == 'GRU':
+        TS_GRU = Time_GRU(z_input, onum=onum, dropout=dropout)
+        z = TS_GRU(encoder_model(input))
+        out = []
+        for i in range(predicted_ts):
+            out.append(generator_model(z[:,i,:]))
+    else:
+        print('Invalid time network name, choose "NN", "LSTM" or "GRU"')
 
-    Enc_time_Dec = keras.Model(inputs = input, outputs=out, name=name)
+    Enc_time_Dec = keras.Model(inputs = inputs, outputs=out, name=name)
     tf.keras.utils.plot_model(Enc_time_Dec, to_file='total_model_plot.png', show_shapes=True, show_layer_names=True)
 
     return input, out, Enc_time_Dec
@@ -232,19 +253,71 @@ def Time_RNN(x, onum, dropout, train=True):
     Time_SimpleRNN = keras.Model(inputs, new_z)
     return new_z, Time_SimpleRNN
 
-def E_RTS_SD(input, filters, z_num, num_conv, conv_k, last_k, repeat,
-           onum, dropout, name='Encode_RecurrentTS_SharedDecode'):
-    z, encoder_model = Encoder(input, filters=filters, z_num=z_num, num_conv=num_conv, conv_k=conv_k, repeat=repeat,
-                               act=tf.nn.leaky_relu)
+def Time_LSTM(time_inputs, onum, dropout=0.1, name='TS_RNN_LSTM'):
+    """
+    Recurrent NN with LSTM units for time evolution in reduced dimension (encoded images)
 
-    new_z, Time_SimpleRNN = Time_RNN(z, onum=onum, dropout=dropout)
+    :param x: encoded image as tensor with format [# encoded images in batch, timesteps, features]
+    :param onum: amount of nodes in output layer, dimension of z
+    :param dropout: dropout rate, chance a node is DROPPED (not kept)
+    :param training: to determine if dropout should be used, True (training) or False (inference)
+    :return: new z, input to decoder
+    """
+    z_old = time_inputs[0]
+    vel = list(time_inputs[1])
+    len_diffs = len(vel)-1
 
-    out, generator_model = Generator(new_z, filters=filters, output_shape=get_conv_shape(input)[1:],
-                                     num_conv=num_conv, conv_k=conv_k, last_k=last_k, repeat=repeat, act=tf.nn.leaky_relu)
+    x_shape = int_shape(z_old)[1:]
+    vel = layers.Concatenate(axis=1)([tf.expand_dims(v, axis=1) for v in vel])# tf.stack(vel_inputs, axis =1)
+    U0, diffs = tf.split(vel, [1,len_diffs], axis=1)
+    diffs = tf.multiply(diffs, 10.0)
+    # vel_shape = int_shape(vel)[1:]
+    #
+    # x_input = layers.Input(shape=x_shape)
+    # vel_input = layers.Input(shape=vel_shape)
 
-    Enc_RecurrentTime_SharedDec = keras.Model(input, out)
+    # ToDo: add time dimenson if multiple timesteps are included as input, now one input is repeated for each timestep
+    x = layers.RepeatVector(len_diffs, input_shape = x_shape)(z_old)
+    x = layers.Concatenate(axis=-1)([x, diffs])
+    x = layers.BatchNormalization()(x)
+    # Shape [batch, time, features] => [batch, time, lstm_units]
+    x = layers.LSTM(x_shape[-1]+1, dropout= dropout, activation="tanh",recurrent_activation="sigmoid",
+                    return_sequences=True)(x)
+    new_z = layers.Dense(onum)(x)
+    #z = layers.Add()([z_old, new_z])
 
-    return z, out, Enc_RecurrentTime_SharedDec
+    Time_LSTM = keras.Model(inputs=time_inputs, outputs= new_z, name = name)
+    tf.keras.utils.plot_model(Time_LSTM, to_file='TS_LSTM_model_plot.png', show_shapes=True, show_layer_names=True)
+
+    return Time_LSTM #,new_z
+
+def Time_GRU(x, onum, dropout=0.1, name='TS_RNN_GRU'):
+    """
+    Recurrent NN with GRU for time evolution in reduced dimension (encoded images)
+
+    :param x: encoded image as tensor with format [# encoded images in batch, timesteps, features]
+    :param onum: amount of nodes in output layer, dimension of z
+    :param dropout: dropout rate, chance a node is DROPPED (not kept)
+    :param training: to determine if dropout should be used, True (training) or False (inference)
+    :return: new z, input to decoder
+    """
+
+    x_shape = int_shape(x)[1:]
+    inputs = layers.Input(shape=x_shape)
+    # ToDo: add time dimenson if multiple timesteps are included as input, now one input is repeated for each timestep
+    x = layers.RepeatVector(5, input_shape = x_shape)(inputs)
+    # Shape [batch, time, features] => [batch, time, lstm_units]
+    x = layers.GRU(x_shape[-1], dropout=dropout, activation="tanh", recurrent_activation="sigmoid",
+                    return_sequences=True)(x)
+
+    new_z = layers.Dense(onum)(x)
+
+    Time_GRU = keras.Model(inputs, new_z, name=name)
+    tf.keras.utils.plot_model(Time_GRU, to_file='TS_GRU_model_plot.png', show_shapes=True, show_layer_names=True)
+
+    return Time_GRU #,new_z
+
+
 
 def TS_NN_layers(hp_nodes, hp_layers, hp_zdim):
     flatten_layer = layers.Flatten()
@@ -305,50 +378,3 @@ def create_hyp_ETSD(hp):
     return Enc_time_Dec
 
 
-def Time_LSTM(x, onum, dropout=0.1, train = True, name='TS_RNN_LSTM'):
-    """
-    Recurrent NN with LSTM units for time evolution in reduced dimension (encoded images)
-
-    :param x: encoded image as tensor with format [# encoded images in batch, timesteps, features]
-    :param onum: amount of nodes in output layer, dimension of z
-    :param dropout: dropout rate, chance a node is DROPPED (not kept)
-    :param training: to determine if dropout should be used, True (training) or False (inference)
-    :return: new z, input to decoder
-    """
-
-    x_shape = int_shape(x)[1:]
-    inputs = layers.Input(shape=x_shape)
-    # ToDo: add flatten layer if multiple timesteps are included to predict future timestep
-
-    # Shape [batch, time, features] => [batch, time, lstm_units]
-    x = layers.LSTM(x_shape[-1],  dropout= dropout,activation="tanh",recurrent_activation="sigmoid",
-                    return_sequences=True)(inputs, training =train )
-    new_z = layers.Dense(onum)(x)
-
-    Time_LSTM = keras.Model(inputs, new_z)
-
-    return new_z, Time_LSTM
-
-def Time_GRU(x, onum, dropout=0.1, train=True, name='TS_RNN_GRU'):
-    """
-    Recurrent NN with GRU for time evolution in reduced dimension (encoded images)
-
-    :param x: encoded image as tensor with format [# encoded images in batch, timesteps, features]
-    :param onum: amount of nodes in output layer, dimension of z
-    :param dropout: dropout rate, chance a node is DROPPED (not kept)
-    :param training: to determine if dropout should be used, True (training) or False (inference)
-    :return: new z, input to decoder
-    """
-
-    x_shape = int_shape(x)[1:]
-    inputs = layers.Input(shape=x_shape)
-    # ToDo: add flatten layer if multiple timesteps are included to predict future timestep
-
-    # Shape [batch, time, features] => [batch, time, lstm_units]
-    x = layers.GRU(x_shape[-1], dropout=dropout, activation="tanh", recurrent_activation="sigmoid",
-                    return_sequences=True)(inputs, training = train)
-    new_z = layers.Dense(onum)(x)
-
-    Time_GRU = keras.Model(inputs, new_z)
-
-    return new_z, Time_GRU

@@ -1,0 +1,89 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+Build  : 9-b456138dc4bc
+Exec   : gmshToFoam channel_bifurcation_w11.0_o6.25.msh2
+Date   : Sep 12 2022
+Time   : 16:25:46
+Host   : "0b3d91168a27"
+PID    : 126
+I/O    : uncollated
+Case   : //data
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 10)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Starting to read mesh format at line 2
+Read format version 2.2  ascii 0
+
+Starting to read physical names at line 5
+Physical names:8
+    Surface 2	front
+    Surface 3	left
+    Surface 4	top
+    Surface 5	right
+    Surface 6	bottom
+    Surface 7	inner_arc
+    Surface 8	back
+
+Starting to read points at line 16
+Vertices to be read:2104
+Vertices read:2104
+
+Starting to read cells at line 2123
+Cells to be read:5964
+
+Mapping region 2 to Foam patch 0
+Mapping region 8 to Foam patch 1
+Mapping region 6 to Foam patch 2
+Mapping region 3 to Foam patch 3
+Mapping region 4 to Foam patch 4
+Mapping region 5 to Foam patch 5
+Mapping region 7 to Foam patch 6
+Mapping region 2 to Foam cellZone 0
+Cells:
+    total:1931
+    hex  :0
+    prism:1931
+    pyr  :0
+    tet  :0
+
+CellZones:
+Zone	Size
+    0	1931
+
+Skipping tag  at line 8090
+Patch 0 gets name front
+Patch 1 gets name back
+Patch 2 gets name bottom
+Patch 3 gets name left
+Patch 4 gets name top
+Patch 5 gets name right
+Patch 6 gets name inner_arc
+
+--> FOAM Warning : 
+    From function Foam::polyMesh::polyMesh(const Foam::IOobject&, Foam::pointField&&, const cellShapeList&, const faceListList&, const wordList&, const wordList&, const Foam::word&, const Foam::word&, const wordList&, bool)
+    in file meshes/polyMesh/polyMeshFromShapeMesh.C at line 595
+    Found 4033 undefined faces in mesh; adding to default patch.
+Finding faces of patch 0
+Finding faces of patch 1
+Finding faces of patch 2
+Finding faces of patch 3
+Finding faces of patch 4
+Finding faces of patch 5
+Finding faces of patch 6
+
+FaceZones:
+Zone	Size
+
+Writing zone 0 to cellZone front and cellSet
+End
+

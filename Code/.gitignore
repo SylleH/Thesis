@@ -1,6 +1,9 @@
 venv_thesis
 DataGeneration/venv_data_thesis
 *.DS_Store
+DataGeneration/Meshes
+DataGeneration/VTK_files
+DataGeneration/openfoam/run/Channel_branch
 DataGeneration/openfoam/run/Channel_bifurcation/0.*
 DataGeneration/openfoam/run/Channel_bifurcation/1.*
 DataGeneration/openfoam/run/Channel_bifurcation/2.*
@@ -24,4 +27,19 @@ DataGeneration/openfoam/run/Channel_bend90/VTK
 DataGeneration/openfoam/run/channel_straight_laminar
 DataGeneration/openfoam/run/channel_straight_ico_2beats
 DataGeneration/openfoam/run/tutorial_pitzDaily
+DataGeneration/*.jpeg
+DataGeneration/*.gif
+DataGeneration/*.jpg
+DataGeneration/*.png
+DataGeneration/Data_Generated
 MLImplementation/model
+MLImplementation/data
+MLImplementation/colorbars
+MLImplementation/error_timestep_plots
+MLImplementation/results_csv
+MLImplementation/animation
+MLImplementation/difference_images
+MLImplementation/predicted_beats
+MLImplementation/max error location plots
+MLImplementation/*.png
+MLImplementation/jobscript*

@@ -51,11 +51,11 @@ namespace Foam
 extern "C"
 {
     // dynamicCode:
-    // SHA1 = fb5cfb170e91438ca9755b551d46bb84a24ad2ea
+    // SHA1 = 09634cad939d8419607bf6e666e01e429b4f8f28
     //
     // unique function name that can be checked if the correct library version
     // has been loaded
-    void ParabolicTimeDependentU_max_fb5cfb170e91438ca9755b551d46bb84a24ad2ea(bool load)
+    void ParabolicTimeDependentU_max_09634cad939d8419607bf6e666e01e429b4f8f28(bool load)
     {
         if (load)
         {
@@ -78,7 +78,7 @@ makeRemovablePatchTypeField
 
 
 const char* const ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::SHA1sum =
-    "fb5cfb170e91438ca9755b551d46bb84a24ad2ea";
+    "09634cad939d8419607bf6e666e01e429b4f8f28";
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
@@ -94,7 +94,7 @@ ParabolicTimeDependentU_maxFixedValueFvPatchVectorField
 {
     if (false)
     {
-        Info<<"construct ParabolicTimeDependentU_max sha1: fb5cfb170e91438ca9755b551d46bb84a24ad2ea"
+        Info<<"construct ParabolicTimeDependentU_max sha1: 09634cad939d8419607bf6e666e01e429b4f8f28"
             " from patch/DimensionedField\n";
     }
 }
@@ -112,7 +112,7 @@ ParabolicTimeDependentU_maxFixedValueFvPatchVectorField
 {
     if (false)
     {
-        Info<<"construct ParabolicTimeDependentU_max sha1: fb5cfb170e91438ca9755b551d46bb84a24ad2ea"
+        Info<<"construct ParabolicTimeDependentU_max sha1: 09634cad939d8419607bf6e666e01e429b4f8f28"
             " from patch/dictionary\n";
     }
 }
@@ -131,7 +131,7 @@ ParabolicTimeDependentU_maxFixedValueFvPatchVectorField
 {
     if (false)
     {
-        Info<<"construct ParabolicTimeDependentU_max sha1: fb5cfb170e91438ca9755b551d46bb84a24ad2ea"
+        Info<<"construct ParabolicTimeDependentU_max sha1: 09634cad939d8419607bf6e666e01e429b4f8f28"
             " from patch/DimensionedField/mapper\n";
     }
 }
@@ -148,7 +148,7 @@ ParabolicTimeDependentU_maxFixedValueFvPatchVectorField
 {
     if (false)
     {
-        Info<<"construct ParabolicTimeDependentU_max sha1: fb5cfb170e91438ca9755b551d46bb84a24ad2ea "
+        Info<<"construct ParabolicTimeDependentU_max sha1: 09634cad939d8419607bf6e666e01e429b4f8f28 "
             "as copy/DimensionedField\n";
     }
 }
@@ -161,7 +161,7 @@ ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::
 {
     if (false)
     {
-        Info<<"destroy ParabolicTimeDependentU_max sha1: fb5cfb170e91438ca9755b551d46bb84a24ad2ea\n";
+        Info<<"destroy ParabolicTimeDependentU_max sha1: 09634cad939d8419607bf6e666e01e429b4f8f28\n";
     }
 }
 
@@ -177,32 +177,37 @@ void ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()
 
     if (false)
     {
-        Info<<"updateCoeffs ParabolicTimeDependentU_max sha1: fb5cfb170e91438ca9755b551d46bb84a24ad2ea\n";
+        Info<<"updateCoeffs ParabolicTimeDependentU_max sha1: 09634cad939d8419607bf6e666e01e429b4f8f28\n";
     }
 
 //{{{ begin code
-    #line 52 "/data/channel_bifurcation/0/U/boundaryField/top"
+    #line 51 "/data/run/channel_bifurcation/0/U/boundaryField/top"
 const vectorField& Cf = patch().Cf();
 		vectorField& field = *this;
 
-		const scalar r = 0.015;
-		const scalar Umax = 0.6;
-		const scalar Umin = 0.02;
-
-		scalar 	Uvar = 0.08;
+		const scalar r = 10.0*1e-3;
+		const scalar rcm = r*100;
 		scalar 	t = this->db().time().value();
+		scalar	tau = fmod(t,1);
+		scalar	Uvar = 0.08;
 		
-		if (t <= 0.35)
+   		const scalar a0    = 97.4;
+scalar a[14]={-6.12644665,-42.59636182,-0.77437875,10.78546692,-6.90775766,-1.1372423,2.37198109,-0.7100494,0.39921836,1.42133022,2.57732891,-1.19777814,-2.20580923,1.37967485};
+
+   		scalar b[14]={-48.95362598,-2.15308961,26.22974423,-3.63331624,-3.37693086,6.26447831,-0.08230374,0.14968907,1.30674276,0.74004953,-1.46645236,-3.36070789,1.00422553,0.08805414};
+   		scalar Q = 0.5*a0;
+   		const scalar t_min = 0;
+   		const scalar t_max = t_min + 1.0;
+   		scalar n = M_PI * ( 2 * ( tau-t_min ) / ( t_max - t_min ) - 1 );
+		
+		if (tau > 0 && tau <= 1)
 		{
-			Uvar = 0.08+Umax*(1-(pow(t-0.175,2)/(0.175*0.175)));
-		}
-		if (t > 0.35 && t <= 0.6)
-		{
-			Uvar = 0.08+Umin*(-1+(pow(t-0.475,1)/(0.125*0.125)));
-		}
-		if (t > 0.6)
-		{
-			Uvar = 0.08;
+			for (int i = 0; i < 10; i++)
+			{
+   			Q += ( a[i]*cos((i+1)*n) + b[i]*sin((i+1)*n) );
+   			}
+			Uvar = Q/(M_PI*(rcm*rcm));
+			Uvar = Uvar/100;
 		}
 		
 		forAll(Cf, faceI)

@@ -1,0 +1,504 @@
+Last login: Mon Sep  5 15:27:47 on ttys004
+
+The default interactive shell is now zsh.
+To update your account to use zsh, please run `chsh -s /bin/zsh`.
+For more details, please visit https://support.apple.com/kb/HT208050.
+(base) MacBook-Pro-van-Sylle:~ sylle$ cd Documents/'Master Applied Mathematics'/Thesis/Code/DataGeneration
+(base) MacBook-Pro-van-Sylle:DataGeneration sylle$ ./extra_data_pipeline.sh
+7.0
+5.25
+4.5
+0.3
+0.002
+0.154
+0.28
+0.27
+0.2
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 7.0, outlet 5.25 and viscocity 4.5 is done
+10.0
+3.25
+4.0
+0.247
+0.059
+0.148
+0.26
+0.11
+0.3
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+#0  Foam::error::printStack(Foam::Ostream&) at ??:?
+#1  Foam::sigFpe::sigHandler(int) at ??:?
+#2  ? in "/lib/x86_64-linux-gnu/libc.so.6"
+#3  Foam::DICPreconditioner::calcReciprocalD(Foam::Field<double>&, Foam::lduMatrix const&) at ??:?
+#4  Foam::DICPreconditioner::DICPreconditioner(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#5  Foam::lduMatrix::preconditioner::addsymMatrixConstructorToTable<Foam::DICPreconditioner>::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#6  Foam::lduMatrix::preconditioner::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#7  Foam::PCG::solve(Foam::Field<double>&, Foam::Field<double> const&, unsigned char) const at ??:?
+#8  Foam::fvMatrix<double>::solveSegregated(Foam::dictionary const&) at ??:?
+#9  Foam::fvMatrix<double>::solve(Foam::dictionary const&) in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#10  Foam::fvMatrix<double>::solve() in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#11  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#12  __libc_start_main in "/lib/x86_64-linux-gnu/libc.so.6"
+#13  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+./Simulate: line 18:   127 Floating point exceptionpimpleFoam > log.pimpleFoam
+
+
+--> FOAM FATAL IO ERROR: 
+size 1508 is not equal to the given value of 1638
+
+file: //data/2/p from line 17 to line 1573.
+
+    From function Foam::Field<Type>::Field(const Foam::word&, const Foam::dictionary&, Foam::label) [with Type = double; Foam::label = int]
+    in file /home/ubuntu/OpenFOAM/OpenFOAM-9/src/OpenFOAM/lnInclude/Field.C at line 208.
+
+FOAM exiting
+
+rm: VTK/allPatches: No such file or directory
+simulation for width 10.0, outlet 3.25 and viscocity 4.0 is done
+10.0
+3.25
+4.0
+0.242
+0.034
+0.117
+0.13
+0.08
+0.19
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 10.0, outlet 3.25 and viscocity 4.0 is done
+11.0
+4.25
+5.5
+0.217
+0.052
+0.186
+0.19
+0.05
+0.04
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+#0  Foam::error::printStack(Foam::Ostream&) at ??:?
+#1  Foam::sigFpe::sigHandler(int) at ??:?
+#2  ? in "/lib/x86_64-linux-gnu/libc.so.6"
+#3  Foam::DICPreconditioner::calcReciprocalD(Foam::Field<double>&, Foam::lduMatrix const&) at ??:?
+#4  Foam::DICPreconditioner::DICPreconditioner(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#5  Foam::lduMatrix::preconditioner::addsymMatrixConstructorToTable<Foam::DICPreconditioner>::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#6  Foam::lduMatrix::preconditioner::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#7  Foam::PCG::solve(Foam::Field<double>&, Foam::Field<double> const&, unsigned char) const at ??:?
+#8  Foam::fvMatrix<double>::solveSegregated(Foam::dictionary const&) at ??:?
+#9  Foam::fvMatrix<double>::solve(Foam::dictionary const&) in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#10  Foam::fvMatrix<double>::solve() in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#11  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#12  __libc_start_main in "/lib/x86_64-linux-gnu/libc.so.6"
+#13  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+./Simulate: line 18:   127 Floating point exceptionpimpleFoam > log.pimpleFoam
+
+
+--> FOAM FATAL IO ERROR: 
+size 1638 is not equal to the given value of 1791
+
+file: //data/2/p from line 17 to line 1703.
+
+    From function Foam::Field<Type>::Field(const Foam::word&, const Foam::dictionary&, Foam::label) [with Type = double; Foam::label = int]
+    in file /home/ubuntu/OpenFOAM/OpenFOAM-9/src/OpenFOAM/lnInclude/Field.C at line 208.
+
+FOAM exiting
+
+rm: VTK/allPatches: No such file or directory
+simulation for width 11.0, outlet 4.25 and viscocity 5.5 is done
+9.0
+5.25
+3.5
+0.221
+0.028
+0.121
+0.1
+0.24
+0.15
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 9.0, outlet 5.25 and viscocity 3.5 is done
+7.0
+4.25
+4.5
+0.207
+0.005
+0.133
+0.12
+0.04
+0.02
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+#0  Foam::error::printStack(Foam::Ostream&) at ??:?
+#1  Foam::sigFpe::sigHandler(int) at ??:?
+#2  ? in "/lib/x86_64-linux-gnu/libc.so.6"
+#3  Foam::DICPreconditioner::calcReciprocalD(Foam::Field<double>&, Foam::lduMatrix const&) at ??:?
+#4  Foam::DICPreconditioner::DICPreconditioner(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#5  Foam::lduMatrix::preconditioner::addsymMatrixConstructorToTable<Foam::DICPreconditioner>::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#6  Foam::lduMatrix::preconditioner::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#7  Foam::PCG::solve(Foam::Field<double>&, Foam::Field<double> const&, unsigned char) const at ??:?
+#8  Foam::fvMatrix<double>::solveSegregated(Foam::dictionary const&) at ??:?
+#9  Foam::fvMatrix<double>::solve(Foam::dictionary const&) in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#10  Foam::fvMatrix<double>::solve() in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#11  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#12  __libc_start_main in "/lib/x86_64-linux-gnu/libc.so.6"
+#13  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+./Simulate: line 18:   127 Floating point exceptionpimpleFoam > log.pimpleFoam
+
+
+--> FOAM FATAL IO ERROR: 
+size 1656 is not equal to the given value of 1422
+
+file: //data/2/p from line 17 to line 1721.
+
+    From function Foam::Field<Type>::Field(const Foam::word&, const Foam::dictionary&, Foam::label) [with Type = double; Foam::label = int]
+    in file /home/ubuntu/OpenFOAM/OpenFOAM-9/src/OpenFOAM/lnInclude/Field.C at line 208.
+
+FOAM exiting
+
+rm: VTK/allPatches: No such file or directory
+simulation for width 7.0, outlet 4.25 and viscocity 4.5 is done
+11.0
+6.25
+5.0
+0.394
+0.013
+0.087
+0.13
+0.13
+0.19
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 11.0, outlet 6.25 and viscocity 5.0 is done
+11.0
+3.25
+4.0
+0.203
+0.014
+0.087
+0.29
+0.05
+0.23
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+#0  Foam::error::printStack(Foam::Ostream&) at ??:?
+#1  Foam::sigFpe::sigHandler(int) at ??:?
+#2  ? in "/lib/x86_64-linux-gnu/libc.so.6"
+#3  Foam::DICPreconditioner::calcReciprocalD(Foam::Field<double>&, Foam::lduMatrix const&) at ??:?
+#4  Foam::DICPreconditioner::DICPreconditioner(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#5  Foam::lduMatrix::preconditioner::addsymMatrixConstructorToTable<Foam::DICPreconditioner>::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#6  Foam::lduMatrix::preconditioner::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#7  Foam::PCG::solve(Foam::Field<double>&, Foam::Field<double> const&, unsigned char) const at ??:?
+#8  Foam::fvMatrix<double>::solveSegregated(Foam::dictionary const&) at ??:?
+#9  Foam::fvMatrix<double>::solve(Foam::dictionary const&) in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#10  Foam::fvMatrix<double>::solve() in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#11  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#12  __libc_start_main in "/lib/x86_64-linux-gnu/libc.so.6"
+#13  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+./Simulate: line 18:   127 Floating point exceptionpimpleFoam > log.pimpleFoam
+
+
+--> FOAM FATAL IO ERROR: 
+size 1931 is not equal to the given value of 1743
+
+file: //data/2/p from line 17 to line 1996.
+
+    From function Foam::Field<Type>::Field(const Foam::word&, const Foam::dictionary&, Foam::label) [with Type = double; Foam::label = int]
+    in file /home/ubuntu/OpenFOAM/OpenFOAM-9/src/OpenFOAM/lnInclude/Field.C at line 208.
+
+FOAM exiting
+
+rm: VTK/allPatches: No such file or directory
+simulation for width 11.0, outlet 3.25 and viscocity 4.0 is done
+10.0
+6.25
+5.0
+0.293
+0.027
+0.135
+0.27
+0.04
+0.2
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+#0  Foam::error::printStack(Foam::Ostream&) at ??:?
+#1  Foam::sigFpe::sigHandler(int) at ??:?
+#2  ? in "/lib/x86_64-linux-gnu/libc.so.6"
+#3  Foam::DICPreconditioner::calcReciprocalD(Foam::Field<double>&, Foam::lduMatrix const&) at ??:?
+#4  Foam::DICPreconditioner::DICPreconditioner(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#5  Foam::lduMatrix::preconditioner::addsymMatrixConstructorToTable<Foam::DICPreconditioner>::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#6  Foam::lduMatrix::preconditioner::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#7  Foam::PCG::solve(Foam::Field<double>&, Foam::Field<double> const&, unsigned char) const at ??:?
+#8  Foam::fvMatrix<double>::solveSegregated(Foam::dictionary const&) at ??:?
+#9  Foam::fvMatrix<double>::solve(Foam::dictionary const&) in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#10  Foam::fvMatrix<double>::solve() in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#11  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#12  __libc_start_main in "/lib/x86_64-linux-gnu/libc.so.6"
+#13  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+./Simulate: line 18:   128 Floating point exceptionpimpleFoam > log.pimpleFoam
+
+
+--> FOAM FATAL IO ERROR: 
+size 1931 is not equal to the given value of 1846
+
+file: //data/2/p from line 17 to line 1996.
+
+    From function Foam::Field<Type>::Field(const Foam::word&, const Foam::dictionary&, Foam::label) [with Type = double; Foam::label = int]
+    in file /home/ubuntu/OpenFOAM/OpenFOAM-9/src/OpenFOAM/lnInclude/Field.C at line 208.
+
+FOAM exiting
+
+rm: VTK/allPatches: No such file or directory
+simulation for width 10.0, outlet 6.25 and viscocity 5.0 is done
+8.0
+5.25
+3.5
+0.271
+0.015
+0.111
+0.26
+0.07
+0.3
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+#0  Foam::error::printStack(Foam::Ostream&) at ??:?
+#1  Foam::sigFpe::sigHandler(int) at ??:?
+#2  ? in "/lib/x86_64-linux-gnu/libc.so.6"
+#3  Foam::DICPreconditioner::calcReciprocalD(Foam::Field<double>&, Foam::lduMatrix const&) at ??:?
+#4  Foam::DICPreconditioner::DICPreconditioner(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#5  Foam::lduMatrix::preconditioner::addsymMatrixConstructorToTable<Foam::DICPreconditioner>::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#6  Foam::lduMatrix::preconditioner::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#7  Foam::PCG::solve(Foam::Field<double>&, Foam::Field<double> const&, unsigned char) const at ??:?
+#8  Foam::fvMatrix<double>::solveSegregated(Foam::dictionary const&) at ??:?
+#9  Foam::fvMatrix<double>::solve(Foam::dictionary const&) in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#10  Foam::fvMatrix<double>::solve() in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#11  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#12  __libc_start_main in "/lib/x86_64-linux-gnu/libc.so.6"
+#13  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+./Simulate: line 18:   127 Floating point exceptionpimpleFoam > log.pimpleFoam
+
+
+--> FOAM FATAL IO ERROR: 
+size 1931 is not equal to the given value of 1575
+
+file: //data/2/p from line 17 to line 1996.
+
+    From function Foam::Field<Type>::Field(const Foam::word&, const Foam::dictionary&, Foam::label) [with Type = double; Foam::label = int]
+    in file /home/ubuntu/OpenFOAM/OpenFOAM-9/src/OpenFOAM/lnInclude/Field.C at line 208.
+
+FOAM exiting
+
+rm: VTK/allPatches: No such file or directory
+simulation for width 8.0, outlet 5.25 and viscocity 3.5 is done
+All done
+(base) MacBook-Pro-van-Sylle:DataGeneration sylle$ ./extra_data_pipeline.sh
+10.0
+3.25
+4.0
+0.255
+0.063
+0.177
+0.27
+0.26
+0.21
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 10.0, outlet 3.25 and viscocity 4.0 is done
+9.0
+5.25
+5.0
+0.328
+0.04
+0.078
+0.2
+0.21
+0.06
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 9.0, outlet 5.25 and viscocity 5.0 is done
+10.0
+5.25
+4.0
+0.218
+0.048
+0.181
+0.14
+0.23
+0.02
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 10.0, outlet 5.25 and viscocity 4.0 is done
+11.0
+6.25
+5.5
+0.302
+0.039
+0.127
+0.19
+0.1
+0.16
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+#0  Foam::error::printStack(Foam::Ostream&) at ??:?
+#1  Foam::sigFpe::sigHandler(int) at ??:?
+#2  ? in "/lib/x86_64-linux-gnu/libc.so.6"
+#3  Foam::DICPreconditioner::calcReciprocalD(Foam::Field<double>&, Foam::lduMatrix const&) at ??:?
+#4  Foam::DICPreconditioner::DICPreconditioner(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#5  Foam::lduMatrix::preconditioner::addsymMatrixConstructorToTable<Foam::DICPreconditioner>::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#6  Foam::lduMatrix::preconditioner::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#7  Foam::PCG::solve(Foam::Field<double>&, Foam::Field<double> const&, unsigned char) const at ??:?
+#8  Foam::fvMatrix<double>::solveSegregated(Foam::dictionary const&) at ??:?
+#9  Foam::fvMatrix<double>::solve(Foam::dictionary const&) in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#10  Foam::fvMatrix<double>::solve() in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#11  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#12  __libc_start_main in "/lib/x86_64-linux-gnu/libc.so.6"
+#13  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+./Simulate: line 18:   127 Floating point exceptionpimpleFoam > log.pimpleFoam
+
+
+--> FOAM FATAL IO ERROR: 
+size 1776 is not equal to the given value of 1931
+
+file: //data/2/p from line 17 to line 1841.
+
+    From function Foam::Field<Type>::Field(const Foam::word&, const Foam::dictionary&, Foam::label) [with Type = double; Foam::label = int]
+    in file /home/ubuntu/OpenFOAM/OpenFOAM-9/src/OpenFOAM/lnInclude/Field.C at line 208.
+
+FOAM exiting
+
+rm: VTK/allPatches: No such file or directory
+simulation for width 11.0, outlet 6.25 and viscocity 5.5 is done
+9.0
+3.25
+3.5
+0.343
+0.012
+0.125
+0.15
+0.21
+0.17
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 9.0, outlet 3.25 and viscocity 3.5 is done
+8.0
+3.25
+4.5
+0.366
+0.013
+0.18
+0.19
+0.24
+0.1
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 8.0, outlet 3.25 and viscocity 4.5 is done
+8.0
+3.25
+5.0
+0.221
+0.002
+0.094
+0.15
+0.21
+0.09
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 8.0, outlet 3.25 and viscocity 5.0 is done
+9.0
+6.25
+5.0
+0.368
+0.005
+0.174
+0.13
+0.09
+0.1
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 9.0, outlet 6.25 and viscocity 5.0 is done
+8.0
+3.25
+4.5
+0.344
+0.057
+0.107
+0.28
+0.09
+0.17
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+#0  Foam::error::printStack(Foam::Ostream&) at ??:?
+#1  Foam::sigFpe::sigHandler(int) at ??:?
+#2  ? in "/lib/x86_64-linux-gnu/libc.so.6"
+#3  Foam::DICPreconditioner::calcReciprocalD(Foam::Field<double>&, Foam::lduMatrix const&) at ??:?
+#4  Foam::DICPreconditioner::DICPreconditioner(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#5  Foam::lduMatrix::preconditioner::addsymMatrixConstructorToTable<Foam::DICPreconditioner>::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#6  Foam::lduMatrix::preconditioner::New(Foam::lduMatrix::solver const&, Foam::dictionary const&) at ??:?
+#7  Foam::PCG::solve(Foam::Field<double>&, Foam::Field<double> const&, unsigned char) const at ??:?
+#8  Foam::fvMatrix<double>::solveSegregated(Foam::dictionary const&) at ??:?
+#9  Foam::fvMatrix<double>::solve(Foam::dictionary const&) in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#10  Foam::fvMatrix<double>::solve() in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#11  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+#12  __libc_start_main in "/lib/x86_64-linux-gnu/libc.so.6"
+#13  ? in "/opt/openfoam9/platforms/linux64GccDPInt32Opt/bin/pimpleFoam"
+./Simulate: line 18:   128 Floating point exceptionpimpleFoam > log.pimpleFoam
+
+
+--> FOAM FATAL IO ERROR: 
+size 1718 is not equal to the given value of 1437
+
+file: //data/2/p from line 17 to line 1783.
+
+    From function Foam::Field<Type>::Field(const Foam::word&, const Foam::dictionary&, Foam::label) [with Type = double; Foam::label = int]
+    in file /home/ubuntu/OpenFOAM/OpenFOAM-9/src/OpenFOAM/lnInclude/Field.C at line 208.
+
+FOAM exiting
+
+rm: VTK/allPatches: No such file or directory
+simulation for width 8.0, outlet 3.25 and viscocity 4.5 is done
+11.0
+4.25
+4.0
+0.337
+0.045
+0.139
+0.18
+0.22
+0.15
+    ln: ./lnInclude
+//data/0/U/boundaryField/top: In member function 'virtual void Foam::ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()':
+//data/0/U/boundaryField/top:86:17: warning: unused variable 'y' [-Wunused-variable]
+simulation for width 11.0, outlet 4.25 and viscocity 4.0 is done
+All done
+(base) MacBook-Pro-van-Sylle:DataGeneration sylle$ exit
+logout
+Saving session...
+...copying shared history...
+...saving history...truncating history files...
+...completed.
+Deleting expired sessions...6 completed.
+
+[Proces voltooid]
+

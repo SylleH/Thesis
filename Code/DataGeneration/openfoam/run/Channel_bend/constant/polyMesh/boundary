@@ -20,43 +20,43 @@ FoamFile
     {
         type            empty;
         physicalType    patch;
-        nFaces          942;
-        startFace       1363;
+        nFaces          1655;
+        startFace       2420;
     }
     front 
     {
         type            empty;
         physicalType    patch;
-        nFaces          942;
-        startFace       2305;
+        nFaces          1655;
+        startFace       4075;
     }
     top
     {
         type            patch;
         physicalType    patch;
-        nFaces          10;
-        startFace       3247;
+        nFaces          15;
+        startFace       5730;
     }
     outer_arc 
     {
         type            wall;
         physicalType    patch;
-        nFaces          55;
-        startFace       3257;
+        nFaces          70;
+        startFace       5745;
     }
     bottom
     {
         type            patch;
         physicalType    patch;
-        nFaces          10;
-        startFace       3312;
+        nFaces          15;
+        startFace       5815;
     }
     inner_arc 
     {
         type            wall;
         physicalType    patch;
         nFaces          25;
-        startFace       3322;
+        startFace       5830;
     }
 )
 

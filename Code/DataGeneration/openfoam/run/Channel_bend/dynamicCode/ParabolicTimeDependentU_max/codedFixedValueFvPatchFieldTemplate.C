@@ -51,11 +51,11 @@ namespace Foam
 extern "C"
 {
     // dynamicCode:
-    // SHA1 = 00fea06db2226bc2a01d0b78c5c89e6d73d49780
+    // SHA1 = 23cb0e945b7f2ebbf22410587cf67f36d94ead51
     //
     // unique function name that can be checked if the correct library version
     // has been loaded
-    void ParabolicTimeDependentU_max_00fea06db2226bc2a01d0b78c5c89e6d73d49780(bool load)
+    void ParabolicTimeDependentU_max_23cb0e945b7f2ebbf22410587cf67f36d94ead51(bool load)
     {
         if (load)
         {
@@ -78,7 +78,7 @@ makeRemovablePatchTypeField
 
 
 const char* const ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::SHA1sum =
-    "00fea06db2226bc2a01d0b78c5c89e6d73d49780";
+    "23cb0e945b7f2ebbf22410587cf67f36d94ead51";
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
@@ -94,7 +94,7 @@ ParabolicTimeDependentU_maxFixedValueFvPatchVectorField
 {
     if (false)
     {
-        Info<<"construct ParabolicTimeDependentU_max sha1: 00fea06db2226bc2a01d0b78c5c89e6d73d49780"
+        Info<<"construct ParabolicTimeDependentU_max sha1: 23cb0e945b7f2ebbf22410587cf67f36d94ead51"
             " from patch/DimensionedField\n";
     }
 }
@@ -112,7 +112,7 @@ ParabolicTimeDependentU_maxFixedValueFvPatchVectorField
 {
     if (false)
     {
-        Info<<"construct ParabolicTimeDependentU_max sha1: 00fea06db2226bc2a01d0b78c5c89e6d73d49780"
+        Info<<"construct ParabolicTimeDependentU_max sha1: 23cb0e945b7f2ebbf22410587cf67f36d94ead51"
             " from patch/dictionary\n";
     }
 }
@@ -131,7 +131,7 @@ ParabolicTimeDependentU_maxFixedValueFvPatchVectorField
 {
     if (false)
     {
-        Info<<"construct ParabolicTimeDependentU_max sha1: 00fea06db2226bc2a01d0b78c5c89e6d73d49780"
+        Info<<"construct ParabolicTimeDependentU_max sha1: 23cb0e945b7f2ebbf22410587cf67f36d94ead51"
             " from patch/DimensionedField/mapper\n";
     }
 }
@@ -148,7 +148,7 @@ ParabolicTimeDependentU_maxFixedValueFvPatchVectorField
 {
     if (false)
     {
-        Info<<"construct ParabolicTimeDependentU_max sha1: 00fea06db2226bc2a01d0b78c5c89e6d73d49780 "
+        Info<<"construct ParabolicTimeDependentU_max sha1: 23cb0e945b7f2ebbf22410587cf67f36d94ead51 "
             "as copy/DimensionedField\n";
     }
 }
@@ -161,7 +161,7 @@ ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::
 {
     if (false)
     {
-        Info<<"destroy ParabolicTimeDependentU_max sha1: 00fea06db2226bc2a01d0b78c5c89e6d73d49780\n";
+        Info<<"destroy ParabolicTimeDependentU_max sha1: 23cb0e945b7f2ebbf22410587cf67f36d94ead51\n";
     }
 }
 
@@ -177,7 +177,7 @@ void ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()
 
     if (false)
     {
-        Info<<"updateCoeffs ParabolicTimeDependentU_max sha1: 00fea06db2226bc2a01d0b78c5c89e6d73d49780\n";
+        Info<<"updateCoeffs ParabolicTimeDependentU_max sha1: 23cb0e945b7f2ebbf22410587cf67f36d94ead51\n";
     }
 
 //{{{ begin code
@@ -185,7 +185,7 @@ void ParabolicTimeDependentU_maxFixedValueFvPatchVectorField::updateCoeffs()
 const vectorField& Cf = patch().Cf();
 		vectorField& field = *this;
 
-		const scalar r = 12.0*1e-3;
+		const scalar r = 18.0*1e-3;
 		const scalar Umax = 0.4;
 		const scalar Umin = 0.02;
 

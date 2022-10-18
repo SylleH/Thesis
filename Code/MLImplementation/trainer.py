@@ -9,11 +9,40 @@ from tensorflow import keras
 from keras.callbacks import EarlyStopping, ModelCheckpoint, TensorBoard
 from datetime import date
 
+def trainer_loaded_model(config, strategy, data_dir):
+    #load config
+    img_height = config["preprocess"]["img_height"]
+    img_width = config["preprocess"]["img_width"]
+    patience = config["AE"]["training"]["patience"]
+    batch_size = config["AE"]["training"]["batch_size"]
+    epochs = config["AE"]["training"]["epochs"]
+    arc_filepath = config["data"]['model']
+    output = config["TS"]["window"]["label"]
+    input = config["TS"]["window"]["input"]
 
+    log_path = arc_filepath+'/logs'
+    checkpoint_filepath = arc_filepath +'/checkpoint'
+    model_path = checkpoint_filepath+'/model_2022-08-26'
+    fig_name = "loss_LSTM_loaded_alldata"
 
+    train_generator, val_generator = create_input_multi_output_gen(data_dir, img_height, img_width,
+                                                                   previous_ts=input,
+                                                                   predicted_ts=output,
+                                                                   batch_size=batch_size, val_split=0.9)
+    # define callbacks
+    tb_callback = TensorBoard(log_dir=log_path)
+    es_callback = EarlyStopping(patience= patience)
+    modcheck_callback = ModelCheckpoint(filepath=os.path.join(checkpoint_filepath, 'model_' + str(date.today())+'_'+data_dir),
+                                        save_weights_only=False, monitor='val_loss', mode='min', save_best_only=True)
 
+    callbacks = [tb_callback, es_callback, modcheck_callback]
+    with strategy.scope():
+        loaded_model = tf.keras.models.load_model(model_path)
+        history = train_and_store(loaded_model, train_generator, val_generator, epochs, callbacks, fig_name)
 
-def trainer_AE(config, strategy, total=False):
+    return history, checkpoint_filepath
+
+def trainer_AE(config, strategy, data_dir, total=False):
     """
     Train Autoencoder network
     :param config: config dict loaded from config.yaml file
@@ -47,39 +76,42 @@ def trainer_AE(config, strategy, total=False):
         node_num = config["TS"]["node_num"]
         num_layers = config["TS"]["num_layers"]
         dropout = config["TS"]["training"]["dropout"]
-
+        arc = config["TS"]["architecture"]
 
     #data_dir = "data/" + scenario + "/"
-    data_dir = 'data/NN_testset/'
+    #data_dir = 'data/NN_testset/'
     #model_path = model_dir+"AE_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_f"+str(filters)+"_z"+str(z_num)
     model_path = model_dir + "AE_straight_OVERFIT_val0.01_E126_f16_z150_oneTS"
     if total:
-        model_path = model_dir+"total_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_hypertuned"
+        model_path = model_dir+"total_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_"+arc
     log_path = model_path + "/logs"
     checkpoint_filepath = model_path + "/checkpoint/"
     #fig_name = "loss_"+"AE_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_f"+str(filters)+"_z"+str(z_num)
     fig_name = "loss" + "AE_straight_OVERFIT_val0.01_E126_f16_z150_oneTS"
     if total:
-        fig_name = "loss_"+"total_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_hypertuned"
+        fig_name = "loss_"+"total_"+str(scenario)+"_BS"+str(batch_size)+"_E"+str(epochs)+"_"+arc
 
     # define callbacks AE
     tb_callback = TensorBoard(log_dir=log_path)
     es_callback = EarlyStopping(patience= patience)
-    modcheck_callback = ModelCheckpoint(filepath=os.path.join(checkpoint_filepath, 'model_' + str(date.today())),
+    modcheck_callback = ModelCheckpoint(filepath=os.path.join(checkpoint_filepath, 'model_' + str(date.today())+'_Diffs10x'),
                                         save_weights_only=False, monitor='val_loss', mode='min', save_best_only=True)
 
     callbacks = [tb_callback, es_callback, modcheck_callback]
 
     if total:
-        train_generator, val_generator = create_input_multi_output_gen("data/TS_seperately/", img_height, img_width, previous_ts=input,
+        train_generator, val_generator = create_input_multi_output_gen(f"data/{data_dir}/", img_height, img_width, previous_ts=input,
                                                                        predicted_ts=output,
                                                                        batch_size=batch_size, val_split=0.9)
+
     else:
         train_generator, val_generator = create_train_val_datagen(data_dir, batch_size, img_height, img_width)
 
-    #create model and train with determined strategy
+    # #create model and train with determined strategy
     with strategy.scope():
         img_inputs = keras.Input(shape=(img_height, img_width, channels)) #shape of each sample needs to be supplied, this is after cropping
+        vel_inputs = [keras.Input(1) for x in range(output+1)]
+        inputs = tuple([img_inputs]+ vel_inputs)
         if not total:
             model = create_AE(img_inputs, filters=filters, z_num=z_num,
                                  repeat=repeat, num_conv=num_conv, conv_k=conv_k, last_k=last_k)
@@ -87,12 +119,13 @@ def trainer_AE(config, strategy, total=False):
             history = train_and_store(model, train_generator, val_generator,
                                       batch_size, epochs, callbacks, fig_name)
         else:
-            z, out, model = E_TS_D(img_inputs, filters, z_num, num_conv, conv_k, last_k, repeat,
-                                    onum=z_num, num_layers=num_layers, node_num=node_num, dropout=dropout)
-            model.compile(loss="mse", optimizer="adam", metrics=["mse"])
+            z, out, model = E_TS_D(inputs, filters, z_num, num_conv, conv_k, last_k, repeat,
+                                    onum=z_num, num_layers=num_layers, node_num=node_num, dropout=dropout, TS =arc)
+            opt = tf.keras.optimizers.Adam(learning_rate=0.001, amsgrad=True)
+            model.compile(loss="mse", optimizer=opt, metrics=["mse", "mae"])
             print(model.summary())
 
-            history = model.fit(train_generator, validation_data=val_generator, epochs=epochs, callbacks=callbacks)
+            history = train_and_store(model, train_generator, val_generator, epochs, callbacks, fig_name)
 
     return history, checkpoint_filepath
 

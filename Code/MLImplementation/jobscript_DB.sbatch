@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 #SBATCH --account=research-eemcs-diam
-#SBATCH --job-name="hypertun"
+#SBATCH --job-name="Diffs10x"
 #SBATCH --partition=gpu
-#SBATCH --time=4:00:00
+#SBATCH --time=47:59:99
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem-per-cpu=10G
@@ -31,4 +31,4 @@ cd /scratch/syllehoogeveen/MLImplementation
 
 #python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 
-srun python main.py train total
+srun python main.py train total TS_seperately
