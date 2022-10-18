@@ -1,5 +1,0 @@
-PyYAML==6.0
-matplotlib==3.5.1
-tensorflow-gpu==2.8.0
-pandas==1.4.1
-numpy==1.19.0

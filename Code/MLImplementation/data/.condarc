@@ -1,6 +1,0 @@
-pkgs_dirs:
-  - /home/nfs/syllehoogeveen/.conda/pkgs
-  - /tudelft.net/staff-umbrella/transientcnn/.conda/pkgs
-envs_dirs:
-  - /home/nfs/syllehoogeveen/.conda/envs
-  - /tudelft.net/staff-umbrella/transientcnn/.conda/envs
